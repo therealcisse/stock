@@ -1,0 +1,15 @@
+.dropdown-item {
+  composes: dropdown-item from "styles/_base.scss";
+}
+
+.dropdown-header {
+  composes: dropdown-header from "styles/_base.scss";
+}
+
+.divider {
+  composes: dropdown-divider from "styles/_base.scss";
+}
+
+.disabled {
+  composes: disabled from "styles/_base.scss";
+}

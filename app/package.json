@@ -1,0 +1,21 @@
+{
+  "name": "stock",
+  "productName": "Mon Stock",
+  "version": "1.0.0",
+  "description": "Gestion de Stock",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Amadou Cisse",
+    "email": "cisse.amadou.9@gmail.com",
+    "url": "https://github.com/amsayk"
+  },
+  "scripts": {
+    "postinstall":
+      "npm rebuild --runtime=electron --target=1.8.0 --disturl=https://atom.io/download/atom-shell --build-from-source"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "better-sqlite3": "^4.0.2"
+  }
+}

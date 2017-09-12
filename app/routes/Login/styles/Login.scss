@@ -1,0 +1,114 @@
+@import "variables";
+
+.center {
+  composes: center flex-column from "styles/_base.scss";
+  min-height: 575px;
+}
+
+.logIn {
+  composes: btn btn-primary btn-block buttonShadow from "styles/_base.scss";
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 11px 10px;
+}
+
+.navSignupWrapper {
+  margin-top: 25px;
+}
+
+.navbarText {
+  composes: hint-block align-middle from "styles/_base.scss";
+}
+
+.control {
+  composes: formControl from "styles/_base.scss";
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+
+  &:focus {
+    z-index: 2;
+  }
+}
+
+.root {
+  composes: d-flex flex-column from "styles/_base.scss";
+  background-color: #eee;
+  height: 100%;
+  overflow-y: auto;
+
+  .logo {
+    align-self: center;
+    margin-bottom: 25px;
+  }
+
+  footer {
+    align-items: flex-start;
+    display: flex;
+    height: 150px;
+    justify-content: center;
+  }
+
+  footer ul {
+    padding-left: 0;
+  }
+}
+
+.form {
+  align-self: center;
+  background-color: #fff;
+  border-radius: 4px;
+  margin: 0 auto;
+  min-width: 380px;
+  padding: 15px 35px;
+
+  .heading {
+    font-size: 24px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    margin-bottom: 30px;
+    margin-top: 9px;
+    text-align: center;
+  }
+}
+
+.usernameFieldControl {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  composes: control;
+  top: 1px;
+}
+
+.passwordFieldControl {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  composes: control;
+  margin-bottom: 20px;
+  top: -1px;
+}
+
+.formControlFeedback {
+  composes: formControlFeedback from "styles/_base.scss";
+}
+
+.error {
+  composes: hint-block from "styles/_base.scss";
+  margin-bottom: 12px;
+  text-align: center;
+
+  * {
+    color: theme-color("danger");
+  }
+}
+
+.footerLink {
+  display: inline-block;
+  margin: 0 10px;
+
+  a {
+    color: #9b9b9b;
+    font-size: 12px;
+  }
+}

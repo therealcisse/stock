@@ -1,0 +1,31 @@
+@import "bootstrap/scss/functions"; // Bootstrap Functions
+
+// Core variables
+@import "bootstrap/scss/variables";
+
+// @import 'react-dates/css/variables';
+
+$app-font-path: "styles/fonts";
+
+// overrides here (do not use !default here)
+$body-bg: #fff;
+$navbar-bg: #fff;
+$navbar-horizontal-spacing: 25px;
+$navbar-vertical-spacing: 0;
+
+// Height of global notifications
+$notification-height: 45px;
+
+// Enable shadows for form controls
+$enable-shadows: false;
+
+// color for some blurred inputs
+$input-blur-color: #fafafa;
+
+// Fonts
+$pixel-base: 16;
+$font-size-base: (14 / $pixel-base) * 1rem;
+$line-height-base: 1.42857142857143;
+
+// error icon
+// $form-icon-danger: str-replace(url("data:image/svg+xml;charset=utf8, %3Csvg xmlns='http://www.w3.org/2000/svg' fill='#{$form-icon-danger-color}' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E"), "#", "%23");

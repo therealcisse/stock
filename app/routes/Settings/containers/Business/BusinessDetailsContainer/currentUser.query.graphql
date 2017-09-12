@@ -1,0 +1,20 @@
+query settings_business__getUser($id: ID!) {
+  currentUser: getUser(id: $id) {
+    id
+    changePasswordAtNextLogin
+    business {
+      id
+      displayName
+      description
+      url
+      country
+      addressLine1
+      addressLine2
+      city
+      stateProvince
+      postalCode
+      phone
+      taxId
+    }
+  }
+}

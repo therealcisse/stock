@@ -1,0 +1,35 @@
+.active {
+  composes: active from "styles/_base.scss";
+}
+
+.disabled {
+  composes: disabled from "styles/_base.scss";
+}
+
+.btn-block {
+  composes: btn-block from "styles/_base.scss";
+}
+
+.btn {
+  composes: btn from "styles/_base.scss";
+}
+
+.btn-link {
+  composes: btn-link from "styles/_base.scss";
+}
+
+.btn-primary {
+  composes: btn-primary from "styles/_base.scss";
+}
+
+.btn-secondary {
+  composes: btn-secondary from "styles/_base.scss";
+}
+
+.btn-danger {
+  composes: btn-danger from "styles/_base.scss";
+}
+
+.btn-success {
+  composes: btn-success from "styles/_base.scss";
+}

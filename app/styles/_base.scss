@@ -1,0 +1,99 @@
+// Variable overrides come first (without !default). Bootstrap default variables
+// come second because they use !default (they won't get set if set already) and
+// some of them depend on our overrides.
+@import "variables";
+
+// mixins
+@import "bootstrap/scss/mixins";
+
+// Reset and dependencies
+// @import 'bootstrap/scss/normalize';
+// @import 'bootstrap/scss/print';
+
+// Core CSS
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+// @import 'bootstrap/scss/code';
+// @import 'bootstrap/scss/images';
+@import "bootstrap/scss/grid";
+// @import 'bootstrap/scss/tables';
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+
+// Components
+@import "bootstrap/scss/transitions";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/button-group";
+// @import 'bootstrap/scss/input-group';
+// @import 'bootstrap/scss/custom-forms';
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+// @import 'bootstrap/scss/card';
+// @import 'bootstrap/scss/breadcrumb';
+// @import 'bootstrap/scss/pagination';
+@import "bootstrap/scss/badge";
+// @import 'bootstrap/scss/jumbotron';
+@import "bootstrap/scss/alert";
+// @import 'bootstrap/scss/progress';
+// @import 'bootstrap/scss/media';
+// @import 'bootstrap/scss/list-group';
+// @import 'bootstrap/scss/responsive-embed';
+@import "bootstrap/scss/close";
+
+// Components w/ JavaScript
+// @import 'bootstrap/scss/modal';
+// @import 'bootstrap/scss/tooltip';
+// @import 'bootstrap/scss/popover';
+// @import 'bootstrap/scss/carousel';
+
+// Utility classes
+@import "bootstrap/scss/utilities";
+
+.buttonShadow {
+  box-shadow: 8px 10px 20px 0px rgba(46, 61, 73, 0.15);
+  border-radius: 0.25rem;
+  border-color: transparent;
+
+  &:hover {
+    box-shadow: 2px 4px 8px 0px rgba(46, 61, 73, 0.2);
+  }
+}
+
+.alert {
+  &.alert-dismissible {
+    padding: 0.55em 1.25rem 0;
+  }
+}
+
+.fit-page {
+  min-height: 100vh;
+}
+
+.flex {
+  composes: d-flex;
+  height: 100%;
+}
+
+.center {
+  align-items: center;
+  composes: d-flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.hint-block {
+  color: #999;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.disable-selection {
+  user-select: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+// Custom imports
+@import "themes/default";

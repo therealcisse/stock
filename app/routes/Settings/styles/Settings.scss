@@ -1,0 +1,330 @@
+@import "variables";
+
+$toolbar-height: 49px;
+$navbar-height: 61px;
+$sidebar-width: 240px;
+
+// Common
+
+// .body {
+//   margin-top: calc(#{$navbar-height} + 1px);
+//   background-color: #fff;
+//   composes: d-flex from 'styles/_base.scss';
+//   flex: 1;
+// }
+
+.content {
+  flex: 1;
+  // overflow: auto;
+  padding: 20px;
+  margin-left: $sidebar-width;
+  margin-top: calc(#{$navbar-height});
+}
+
+.form {
+  margin: 10px 0 0 25px;
+}
+
+.iconRequired {
+  color: theme-color("danger");
+  left: 100%;
+  position: absolute;
+  top: -3px;
+}
+
+.buttonGroup {
+  composes: buttonGroup row from "styles/_base.scss";
+  margin-top: 1em;
+}
+
+.saveButton {
+  composes: btn btn-primary from "styles/_base.scss";
+  font-weight: 500;
+  margin-top: 1em;
+  margin-left: 15px;
+}
+
+.changePasswordButton {
+  composes: btn btn-primary from "styles/_base.scss";
+  font-weight: 500;
+
+  &:hover,
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.cancelButton {
+  composes: btn btn-link from "styles/_base.scss";
+
+  &:hover,
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.offset2 {
+  composes: col-sm-2 from "styles/_base.scss";
+}
+
+.control {
+  composes: formControl from "styles/_base.scss";
+  font-size: inherit;
+  height: 2.54285714em;
+  max-width: 240px;
+  // padding: 10px;
+  position: relative;
+}
+
+.control + button[data-password-input-button] {
+  left: calc(240px - 45px);
+  top: 4px;
+}
+
+textarea.control {
+  height: auto;
+}
+
+.width15Percent {
+  width: 15%;
+}
+
+.inputWrapper {
+  composes: col-sm-10 from "styles/_base.scss";
+}
+
+.label {
+  color: #707070;
+  composes: col-sm-2 from "styles/_base.scss";
+  padding: 5px 0 0;
+  position: relative;
+  text-align: right;
+  word-wrap: break-word;
+}
+
+.formGroup {
+  composes: formGroup row from "styles/_base.scss";
+  margin-bottom: 0.5em;
+}
+
+.emailField,
+.idField {
+  composes: formGroup;
+}
+
+.formGroupHasDanger {
+  composes: formGroupHasDanger from "styles/_base.scss";
+}
+
+.formControlFeedback {
+  composes: formControlFeedback from "styles/_base.scss";
+}
+
+.formControlDanger {
+  composes: formControlDanger from "styles/_base.scss";
+}
+
+.email {
+  composes: formControlStatic from "styles/_base.scss";
+  font-weight: 700;
+  max-width: 240px;
+  padding-top: 0.25rem;
+}
+
+.id {
+  background-clip: padding-box;
+  background-color: #eceeef;
+  background-image: none;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  composes: email;
+  opacity: 1;
+  padding: 7px 10px;
+}
+
+.root {
+  composes: d-flex flex-column from "styles/_base.scss";
+  height: 100vh;
+}
+
+.formHeading {
+  color: #333;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin-bottom: 30px;
+  text-transform: none;
+}
+
+// Header
+
+.navbar {
+  composes: navbar fixed-top flex-row justify-content-between from "styles/_base.scss";
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-left: $navbar-horizontal-spacing;
+  padding-right: $navbar-horizontal-spacing;
+  transition: top 0.5s ease-in-out;
+  box-shadow: 0 2px 4px 0 #e6e9ed;
+  height: $navbar-height;
+
+  .notificationOpen & {
+    // top: calc(#{$notification-height});
+  }
+}
+
+.menu {
+  composes: navbar-nav from "styles/_base.scss";
+  justify-content: center;
+}
+
+.logoutLink {
+  composes: nav-item nav-link from "styles/_base.scss";
+  cursor: pointer;
+}
+
+// Sidebar
+
+.sidebar {
+  position: fixed;
+  top: $navbar-height;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  border-right: 1px solid rgba(0, 0, 0, 0.095);
+  padding: 20px;
+  width: $sidebar-width;
+  height: calc(100% - #{$navbar-height});
+  transition: top 0.5s ease-in-out;
+
+  .notificationOpen & {
+    // top: calc(#{$navbar-height} + #{$notification-height});
+    // height: calc(100% - #{$navbar-height} - #{$notification-height});
+  }
+
+  .heading {
+    color: #707070;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.66666666666667;
+    margin-top: 5px;
+    padding: 10px 10px 4px;
+    text-transform: uppercase;
+  }
+
+  ul,
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    margin-bottom: 10px;
+  }
+
+  a {
+    color: #3572b0;
+    display: block;
+    line-height: 1.14285714285714;
+    padding: 7px 10px;
+    word-wrap: break-word;
+  }
+
+  a:hover,
+  a:focus {
+    background: #e6e6e6;
+    text-decoration: none;
+  }
+
+  .selected > a {
+    color: #333;
+    font-weight: 700;
+  }
+}
+
+.changeEmailFormHeading {
+  composes: formHeading;
+  margin-bottom: 0;
+}
+
+.currentEmailIntro {
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+.changeEmailButton {
+  color: $black;
+  composes: btn btn-link align-middle from "styles/_base.scss";
+  opacity: 0.54;
+  padding: 0;
+
+  &:focus,
+  &:hover {
+    box-shadow: none;
+    color: $black;
+    opacity: 0.8;
+    outline: 0;
+    text-decoration: none;
+  }
+}
+
+.changeEmailIcon {
+}
+
+// Password meter
+
+.passwordStrength {
+  border-top: 5px solid #f5f5f5;
+  box-sizing: border-box;
+  color: #707070;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 2px;
+  max-width: 240px;
+  min-height: 23px;
+  position: relative;
+}
+
+.passwordStrength::after,
+.passwordStrength::before {
+  content: "";
+  height: 5px;
+  position: absolute;
+  top: -5px;
+}
+
+.passwordStrength::after {
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+  left: 25%;
+  right: 25%;
+}
+
+.passwordStrength::before {
+  background: #f5f5f5;
+  left: 0;
+  transition: all 0.2s ease-out;
+  width: 0;
+}
+
+.passwordStrength-1::before {
+  background: #d04437;
+  width: 25%;
+}
+
+.passwordStrength-2::before {
+  background: #ffd351;
+  width: 50%;
+}
+
+.passwordStrength-3::before {
+  background: #89c495;
+  width: 75%;
+}
+
+.passwordStrength-4::before {
+  background: #14892c;
+  width: 100%;
+}

@@ -1,0 +1,44 @@
+.profile {
+  composes: d-flex flex-row align-content-center from "styles/_base.scss";
+
+  .profile-info-line {
+    max-width: 420px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.profileAvatar {
+  margin: 10px;
+}
+
+.profileInfo {
+  align-self: center;
+  margin-right: 10px;
+}
+
+.profileName {
+  composes: profile-info-line;
+  font-weight: 700;
+}
+
+.profileEmail {
+  color: #707070;
+  composes: profile-info-line;
+  font-size: 13px;
+}
+
+.menu {
+  composes: navbar-nav rightNavItem from "styles/_base.scss";
+  justify-content: center;
+
+  [role="menu"] {
+    top: 110% !important;
+  }
+}
+
+.avatar {
+  padding: 0;
+  padding: 4px;
+}

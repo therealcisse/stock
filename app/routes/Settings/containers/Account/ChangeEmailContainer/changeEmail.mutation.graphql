@@ -1,0 +1,9 @@
+mutation changeEmail($payload: ChangeEmailPayload!) {
+  changeEmail(payload: $payload) {
+    user {
+      id
+      email
+    }
+    errors
+  }
+}

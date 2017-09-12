@@ -1,0 +1,34 @@
+.noCaret::after {
+  content: none;
+}
+
+.open {
+  composes: show from "styles/_base.scss";
+}
+
+.dropdown {
+  composes: dropdown from "styles/_base.scss";
+
+  &.open .dropdown-menu {
+    display: block;
+  }
+}
+
+.dropdown-toggle {
+  composes: dropdown-toggle from "styles/_base.scss";
+}
+
+.dropdown-menu {
+  composes: dropdown-menu from "styles/_base.scss";
+  position: absolute !important;
+  float: left !important;
+}
+
+.dropdown-menu-right {
+  right: 0;
+  left: auto;
+}
+
+.disabled {
+  composes: disabled from "styles/_base.scss";
+}

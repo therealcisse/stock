@@ -1,0 +1,7 @@
+.fade {
+  composes: fade from "styles/_base.scss";
+}
+
+.show {
+  composes: show from "styles/_base.scss";
+}

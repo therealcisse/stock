@@ -1,0 +1,14 @@
+.notification {
+  background-clip: padding-box;
+  margin-bottom: 0;
+  text-align: center;
+  height: $notification-height;
+}
+
+.notification-full {
+  border-radius: 0;
+}
+
+.close {
+  composes: close;
+}

@@ -1,0 +1,48 @@
+@import "animate";
+
+.notification {
+  composes: notification notification-full align-content-center alert fade show from "styles/_base.scss";
+}
+
+.notificationInvalidLink {
+  composes: alert-danger alert-dismissible from "styles/_base.scss";
+}
+
+.notificationPasswordResetSuccess {
+  composes: alert-success from "styles/_base.scss";
+}
+
+.notificationVerificationPending {
+  composes: alert-warning from "styles/_base.scss";
+}
+
+.notificationVerificationSuccess {
+  composes: alert-success alert-dismissible from "styles/_base.scss";
+}
+
+.notificationBusinessRequired {
+  composes: alert-success from "styles/_base.scss";
+}
+
+.notificationSessionExpired {
+  composes: alert-info from "styles/_base.scss";
+}
+
+.link {
+  composes: alert-link from "styles/_base.scss";
+  cursor: pointer;
+  font-weight: normal;
+  text-decoration: underline !important;
+}
+
+.close {
+  composes: close from "styles/_base.scss";
+  padding: 0.5rem 1.25rem;
+  top: -0.25rem;
+}
+
+.changeEmailLink,
+.resendLink,
+.businessLink {
+  composes: link;
+}

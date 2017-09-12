@@ -1,0 +1,9 @@
+mutation updateAccountSettings($payload: UpdateAccountSettingsPayload!) {
+  updateAccountSettings(payload: $payload) {
+    user {
+      id
+      displayName
+    }
+    errors
+  }
+}

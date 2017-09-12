@@ -1,0 +1,16 @@
+subscription onEvent {
+  onEvent {
+    event {
+      id
+      now
+      ns
+      type
+      metadata
+      timestamp
+      user {
+        id
+        displayName
+      }
+    }
+  }
+}

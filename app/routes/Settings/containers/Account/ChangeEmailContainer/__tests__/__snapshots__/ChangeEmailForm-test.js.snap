@@ -1,0 +1,53 @@
+exports[`change email form should render the snapshot 1`] = `
+<div
+  className="content">
+  <h1
+    className="changeEmailFormHeading">
+    Change email address
+  </h1>
+  <p
+    className="currentEmailIntro">
+    <span>
+      Your email address is currently 
+      <strong>
+        email
+      </strong>
+      .
+    </span>
+  </p>
+  <div
+    className="form">
+    <div
+      className="formGroup">
+      <label
+        className="label"
+        htmlFor="email">
+        New email address
+      </label>
+      <div
+        className="inputWrapper">
+        <input
+          autoComplete="off"
+          autoFocus={true}
+          className="control"
+          name="email"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onDragStart={[Function]}
+          onDrop={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          type="text"
+          value="" />
+        <div />
+      </div>
+    </div>
+    <button
+      className="saveButton"
+      disabled={true}
+      onClick={[Function]}>
+      Change email
+    </button>
+  </div>
+</div>
+`;

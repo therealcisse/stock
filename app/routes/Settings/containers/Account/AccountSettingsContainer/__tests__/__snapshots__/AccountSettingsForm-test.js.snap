@@ -1,0 +1,84 @@
+exports[`account settings form should render the snapshot 1`] = `
+<div
+  className="content">
+  <h1
+    className="formHeading">
+    Account settings
+  </h1>
+  <div
+    className="form">
+    <div
+      className="emailField">
+      <label
+        className="label"
+        htmlFor="email">
+        Email
+      </label>
+      <div
+        className="inputWrapper">
+        <p
+          className="email"
+          title="Change email">
+          
+           
+          <a
+            className="changeEmailButton"
+            onClick={[Function]}
+            style={Object {}}>
+            <span
+              allowFontScaling={false}
+              className="changeEmailIcon"
+              style={
+                Object {
+                  "color": undefined,
+                  "fontFamily": "Material Icons",
+                  "fontSize": 18,
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                }
+              }>
+              
+            </span>
+          </a>
+        </p>
+      </div>
+    </div>
+    <div
+      className="formGroup">
+      <label
+        className="label"
+        htmlFor="displayName">
+        Full name
+         
+        <span
+          className="iconRequired">
+          ⋆
+        </span>
+      </label>
+      <div
+        className="inputWrapper">
+        <input
+          autoComplete="off"
+          autoFocus={true}
+          className="control"
+          name="displayName"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onDragStart={[Function]}
+          onDrop={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          type="text"
+          value="" />
+        <div />
+      </div>
+    </div>
+    <button
+      className="saveButton"
+      disabled={true}
+      onClick={[Function]}>
+      Save
+    </button>
+  </div>
+</div>
+`;

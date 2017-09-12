@@ -1,0 +1,10 @@
+@import "variables";
+
+.logo {
+  color: theme-color("dark");
+  composes: align-top rounded-circle from "styles/_base.scss";
+
+  &:hover {
+    color: theme-color("primary");
+  }
+}

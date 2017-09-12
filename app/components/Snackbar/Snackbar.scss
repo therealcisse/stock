@@ -1,0 +1,70 @@
+@import "variables";
+@import "animate";
+$app-color-black: #373a3c !default;
+$snackbar-action-color: #a1c2fa !default;
+$snackbar-action-hover-color: #bbdefb !default;
+
+.snackbar {
+  animation-duration: 0.5s;
+  background: rgba($app-color-black, 0.9);
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba($app-color-black, 0.1);
+  color: #fff;
+  composes: flex-row align-content-between from "styles/_base.scss";
+  font-size: 14px;
+  line-height: 1.65em;
+  max-width: 568px;
+  min-height: 48px;
+  padding: 15px 24px;
+  position: fixed;
+
+  &.primary {
+    background: theme-color("primary");
+  }
+
+  &.success {
+    background: theme-color("success");
+  }
+
+  &.info {
+    background: theme-color("info");
+  }
+
+  &.warning {
+    background: theme-color("warning");
+  }
+
+  &.danger {
+    background: theme-color("danger");
+  }
+}
+
+.snackbar > *:not(:first-child) {
+  margin-left: 12px;
+}
+
+.btn-snackbar {
+  background: none;
+  border: 0;
+  color: $snackbar-action-color;
+  composes: btn btn-link align-self-center from "styles/_base.scss";
+  cursor: pointer;
+  font-weight: bold;
+  height: 100%;
+  line-height: 100%;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+
+  &:focus,
+  &:hover {
+    box-shadow: none;
+    color: $snackbar-action-hover-color;
+    outline: 0;
+    text-decoration: none;
+  }
+}
+
+.close {
+  composes: close justify-content-end from "styles/_base.scss";
+}

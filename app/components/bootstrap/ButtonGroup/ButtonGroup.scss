@@ -1,0 +1,15 @@
+.btn-group {
+  composes: btn-group from "styles/_base.scss";
+}
+
+.btn-block {
+  composes: btn-block from "styles/_base.scss";
+}
+
+.btn-group-vertical {
+  composes: btn-group-vertical from "styles/_base.scss";
+}
+
+.btn-group-justified {
+  composes: btn-group-justified from "styles/_base.scss";
+}

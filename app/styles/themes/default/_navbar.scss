@@ -1,0 +1,47 @@
+.navbar {
+  background: $navbar-bg;
+  background-clip: padding-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.075);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  composes: navbar navbar-light;
+  margin-bottom: -1px;
+}
+
+.navbarRight {
+  composes: justify-content-end;
+}
+
+.navbarForm {
+  composes: form-inline;
+}
+
+.navLink {
+  composes: btn btn-link;
+}
+
+.navbarText {
+  composes: hint-block;
+  composes: navbar-text;
+}
+
+.leftNav {
+  composes: d-flex flex-row justify-content-start align-items-center;
+  flex: 1;
+}
+
+.middleNav {
+  composes: d-flex flex-row justify-content-center align-items-center;
+  flex: 1;
+}
+
+.rightNav {
+  composes: d-flex flex-row align-items-center justify-content-end align-items-center;
+  flex: 1;
+}
+
+.rightNavItem + .rightNavItem {
+  margin-left: 17px;
+}
+.leftNavItem + .leftNavItem {
+  margin-left: 17px;
+}

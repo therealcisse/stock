@@ -1,0 +1,111 @@
+Use material-ui
+
+online icon generator: https://iconverticons.com/online/
+
+-2. Use grid layout
+
+-1. Design DB system
+
+0. Generate and incorporate mock data
+
+
+1. Home page
+
+Side bar (global)
+--------
+
+Icons:
+-------
+home,
+sales,
+expenses,
+products
+clients,
+suppliers
+
+
+Main  area
+-----------
+
+graphs
+------
+
+stock
+------
+all products in pie charts with stock number as percentage + legend
+
+
+sales
+------
+sales for last 30 days changeable (3 months, 6 months, year, etc)
+
+
+expenses
+--------
+expenses for last 30 days changeable (3 months, 6 months, year, etc)
+
+chiffres d'affaires
+-------------------
+sales total
+expenses total
+total = sales total - expenses total
+
+Events
+------
+
+new sale, expense, product, client, supplier
+stock change from sale or expense
+
+2. Header
+
+search
+new button (sale, expense, client, supplier, product)
+open DB folder secured by re-entry of password (later)
+
+3. Sales
+
+amount of sales (sales for last 30 days)
+List of sales
+
+Sale page
+Sale form
+
+4. Expenses
+
+amount of expenses
+List of expenses
+
+Expense page
+Expense form
+
+5. Products
+
+Graph of stock of products
+List of products
+Stock of products as last column (loaded lazily and maybe cached)
+
+Product page
+Product form
+
+6. Clients
+
+List of clients
+
+Client form
+
+6.1 Client page
+===============
+Client info
+list of client events
+
+7. Suppliers
+
+List of suppliers
+
+Supplier form
+
+7.1 Supplier page
+=================
+Supplier info
+list of supplier events
+

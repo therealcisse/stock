@@ -1,0 +1,121 @@
+@import "base";
+
+// Some best-practice CSS that's useful for most apps
+// Just remove them if they're not what you want
+html {
+  box-sizing: border-box;
+  background-color: #ffffff;
+}
+
+html,
+body {
+  // height: 100%;
+  // min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  min-height: 100vh;
+}
+
+button {
+  background-color: transparent;
+}
+
+* {
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.root {
+  composes: d-flex flex-column;
+  min-height: 100vh;
+  min-width: 1281px;
+  overflow-x: auto;
+  // height: 100%;
+}
+
+:global .pageload-overlay {
+  display: none;
+}
+
+main {
+  // height: 100%;
+}
+
+main,
+body {
+}
+
+mark {
+  background-color: transparent;
+}
+
+::placeholder {
+  user-select: none;
+}
+
+:global {
+  // React date picker
+  @import "react-date-picker/style/index.scss";
+
+  .react-date-picker-dropup .react-date-field__picker {
+  }
+
+  .react-date-field--theme-default,
+  .react-date-field--focused,
+  .react-date-field__picker {
+    border: none !important;
+  }
+
+  .react-date-field__calendar-icon {
+    display: none;
+  }
+
+  .react-date-field__input {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+:global {
+  // React dates
+  // @import 'react-dates/css/styles';
+
+  .DateInput {
+    padding-left: 0;
+    width: auto;
+  }
+
+  .DateRangePickerInput {
+    border: 0;
+  }
+
+  .DateRangePickerInput__clear-dates--hide {
+    display: none;
+  }
+
+  .DateRangePickerInput__arrow {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .SingleDatePickerInput {
+    border: 0;
+  }
+
+  .DateInput__input {
+    cursor: pointer;
+  }
+}

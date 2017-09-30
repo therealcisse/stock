@@ -1,3 +1,5 @@
+// @flow
+
 import Loaders from './loaders';
 
 import asTransaction from 'data/asTransaction';
@@ -9,6 +11,16 @@ import { Product, Event } from 'data/types';
 import uuid from 'uuid';
 
 import sort from 'lodash.orderby';
+
+type Item = {
+  type: Expense.TYPE | Sale.TYPE,
+  foreignId: String,
+  productId: String,
+  qty: number,
+  unitPrice: number,
+  dateNow: number,
+  dateCreated: number,
+};
 
 export class ProductConnector {
   constructor({ db }) {
@@ -30,15 +42,7 @@ export class ProductConnector {
     unitPrice,
     dateNow,
     dateCreated,
-  }: {
-    type: Expense.TYPE | Sale.TYPE,
-    foreignId: String,
-    productId: String,
-    qty: number,
-    unitPrice: number,
-    dateNow: number,
-    dateCreated: number,
-  }): string {
+  }: Item): string {
     invariant(
       this.db.inTransaction,
       `Products.newItem must be ran in a transaction`,

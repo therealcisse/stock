@@ -15,7 +15,9 @@ export class UserConnector {
 
     this.setPassword = asTransaction(this.setPassword.bind(this));
     this.changeEmail = asTransaction(this.changeEmail.bind(this));
-    this.updateAccountSettings = asTransaction(this.updateAccountSettings.bind(this));
+    this.updateAccountSettings = asTransaction(
+      this.updateAccountSettings.bind(this),
+    );
   }
 
   get(id) {

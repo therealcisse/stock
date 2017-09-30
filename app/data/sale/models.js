@@ -46,6 +46,4 @@ export class Sales {
   delPay(id, context) {
     return this.connector.delPay(id, context);
   }
-
 }
-

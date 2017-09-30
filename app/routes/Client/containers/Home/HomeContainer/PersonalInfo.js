@@ -10,14 +10,8 @@ export default class PersonalInfo extends React.Component {
         <div className={style.table}>
           <div className={style.tableRow}>
             <Line label="Nom du client" value={client.displayName} />
-            <Line
-              label="E-mail"
-              value={client.email || <span>&mdash;</span>}
-            />
-            <Line
-              label="Téléphone"
-              value={client.tel || <span>&mdash;</span>}
-            />
+            <Line label="E-mail" value={client.email || <span>&mdash;</span>} />
+            <Line label="Téléphone" value={client.tel || <span>&mdash;</span>} />
             <Line
               label="Adresse"
               value={client.address || <span>&mdash;</span>}
@@ -48,4 +42,3 @@ function Line({ label, value }) {
     </div>
   );
 }
-

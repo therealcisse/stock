@@ -25,11 +25,7 @@ export class HomeContainer extends React.Component {
 
     return (
       <div className={style.root}>
-        <SideMenu
-          intl={intl}
-          user={user}
-          onLogOut={actions.logOut}
-        />
+        <SideMenu intl={intl} user={user} onLogOut={actions.logOut} />
       </div>
     );
   }

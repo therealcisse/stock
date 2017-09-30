@@ -43,4 +43,3 @@ export class Expenses {
     return this.connector.delPay(id, context);
   }
 }
-

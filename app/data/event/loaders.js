@@ -14,9 +14,10 @@ export default function({ db }) {
 
       return ids.map(id => {
         const index = objects.findIndex(object => object.id === id);
-        return index !== -1 ? objects[index] : new Error(`Event ${id} not found`);
+        return index !== -1
+          ? objects[index]
+          : new Error(`Event ${id} not found`);
       });
     }, {}),
   };
 }
-

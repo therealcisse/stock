@@ -182,5 +182,3 @@ class ClientSales extends React.Component {
 export default compose(injectIntl, withStyles(styles), DataLoader.sales)(
   ClientSales,
 );
-
-

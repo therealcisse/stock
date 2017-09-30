@@ -81,12 +81,10 @@ class PageBody extends React.Component {
           onChangeIndex={this.handleChangeIndex}
         >
           <TabContainer>
-            <Operations
-              id={n.supplier.id}
-            />
+            <Operations id={n.supplier.id} />
           </TabContainer>
           <TabContainer>
-            <PersonalInfo supplier={n.supplier}/>
+            <PersonalInfo supplier={n.supplier} />
           </TabContainer>
         </SwipeableViews>
       </div>

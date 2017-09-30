@@ -161,7 +161,10 @@ class PageBody extends React.Component {
               return (
                 <TableRow hover tabIndex={-1} key={n.client.id}>
                   <TableCell disablePadding>
-                    <Link to={PATH_CLIENT_PREFIX + '/' + n.client.id} className={style.displayNameLink}>
+                    <Link
+                      to={PATH_CLIENT_PREFIX + '/' + n.client.id}
+                      className={style.displayNameLink}
+                    >
                       <Typography type="body1" noWrap>
                         {n.client.displayName}
                       </Typography>

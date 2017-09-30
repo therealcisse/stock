@@ -10,7 +10,9 @@ const styles = theme => ({
 });
 
 function Loading({ classes, size = 50 }) {
-  return <CircularProgress color="accent" className={classes.progress} size={size} />;
+  return (
+    <CircularProgress color="accent" className={classes.progress} size={size} />
+  );
 }
 
 Loading.propTypes = {

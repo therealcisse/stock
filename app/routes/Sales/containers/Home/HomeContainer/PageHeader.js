@@ -55,7 +55,7 @@ class PageHeader extends React.Component {
             {/* ) : null} */}
           </div>
         </div>
-        <SalesReport/>
+        <SalesReport />
       </div>
     );
   }

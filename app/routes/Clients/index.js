@@ -8,4 +8,6 @@ import Home from './containers/Home';
 
 import UserIsAuthenticated from 'authWrappers/UserIsAuthenticated';
 
-export default <Route path={PATH_CLIENTS} component={UserIsAuthenticated(Home)} />;
+export default (
+  <Route path={PATH_CLIENTS} component={UserIsAuthenticated(Home)} />
+);

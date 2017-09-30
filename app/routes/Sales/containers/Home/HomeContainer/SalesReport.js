@@ -41,9 +41,7 @@ class SalesReport extends React.Component {
                           </span>
                           <div>
                             <span>&nbsp;</span>
-                            <span>
-                              {n.sales.openCount} en cours
-                            </span>
+                            <span>{n.sales.openCount} en cours</span>
                           </div>
                         </div>
                       </div>

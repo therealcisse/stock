@@ -19,7 +19,7 @@ const expenses = graphql(ExpensesQuery, {
 const addExpense = graphql(AddExpenseMutation, {
   props({ mutate }) {
     return {
-      addExpense: (payload) =>
+      addExpense: payload =>
         mutate({
           refetchQueries: [],
           variables: { payload },

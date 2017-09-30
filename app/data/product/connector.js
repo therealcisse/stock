@@ -30,7 +30,7 @@ export class ProductConnector {
     unitPrice,
     dateNow,
     dateCreated,
-  }/*: {
+  }: {
     type: Expense.TYPE | Sale.TYPE,
     foreignId: String,
     productId: String,
@@ -38,7 +38,7 @@ export class ProductConnector {
     unitPrice: number,
     dateNow: number,
     dateCreated: number,
-  }*/): string {
+  }): string {
     invariant(
       this.db.inTransaction,
       `Products.newItem must be ran in a transaction`,

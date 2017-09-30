@@ -23,7 +23,7 @@ const sales = graphql(SalesQuery, {
 const addSale = graphql(AddSaleMutation, {
   props({ mutate }) {
     return {
-      addSale: (payload) =>
+      addSale: payload =>
         mutate({
           refetchQueries: [],
           variables: { payload },

@@ -16,4 +16,3 @@ export default defineMessages({
     defaultMessage: 'Merci. Nous avons envoyé un courriel à l’adresse fournie.',
   },
 });
-

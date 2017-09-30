@@ -4,33 +4,41 @@ import { Expense, Item, Payment, TransactionStatus } from 'data/types';
 
 import { Money } from 'data/utils';
 
-export default function ({ db }) {
+export default function({ db }) {
   return {
     ids: new DataLoader(async function(ids) {
       const objects = db
         .prepare(
-          `SELECT * FROM expenses WHERE id IN (${ids.map(() => '?').join(', ')});`,
+          `SELECT * FROM expenses WHERE id IN (${ids
+            .map(() => '?')
+            .join(', ')});`,
         )
         .all(ids)
         .map(Expense.fromDatabase);
 
       return ids.map(id => {
         const index = objects.findIndex(object => object.id === id);
-        return index !== -1 ? objects[index] : new Error(`Expense ${id} not found`);
+        return index !== -1
+          ? objects[index]
+          : new Error(`Expense ${id} not found`);
       });
     }, {}),
 
     payment: new DataLoader(async function(ids) {
       const objects = db
         .prepare(
-          `SELECT * FROM payments WHERE id IN (${ids.map(() => '?').join(', ')});`,
+          `SELECT * FROM payments WHERE id IN (${ids
+            .map(() => '?')
+            .join(', ')});`,
         )
         .all(ids)
         .map(Payment.fromDatabase);
 
       return ids.map(id => {
         const index = objects.findIndex(object => object.id === id);
-        return index !== -1 ? objects[index] : new Error(`Payment ${id} not found`);
+        return index !== -1
+          ? objects[index]
+          : new Error(`Payment ${id} not found`);
       });
     }, {}),
 
@@ -61,10 +69,8 @@ export default function ({ db }) {
     }, {}),
 
     length: new DataLoader(async function(ids) {
-      const {length} = db
-        .prepare(
-          `SELECT COUNT(*) as length FROM expenses;`,
-        )
+      const { length } = db
+        .prepare(`SELECT COUNT(*) as length FROM expenses;`)
         .get();
 
       return ids.map(() => length);
@@ -135,6 +141,5 @@ export default function ({ db }) {
         };
       });
     }, {}),
-  }
+  };
 }
-

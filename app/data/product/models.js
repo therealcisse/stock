@@ -21,7 +21,7 @@ export class Products {
     return this.connector.addProduct(id, payload, context);
   }
 
-  newItem(item/*: {
+  newItem(item: {
     type: Expense.TYPE | Sale.TYPE,
     foreignId: String,
     productId: String,
@@ -29,7 +29,7 @@ export class Products {
     unitPrice: number,
     dateNow: number,
     dateCreated: number,
-  }*/): Promise<string> {
+  }): Promise<string> {
     return this.connector.newItem(item);
   }
 }

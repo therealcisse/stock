@@ -35,7 +35,12 @@ class PageHeader extends React.Component {
         </div>
 
         <div className={style.add}>
-          <Button onClick={this.handleClickOpen} raised color="accent" className={classes.button}>
+          <Button
+            onClick={this.handleClickOpen}
+            raised
+            color="accent"
+            className={classes.button}
+          >
             Nouveau fournisseur
           </Button>
           {this.state.dialogOpen ? (

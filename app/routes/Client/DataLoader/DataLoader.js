@@ -7,7 +7,7 @@ import ExpensesQuery from './getClientExpenses.query.graphql';
 import ClientQuery from './getClient.query.graphql';
 
 const expenses = graphql(ExpensesQuery, {
-  options: (ownProps) => ({
+  options: ownProps => ({
     variables: {
       id: ownProps.id,
       query: {
@@ -19,7 +19,7 @@ const expenses = graphql(ExpensesQuery, {
 });
 
 const sales = graphql(SalesQuery, {
-  options: (ownProps) => ({
+  options: ownProps => ({
     variables: {
       id: ownProps.id,
       query: {

@@ -9,9 +9,7 @@ export default function({ db }) {
     ids: new DataLoader(async function(ids) {
       const objects = db
         .prepare(
-          `SELECT * FROM people WHERE id IN (${ids
-            .map(() => '?')
-            .join(', ')});`,
+          `SELECT * FROM people WHERE id IN (${ids.map(() => '?').join(', ')});`,
         )
         .all(ids)
         .map(Supplier.fromDatabase);

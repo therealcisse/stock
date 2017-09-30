@@ -11,7 +11,11 @@ import compose from 'redux/lib/compose';
 
 import { withStyles } from 'material-ui/styles';
 
-import { PATH_SUPPLIER_PREFIX, PATH_CLIENT_PREFIX, PATH_EXPENSE_PREFIX } from 'vars';
+import {
+  PATH_SUPPLIER_PREFIX,
+  PATH_CLIENT_PREFIX,
+  PATH_EXPENSE_PREFIX,
+} from 'vars';
 
 import { Client } from 'data/types';
 

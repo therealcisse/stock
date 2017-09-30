@@ -278,7 +278,12 @@ class Payments extends React.PureComponent {
               <TableBody>
                 {items.map(payment => {
                   return (
-                    <TableRow hover tabIndex={-1} key={payment.id} className={style.payment}>
+                    <TableRow
+                      hover
+                      tabIndex={-1}
+                      key={payment.id}
+                      className={style.payment}
+                    >
                       <TableCell disablePadding>{''}</TableCell>
                       <TableCell>
                         <div className={style.dateCreated}>
@@ -289,16 +294,18 @@ class Payments extends React.PureComponent {
                               year: 'numeric',
                             })}
                           </Typography>
-                          {payment.isDeleted ? null : <div className={style.actions}>
-                            <IconButton
-                              aria-label="Actions"
-                              onClick={this.handleTrash.bind(this, payment.id)}
-                              width={24}
-                              height={24}
-                            >
-                              <Trash />
-                            </IconButton>
-                          </div>}
+                          {payment.isDeleted ? null : (
+                            <div className={style.actions}>
+                              <IconButton
+                                aria-label="Actions"
+                                onClick={this.handleTrash.bind(this, payment.id)}
+                                width={24}
+                                height={24}
+                              >
+                                <Trash />
+                              </IconButton>
+                            </div>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell numeric>

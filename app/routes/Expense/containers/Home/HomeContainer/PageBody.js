@@ -304,16 +304,18 @@ class Payments extends React.PureComponent {
                               year: 'numeric',
                             })}
                           </Typography>
-                          {payment.isDeleted ? null : <div className={style.actions}>
-                            <IconButton
-                              aria-label="Actions"
-                              onClick={this.handleTrash.bind(this, payment.id)}
-                              width={24}
-                              height={24}
-                            >
-                              <Trash />
-                            </IconButton>
-                          </div>}
+                          {payment.isDeleted ? null : (
+                            <div className={style.actions}>
+                              <IconButton
+                                aria-label="Actions"
+                                onClick={this.handleTrash.bind(this, payment.id)}
+                                width={24}
+                                height={24}
+                              >
+                                <Trash />
+                              </IconButton>
+                            </div>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell numeric>

@@ -103,27 +103,27 @@ export function Sidebar({
       </ul>
 
       {/* Business settings */}
-      {user ? (
-        [
-          <hr key="divider" />,
-          <h1 key="business.title" className={style.heading}>
-            {intl.formatMessage(messages.headingBusiness)}
-          </h1>,
-          <ul key="business.links">
-            <li
-              className={cx({
-                [style.selected]: selectedMenuItem === 'business.settings',
-              })}
-            >
-              <Link
-                to={PATH_SETTINGS_BASE + '/' + PATH_SETTINGS_BUSINESS_DETAILS}
+      {user
+        ? [
+            <hr key="divider" />,
+            <h1 key="business.title" className={style.heading}>
+              {intl.formatMessage(messages.headingBusiness)}
+            </h1>,
+            <ul key="business.links">
+              <li
+                className={cx({
+                  [style.selected]: selectedMenuItem === 'business.settings',
+                })}
               >
-                {intl.formatMessage(messages.linkBusinessDetails)}
-              </Link>
-            </li>
-          </ul>,
-        ]
-      ) : null}
+                <Link
+                  to={PATH_SETTINGS_BASE + '/' + PATH_SETTINGS_BUSINESS_DETAILS}
+                >
+                  {intl.formatMessage(messages.linkBusinessDetails)}
+                </Link>
+              </li>
+            </ul>,
+          ]
+        : null}
     </div>
   );
 }

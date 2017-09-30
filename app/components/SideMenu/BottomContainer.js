@@ -23,7 +23,10 @@ export default function BottomContainer({ intl, user, onLogOut }) {
               <Dropdown.Toggle componentClass={Profile} />
               <Dropdown.Menu className={style.profileMenu}>
                 <MenuItem componentClass={ProfileMenuItem} user={user} />
-                <MenuItem componentClass={Link} to={PATH_SETTINGS_BASE + '/' + PATH_SETTINGS_ACCOUNT}>
+                <MenuItem
+                  componentClass={Link}
+                  to={PATH_SETTINGS_BASE + '/' + PATH_SETTINGS_ACCOUNT}
+                >
                   {intl.formatMessage(messages.manageAccount)}
                 </MenuItem>
                 <MenuItem divider />

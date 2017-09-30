@@ -5,7 +5,7 @@ import ExpensesQuery from './getSupplierExpenses.query.graphql';
 import SupplierQuery from './getSupplier.query.graphql';
 
 const expenses = graphql(ExpensesQuery, {
-  options: (ownProps) => ({
+  options: ownProps => ({
     variables: {
       id: ownProps.id,
       query: {

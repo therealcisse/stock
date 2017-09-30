@@ -112,14 +112,7 @@ class PageHeader extends React.Component {
             : null}
         </div>
 
-        <div>
-          {n ? (
-            <Report
-              intl={intl}
-              expense={n}
-            />
-          ) : null}
-        </div>
+        <div>{n ? <Report intl={intl} expense={n} /> : null}</div>
 
         {/* {this.state.dialogOpen ? ( */}
         {/*   <ExpenseForm */}

@@ -46,7 +46,9 @@ export class ClientConnector {
 
   async getClientExpense(id, query, { Sales }) {
     const objects = this.db
-      .prepare(`SELECT * FROM expenses WHERE state <> @state AND beneficiaryId = @beneficiaryId;`)
+      .prepare(
+        `SELECT * FROM expenses WHERE state <> @state AND beneficiaryId = @beneficiaryId;`,
+      )
       .all({
         state: TransactionStatus.toDatabase(TransactionStatus.CANCELLED),
         beneficiaryId: id,
@@ -72,7 +74,9 @@ export class ClientConnector {
 
   async getClientSales(id, query, { Sales }) {
     const objects = this.db
-      .prepare(`SELECT * FROM sales WHERE state <> @state AND clientId = @clientId;`)
+      .prepare(
+        `SELECT * FROM sales WHERE state <> @state AND clientId = @clientId;`,
+      )
       .all({
         state: TransactionStatus.toDatabase(TransactionStatus.CANCELLED),
         clientId: id,

@@ -222,9 +222,8 @@ export const resolvers = {
 
       return context.Expenses.getExpenses({ cursor, query }, context);
     },
-        getExpense: (_, { id }, context) => {
+    getExpense: (_, { id }, context) => {
       return context.Expenses.getExpense(id);
     },
-
   },
 };

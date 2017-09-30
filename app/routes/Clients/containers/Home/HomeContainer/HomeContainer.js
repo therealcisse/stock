@@ -44,8 +44,8 @@ export class HomeContainer extends React.Component {
           onLogOut={actions.logOut}
         />
         <div className={style.page}>
-          <PageHeader/>
-          <PageBody/>
+          <PageHeader />
+          <PageBody />
         </div>
       </div>
     );

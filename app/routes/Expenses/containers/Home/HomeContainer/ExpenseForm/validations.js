@@ -10,7 +10,6 @@ const validations = {
     email: true,
     validateOnBlur: true,
   },
-
 };
 
 export default generateValidation(validations);

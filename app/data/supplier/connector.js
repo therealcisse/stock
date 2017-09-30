@@ -20,8 +20,10 @@ export class SupplierConnector {
   }
 
   async getSupplierExpenses(id, query, { Expenses }) {
-   const objects = this.db
-      .prepare(`SELECT * FROM expenses WHERE state <> @state AND beneficiaryId = @beneficiaryId;`)
+    const objects = this.db
+      .prepare(
+        `SELECT * FROM expenses WHERE state <> @state AND beneficiaryId = @beneficiaryId;`,
+      )
       .all({
         state: TransactionStatus.toDatabase(TransactionStatus.CANCELLED),
         beneficiaryId: id,

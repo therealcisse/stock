@@ -155,7 +155,9 @@ class Operations extends React.Component {
                       year: 'numeric',
                     })}
                   </TableCell>
-                  <TableCell>{n.expense.refNo || <span>&mdash;</span>}</TableCell>
+                  <TableCell>
+                    {n.expense.refNo || <span>&mdash;</span>}
+                  </TableCell>
                   <TableCell numeric>
                     {intl.formatNumber(n.balanceDue, { format: 'MAD' })}
                   </TableCell>
@@ -175,4 +177,3 @@ class Operations extends React.Component {
 export default compose(injectIntl, withStyles(styles), DataLoader.expenses)(
   Operations,
 );
-

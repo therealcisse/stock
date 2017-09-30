@@ -80,7 +80,11 @@ export const resolvers = {
       // TODO: Validate payload
 
       try {
-        const transaction = await context.Products.addProduct(id, payload, context);
+        const transaction = await context.Products.addProduct(
+          id,
+          payload,
+          context,
+        );
 
         const [product, stock, events] = await Promise.all([
           context.Products.get(transaction.id),

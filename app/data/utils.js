@@ -10,7 +10,6 @@ export class Money {
   }
 
   static toDatabase(value: number): number {
-    return Math.trunc( value * MONETARY_UNIT );
+    return Math.trunc(value * MONETARY_UNIT);
   }
 }
-

@@ -6,21 +6,11 @@ import asTransaction from 'data/asTransaction';
 
 import invariant from 'invariant';
 
-import { Product, Event } from 'data/types';
+import { Product, Event, Sale, Expense } from 'data/types';
 
 import uuid from 'uuid';
 
 import sort from 'lodash.orderby';
-
-type Item = {
-  type: Expense.TYPE | Sale.TYPE,
-  foreignId: String,
-  productId: String,
-  qty: number,
-  unitPrice: number,
-  dateNow: number,
-  dateCreated: number,
-};
 
 export class ProductConnector {
   constructor({ db }) {
@@ -42,7 +32,15 @@ export class ProductConnector {
     unitPrice,
     dateNow,
     dateCreated,
-  }: Item): string {
+  }: {
+    type: typeof Expense.TYPE | typeof Sale.TYPE,
+    foreignId: String,
+    productId: String,
+    qty: number,
+    unitPrice: number,
+    dateNow: number,
+    dateCreated: number,
+  }): string {
     invariant(
       this.db.inTransaction,
       `Products.newItem must be ran in a transaction`,

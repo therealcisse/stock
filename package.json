@@ -1,6 +1,6 @@
 {
   "name": "stock",
-  "productName": "Mon Stock",
+  "productName": "Stock",
   "version": "0.12.0",
   "description": "Gestion de Stock",
   "scripts": {
@@ -70,7 +70,7 @@
       "target": ["nsis"]
     },
     "linux": {
-      "target": ["deb", "AppImage"]
+      "target": ["AppImage"]
     },
     "directories": {
       "buildResources": "resources",
@@ -176,7 +176,6 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.3.0",
-    "express": "^4.15.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "fbjs-scripts": "^0.8.1",
     "file-loader": "^0.11.1",
@@ -212,9 +211,7 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
-    "apollo-client": "^1.9.2",
     "apollo-local-query": "^0.3.0",
-    "async": "^2.5.0",
     "bootstrap": "v4.0.0-beta",
     "classnames": "^2.2.5",
     "dataloader": "^1.3.0",
@@ -224,7 +221,7 @@
     "devtron": "^1.4.0",
     "dom-helpers": "^3.2.1",
     "electron-debug": "^1.4.0",
-    "graphql": "0.10.x",
+    "graphql": "0.10.5",
     "graphql-tag": "^2.4.2",
     "graphql-tools": "^1.2.2",
     "history": "^4.7.2",
@@ -234,17 +231,20 @@
     "is-promise": "^2.1.0",
     "keycode": "^2.1.9",
     "lodash.merge": "^4.6.0",
+    "lodash.orderby": "^4.6.0",
     "lodash.pick": "^4.4.0",
     "lodash.throttle": "^4.1.1",
+    "material-ui": "^1.0.0-beta.10",
+    "material-ui-icons": "^1.0.0-beta.10",
     "moment": "^2.18.1",
     "object-assign": "^4.1.1",
     "prop-types": "^15.5.10",
     "raven": "^2.1.2",
-    "react": "^15.6.1",
+    "react": "16",
     "react-addons-update": "^15.6.0",
     "react-apollo": "^1.4.15",
     "react-date-picker": "^5.3.28",
-    "react-dom": "^15.6.1",
+    "react-dom": "16",
     "react-event-listener": "^0.5.0",
     "react-helmet": "^5.2.0",
     "react-hot-loader": "3.0.0-beta.6",
@@ -255,6 +255,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.6",
+    "react-swipeable-views": "^0.12.8",
     "react-textarea-autosize": "^5.1.0",
     "react-transition-group": "^2.2.0",
     "redbox-react": "^1.5.0",
@@ -265,6 +266,7 @@
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
     "source-map-support": "^0.4.17",
+    "typeface-roboto": "^0.0.35",
     "uncontrollable": "^4.1.0",
     "valid-url": "^1.0.9",
     "warning": "^3.0.0",

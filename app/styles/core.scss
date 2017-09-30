@@ -46,6 +46,15 @@ button {
   // height: 100%;
 }
 
+.error {
+  composes: hint-block;
+  text-align: center;
+
+  * {
+    color: theme-color("danger");
+  }
+}
+
 :global .pageload-overlay {
   display: none;
 }

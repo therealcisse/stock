@@ -131,6 +131,11 @@ textarea.control {
   padding-top: 0.25rem;
 }
 
+.messageDanger {
+  color: theme-color("danger");
+  font-weight: bold;
+}
+
 .id {
   background-clip: padding-box;
   background-color: #eceeef;

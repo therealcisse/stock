@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose } from 'redux';
-import { Link } from 'react-router-dom';
+import Link from 'react-router-dom/Link';
 
 import style from '../Notification.scss';
 

@@ -83,7 +83,7 @@ export function createSnackbarController(store) {
           function() {
             this.slideOut();
           }.bind(this),
-          notification.duration || 3000,
+          notification.duration || (__DEV__ ? 2 * 60 * 1000 : 2500),
         );
       }
     },
@@ -110,7 +110,6 @@ export function createSnackbarController(store) {
             animation: null,
             message: null,
             persist: false,
-            closeable: false,
             action: null,
             duration: null,
           }),

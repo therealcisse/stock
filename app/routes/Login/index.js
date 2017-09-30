@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PATH_LOGIN } from 'vars';
 
-import { Route } from 'react-router';
+import Route from 'react-router/Route';
 
 import Login from './containers/LoginContainer';
 

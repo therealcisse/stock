@@ -5,6 +5,14 @@ import { connect } from 'react-redux';
 
 import { compose } from 'redux';
 
+import { createSelector } from 'utils/reselect';
+
+import { dbStatus } from 'redux/reducers/app/actions';
+
+import * as selectors from 'redux/reducers/app/selectors';
+
+import { DBStatus } from 'redux/reducers/app/constants';
+
 import messages from './messages';
 
 import { intlShape, injectIntl } from 'react-intl';
@@ -15,7 +23,11 @@ import { HOME_TITLE, APP_NAME } from 'vars';
 
 import style from 'styles/core.scss';
 
-import Notification from 'components/notification';
+import cx from 'classnames';
+
+// import Notification from 'components/notification';
+
+import Loading from 'components/Loading';
 
 class CoreLayout extends React.Component {
   static propTypes = {
@@ -24,17 +36,49 @@ class CoreLayout extends React.Component {
   };
 
   render() {
-    const { intl, children } = this.props;
+    const { dbStatus, intl, children } = this.props;
+
+    if (dbStatus === DBStatus.PENDING) {
+      // return loading
+      return (
+        <div className={cx(style.root, style.center)}>
+          <Title
+            title={intl.formatMessage(messages.title, { appName: APP_NAME })}
+          />
+          <Loading />
+        </div>
+      );
+    }
+
+    if (dbStatus === DBStatus.FAILED) {
+      return (
+        <div className={cx(style.root, style.center)}>
+          <Title
+            title={intl.formatMessage(messages.title, { appName: APP_NAME })}
+          />
+          <div className={style.error}>
+            Erreur d'initialization. Veuillez contacter votre administrateur.
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className={style.root}>
         <Title
           title={intl.formatMessage(messages.title, { appName: APP_NAME })}
         />
-        <Notification />
+        {/* <Notification /> */}
         {children}
       </div>
     );
   }
 }
 
-export default compose(injectIntl)(CoreLayout);
+const mapStateToProps = createSelector(selectors.dbStatus, dbStatus => ({
+  dbStatus,
+}));
+
+const Connect = connect(mapStateToProps);
+
+export default compose(injectIntl, Connect)(CoreLayout);

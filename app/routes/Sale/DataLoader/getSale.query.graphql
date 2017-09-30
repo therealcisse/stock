@@ -1,0 +1,33 @@
+query Sale($id: ID!) {
+  getSale(id: $id) {
+    sale {
+      id
+      refNo
+      dateCreated
+      client {
+        id
+        displayName
+      }
+      items {
+        id
+        product {
+          id
+          displayName
+          ref
+          unitPrice
+        }
+        qty
+        unitPrice
+      }
+      payments {
+        id
+        dateCreated
+        amount
+      }
+    }
+    paid
+    balanceDue
+    total
+    isFullyPaid
+  }
+}

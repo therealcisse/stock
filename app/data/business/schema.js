@@ -34,6 +34,8 @@ export const schema = [
     phone: String
     taxId: String
 
+    lastRefNo: Int!
+
     date: Date!
     lastModified: Date!
   }
@@ -55,11 +57,21 @@ export const schema = [
 
     phone: String
     taxId: String
+
+    lastRefNo: Int!
   }
 
   type UpdateBusinessResponse {
     business: Business,
     errors: JSON!
+  }
+
+  extend type Mutation {
+    # Business
+    updateBusiness(payload: UpdateBusinessPayload!): UpdateBusinessResponse!
+  }
+
+  extend type Query {
   }
 
 `,
@@ -84,6 +96,8 @@ export const resolvers = {
       'phone',
       'taxId',
 
+      'lastRefNo',
+
       'date',
       'lastModified',
     ]),
@@ -96,6 +110,10 @@ export const resolvers = {
 
   Mutation: {
     async updateBusiness(obj, { payload }, context) {
+      if (!context.user) {
+        throw new Error('Login required.');
+      }
+
       try {
         await businessValidations.asyncValidate(fromJS(payload));
       } catch (errors) {

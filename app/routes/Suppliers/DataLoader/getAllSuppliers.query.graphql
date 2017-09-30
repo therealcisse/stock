@@ -1,0 +1,13 @@
+query AllSuppliers($query: GetSuppliersQuery!) {
+  getAllSuppliers(query: $query) {
+    supplier {
+      id
+      displayName
+      tel
+      email
+      address
+      taxId
+    }
+    balanceDue
+  }
+}

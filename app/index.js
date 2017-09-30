@@ -6,6 +6,8 @@ import { configureStore, history } from 'redux/configureStore';
 
 import { ApolloProvider } from 'react-apollo';
 
+import { Provider } from 'react-redux';
+
 import IntlProvider from 'IntlProvider';
 
 import intlLoader from 'utils/intl-loader';
@@ -14,9 +16,11 @@ import { createSelector } from 'utils/reselect';
 
 import { client as apolloClient } from 'apollo';
 
-import { ready } from 'redux/reducers/app/actions';
+import { dbStatus } from 'redux/reducers/app/actions';
 
-import { scrolling } from 'redux/reducers/scrolling/actions';
+import { DBStatus } from 'redux/reducers/app/constants';
+
+// import { scrolling } from 'redux/reducers/scrolling/actions';
 
 import formats from 'intl-formats';
 
@@ -24,18 +28,21 @@ import { updateIntl } from 'redux/reducers/intl/actions';
 
 import { LANG, DEBUG, PATH_LOGIN } from 'vars';
 
+import 'typeface-roboto';
+
 const APP_MOUNT_NODE = document.querySelector('main');
+const SNACKBAR_MOUNT_NODE = document.querySelector('#snackbar');
 
 const store = configureStore();
 
 let render = function() {
   const Root = require('./containers/Root'); // eslint-disable-line global-require
 
-  store.dispatch(scrolling());
+  // store.dispatch(scrolling());
 
   // Check database
-  require('electron').ipcRenderer.on('ready', (event, { ok }) => {
-    store.dispatch(ready());
+  require('electron').ipcRenderer.once('db-status', (event, { status }) => {
+    store.dispatch(dbStatus(status));
   });
 
   const locale = LANG;
@@ -91,6 +98,15 @@ let render = function() {
     APP_MOUNT_NODE,
     () => {},
   );
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <IntlProvider intlSelector={intlSelector}>
+        {store.snackbar.render()}
+      </IntlProvider>
+    </Provider>,
+    SNACKBAR_MOUNT_NODE,
+  );
 };
 
 if (__DEV__) {
@@ -115,6 +131,7 @@ if (__DEV__) {
     // Setup hot module replacement
     module.hot.accept('./containers/Root', () => {
       // ReactDOM.unmountComponentAtNode(APP_MOUNT_NODE);
+      // ReactDOM.unmountComponentAtNode(SNACKBAR_MOUNT_NODE);
       render();
     });
   }
@@ -122,7 +139,7 @@ if (__DEV__) {
 
 if (__DEV__ || DEBUG) {
   // Show all debug messages.
-  localStorage.debug = DEBUG || 'app:*';
+  localStorage.debug = 'app:*';
 }
 
 // ========================================================

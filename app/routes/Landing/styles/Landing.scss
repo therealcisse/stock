@@ -38,7 +38,7 @@ $toolbar-height: 41px;
 }
 
 .root {
-  composes: d-flex flex-column from "styles/_base.scss";
+  composes: d-flex flex-row from "styles/_base.scss";
   // height: 100%;
   min-height: 100vh;
   background-color: #fff;

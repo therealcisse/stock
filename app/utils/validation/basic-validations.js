@@ -21,7 +21,9 @@ export function date(field, value) {
 }
 
 export function number(field, value) {
-  return value ? !isNumber(value) : false;
+  return value
+    ? !isNumber((value || '').replace(/,/, '.').replace(/\s+/g, ''))
+    : false;
 }
 
 export function numberRequired(field, value, prop) {

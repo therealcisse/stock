@@ -1,0 +1,16 @@
+mutation AddProduct($id: ID, $payload: AddProductPayload!) {
+  addProduct(id: $id, payload: $payload) {
+    info {
+      product {
+        id
+        displayName
+        unitPrice
+        ref
+      }
+      stock
+    }
+    error {
+      code
+    }
+  }
+}

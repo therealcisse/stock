@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Route } from 'react-router';
+import Route from 'react-router/Route';
+import Switch from 'react-router/Switch';
 
 import {
   PATH_SETTINGS_BASE,

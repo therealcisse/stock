@@ -1,0 +1,19 @@
+mutation AddSupplier($id: ID, $payload: AddSupplierPayload!) {
+  addSupplier(id: $id, payload: $payload) {
+    info {
+      supplier {
+        id
+        displayName
+        tel
+        email
+        address
+        taxId
+      }
+      balanceDue
+      totalPaid
+    }
+    error {
+      code
+    }
+  }
+}

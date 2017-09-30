@@ -6,6 +6,7 @@ import webpack from 'webpack';
 import path from 'path';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
+import CleanWebpackPlugin from 'clean-webpack-plugin';
 import { dependencies } from './package.json';
 import CheckNodeEnv from './internals/scripts/CheckNodeEnv';
 
@@ -171,6 +172,8 @@ export default merge.smart(baseConfig, {
   },
 
   plugins: [
+    new CleanWebpackPlugin(['dll']),
+
     new webpack.DllPlugin({
       path: path.join(dist, '[name].json'),
       name: '[name]',

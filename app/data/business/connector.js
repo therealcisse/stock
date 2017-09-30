@@ -1,25 +1,17 @@
-import DataLoader from 'dataloader';
-
 import { BUSINESS_KEY } from 'vars';
 
-import { Business } from 'data/types';
+import Loaders from './loaders';
 
 export class BusinessConnector {
   constructor({ db }) {
-    this.business = new DataLoader(async function(ids) {
-      const object = db
-        .prepare(`SELECT * FROM business WHERE key = @key;`)
-        .get({ key: ids[0] });
-
-      return ids.map(() => Business.fromDatabase(object));
-    }, {});
+    this.loaders = Loaders({ db });
   }
   updateBusiness(payload, { Business }) {
     // TODO: save business
-    this.business.clear(BUSINESS_KEY);
+    this.loaders.business.clear(BUSINESS_KEY);
     return Business.get();
   }
   get() {
-    return this.business.load(BUSINESS_KEY);
+    return this.loaders.business.load(BUSINESS_KEY);
   }
 }

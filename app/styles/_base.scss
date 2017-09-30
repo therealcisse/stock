@@ -95,5 +95,13 @@
   display: none !important;
 }
 
+button {
+  &:hover,
+  &:focus,
+  &:active {
+    outline: 0 !important;
+  }
+}
+
 // Custom imports
 @import "themes/default";

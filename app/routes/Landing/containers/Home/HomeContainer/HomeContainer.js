@@ -8,26 +8,29 @@ import { logOut } from 'redux/reducers/user/actions';
 
 import style from 'routes/Landing/styles';
 
-import Header from 'routes/Landing/containers/Header';
-
-import Fade from 'components/Transition/Fade';
+import SideMenu from 'components/SideMenu';
 
 import selector from './selector';
 
-export class HomeContainer extends React.PureComponent {
+import { injectIntl } from 'react-intl';
+
+export class HomeContainer extends React.Component {
   getChildContext() {
     return {
       currentUser: this.props.user,
     };
   }
   render() {
-    const { user, actions } = this.props;
+    const { intl, user, actions, ...props } = this.props;
+
     return (
-      <Fade in appear>
-        <div className={style.root}>
-          <Header user={user} onLogOut={actions.logOut} />
-        </div>
-      </Fade>
+      <div className={style.root}>
+        <SideMenu
+          intl={intl}
+          user={user}
+          onLogOut={actions.logOut}
+        />
+      </div>
     );
   }
 }
@@ -48,4 +51,4 @@ function mapDispatchToProps(dispatch) {
 
 const Connect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(Connect)(HomeContainer);
+export default compose(injectIntl, Connect)(HomeContainer);

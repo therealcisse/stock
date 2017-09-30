@@ -1,0 +1,14 @@
+query Supplier($id: ID!) {
+  getSupplier(id: $id) {
+    supplier {
+      id
+      displayName
+      tel
+      email
+      address
+      taxId
+    }
+    balanceDue
+    totalPaid
+  }
+}

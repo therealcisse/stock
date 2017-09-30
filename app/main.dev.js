@@ -18,13 +18,15 @@ import path from 'path';
 
 import debug from './utils/log';
 
-import { BUSINESS_KEY, APP_NAME, COUNTRY } from './vars';
+import { DBStatus } from './redux/reducers/app/constants';
+
+import { ADMIN_KEY, BUSINESS_KEY, APP_NAME, COUNTRY } from './vars';
 
 const log = debug('app:main');
 
 let mainWindow = null;
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || process.env.DEBUG_PROD === 'true') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
 }
@@ -42,15 +44,33 @@ if (
 const installExtensions = async () => {
   const {
     default: installExtension,
+    REACT_PERF,
     REACT_DEVELOPER_TOOLS,
     REDUX_DEVTOOLS,
   } = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
 
-  return Promise.all(
-    extensions.map(plugin => installExtension(plugin, forceDownload)),
-  ).catch(log.error);
+  const APOLLO_DEVELOPER_TOOLS = {
+    id: 'jdkknkkbebbapilgoeccciglkfbmbnfm',
+    electron: '^1.2.1',
+  };
+
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+
+  try {
+    const name = await installExtension(
+      [
+        REACT_DEVELOPER_TOOLS,
+        REACT_PERF,
+        APOLLO_DEVELOPER_TOOLS,
+        REDUX_DEVTOOLS,
+      ],
+      forceDownload,
+    );
+
+    log(`${name} installed.`);
+  } catch (e) {
+    log.error(e);
+  }
 };
 
 /**
@@ -68,9 +88,13 @@ app.on('window-all-closed', () => {
 const setupDB = new Promise(resolve => {
   const dbPath = path.resolve(app.getPath('userData'), 'STOCK.DB');
   fs.access(dbPath, fs.constants.R_OK | fs.constants.W_OK, err => {
-    let ok = true;
+    let status = DBStatus.OK;
 
     if (err) {
+      log(`DB does not exist, creating...`);
+
+      status = DBStatus.NEW;
+
       try {
         const Database = require('better-sqlite3');
         const db = new Database(dbPath, { fileMustExist: false });
@@ -81,27 +105,187 @@ const setupDB = new Promise(resolve => {
 
         begin.run();
         try {
+          // Products table
+          db.exec(
+            `
+            CREATE TABLE products (
+              id            TEXT PRIMARY KEY,
+              displayName   TEXT NOT NULL,
+              unitPrice     INTEGER,
+
+              ref           TEXT,
+
+              date          INTEGER NOT NULL,
+              lastModified  INTEGER NOT NULL
+            ) WITHOUT ROWID;
+            `,
+          );
+
+          // Sales
+
+          db.exec(
+            `
+            CREATE TABLE sales (
+              id            TEXT NOT NULL,
+              refNo         INTEGER PRIMARY KEY AUTOINCREMENT,
+              clientId      INTEGER NOT NULL,
+
+              dateCreated   INTEGER NOT NULL,
+
+              -- state: extensible indicator of whether sale is valid or voided
+              state         INTEGER NOT NULL DEFAULT 1,
+
+              date          INTEGER NOT NULL,
+              lastModified  INTEGER NOT NULL
+            );
+            `,
+          );
+
+          db.exec(
+            `
+            CREATE UNIQUE INDEX idx_sales_id ON sales (id);
+          `,
+          );
+
+          // Expenses
+
+          db.exec(
+            `
+            CREATE TABLE expenses (
+              id            TEXT PRIMARY KEY,
+              refNo         TEXT,
+              beneficiaryId INTEGER NOT NULL,
+
+              dateCreated   INTEGER NOT NULL,
+
+              -- state: extensible indicator of whether expense is valid or voided
+              state         INTEGER NOT NULL DEFAULT 1,
+
+              date          INTEGER NOT NULL,
+              lastModified  INTEGER NOT NULL
+            ) WITHOUT ROWID;
+            `,
+          );
+
+          // items
+
+          db.exec(
+            `
+            CREATE TABLE items (
+              id            TEXT PRIMARY KEY,
+
+              -- type { SALE, EXPENSE }
+              type          TEXT NOT NULL,
+
+              -- References either sale or expense
+              foreignId     INTEGER NOT NULL,
+
+              productId     INTEGER NOT NULL,
+
+              qty           INTEGER NOT NULL,
+
+              -- Prices are multiplied by 100
+              unitPrice     INTEGER NOT NULL,
+
+              dateCreated   INTEGER NOT NULL,
+
+              date          INTEGER NOT NULL
+            ) WITHOUT ROWID;
+            `,
+          );
+
+          // payments
+
+          db.exec(
+            `
+            CREATE TABLE payments (
+              id           TEXT PRIMARY KEY,
+
+              -- state: extensible indicator of whether expense is valid or voided
+              state         INTEGER NOT NULL DEFAULT 1,
+
+              -- type { SALE, EXPENSE }
+              type         TEXT NOT NULL,
+
+              -- References either sale or expense
+              foreignId    INTEGER NOT NULL,
+
+              -- Amounts are multiplied by 100
+              amount       INTEGER NOT NULL,
+
+              dateCreated  INTEGER NOT NULL,
+
+              date         INTEGER NOT NULL
+            ) WITHOUT ROWID;
+            `,
+          );
+
+          // People table
+          db.exec(
+            `
+            CREATE TABLE people (
+              id            TEXT PRIMARY KEY,
+              displayName   TEXT NOT NULL,
+              email         TEXT,
+              tel           TEXT,
+              address       TEXT,
+              taxId         TEXT,
+
+              type          TEXT NOT NULL,
+
+              date          INTEGER NOT NULL,
+              lastModified  INTEGER NOT NULL
+            ) WITHOUT ROWID;
+            `,
+          );
+
           // Event table
           db.exec(
             `
-            CREATE TABLE events
-            (
-              id            INTEGER PRIMARY KEY AUTOINCREMENT,
-              userId        INTEGER NOT NULL,
-              ns            TEXT NOT NULL,
-              type          TEXT NOT NULL,
-              metadata      TEXT NOT NULL,
-              timestamp     INTEGER NOT NULL
-            );
+            CREATE TABLE events (
+              id          TEXT PRIMARY KEY,
+
+              -- ns { SALES, EXPENSES, PRODUCTS, CLIENTS, SUPPLIERS }
+              ns          TEXT NOT NULL,
+
+              -- type of event
+              type        TEXT NOT NULL,
+
+              metadata    TEXT NOT NULL,
+              timestamp   INTEGER NOT NULL,
+
+              -- A payment was made on an expense or a sale
+              paymentId   INTEGER,
+
+              -- A sale was created, modified or deleted
+              saleId      INTEGER,
+
+              -- An expense was created, modified or deleted
+              expenseId   INTEGER,
+
+              -- A product was created, modified or deleted
+              productId   INTEGER,
+
+              -- A client was created, modified or deleted
+              clientId    INTEGER,
+
+              -- A supplier was created, modified or deleted
+              supplierId  INTEGER
+            ) WITHOUT ROWID;
             `,
+          );
+
+          db.exec(
+            `
+            CREATE INDEX idx_events_timestamp ON events (timestamp);
+          `,
           );
 
           // Business table
           db.exec(
             `
-            CREATE TABLE business
-            (
-              key           TEXT NOT NULL,
+            CREATE TABLE business (
+              key           TEXT PRIMARY KEY,
               displayName   TEXT NOT NULL,
               description   TEXT,
               url           TEXT,
@@ -115,7 +299,7 @@ const setupDB = new Promise(resolve => {
               taxId         TEXT,
               date          INTEGER NOT NULL,
               lastModified  INTEGER NOT NULL
-            );
+            ) WITHOUT ROWID;
             `,
           );
 
@@ -128,16 +312,15 @@ const setupDB = new Promise(resolve => {
           // users table
           db.exec(
             `
-              CREATE TABLE users
-              (
-                id                        INTEGER PRIMARY KEY AUTOINCREMENT,
+              CREATE TABLE users (
+                id                        TEXT PRIMARY KEY,
                 password                  TEXT NOT NULL,
                 displayName               TEXT NOT NULL,
                 username                  VARCHAR NOT NULL,
                 changePasswordAtNextLogin BOOLEAN NOT NULL DEFAULT 0,
                 date                      INTEGER NOT NULL,
                 lastModified              INTEGER NOT NULL
-              );
+              ) WITHOUT ROWID;
             `,
           );
 
@@ -158,7 +341,7 @@ const setupDB = new Promise(resolve => {
           // Initial user
           db.exec(
             `
-            INSERT INTO users (password, displayName, username, changePasswordAtNextLogin, date, lastModified) VALUES ('$2a$10$nWFC.i/7wl0HNabsOikfluI78m2EnTeFtBm1YWxrAu5n6Y5vm3yF.', 'Admin', 'admin', 0, strftime('%s','now'), strftime('%s','now'));
+            INSERT INTO users (id, password, displayName, username, changePasswordAtNextLogin, date, lastModified) VALUES (${ADMIN_KEY}, '$2a$10$nWFC.i/7wl0HNabsOikfluI78m2EnTeFtBm1YWxrAu5n6Y5vm3yF.', 'Admin', 'admin', 0, strftime('%s','now'), strftime('%s','now'));
           `,
           );
 
@@ -167,14 +350,19 @@ const setupDB = new Promise(resolve => {
           if (db.inTransaction) rollback.run();
         }
       } catch (e) {
-        fs.unlinkSync(dbPath);
-        ok = false;
+        log.error(`DB error:`, e);
+
+        try {
+          fs.unlinkSync(dbPath);
+        } catch (e) {}
+
+        status = DBStatus.FAILED;
       }
     }
 
     // TODO: check if admin user and business exist.
 
-    resolve(ok);
+    resolve(status);
   });
 });
 
@@ -193,7 +381,10 @@ if (isSecondInstance) {
 }
 
 app.on('ready', async () => {
-  if (process.env.NODE_ENV === 'development') {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.DEBUG_PROD === 'true'
+  ) {
     await installExtensions();
   }
 
@@ -226,7 +417,9 @@ app.on('ready', async () => {
       throw new Error(`'mainWindow' is not defined`);
     }
 
-    mainWindow.webContents.send('ready', { ok: await setupDB });
+    mainWindow.webContents.send('db-status', {
+      status: await setupDB,
+    });
   });
 
   mainWindow.on('closed', () => {

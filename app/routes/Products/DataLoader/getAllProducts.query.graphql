@@ -1,0 +1,11 @@
+query AllProducts($query: GetProductsQuery!) {
+  getAllProducts(query: $query) {
+    product {
+      id
+      displayName
+      unitPrice
+      ref
+    }
+    stock
+  }
+}

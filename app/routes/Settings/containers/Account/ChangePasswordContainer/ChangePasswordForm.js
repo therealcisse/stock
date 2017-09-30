@@ -1,6 +1,6 @@
 import React from 'react';
 import T from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'react-router-dom/Link';
 
 import { compose } from 'redux';
 

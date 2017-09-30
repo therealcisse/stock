@@ -1,0 +1,41 @@
+query SupplierExpenses($id: ID!, $query: GetExpensesQuery!) {
+  getSupplierExpenses(id: $id, query: $query) {
+    expenses {
+      expense {
+        id
+        refNo
+        status
+        beneficiary {
+          __typename
+          id
+          displayName
+        }
+        dateCreated
+        items {
+          id
+          product {
+            id
+            displayName
+          }
+          qty
+          unitPrice
+        }
+        payments {
+          id
+          amount
+          status
+          dateCreated
+        }
+        date
+        lastModified
+      }
+      paid
+      total
+      balanceDue
+      isFullyPaid
+    }
+    cursor
+    prevCursor
+    length
+  }
+}

@@ -1,16 +1,17 @@
-import {} from 'data/constants';
-
 export class Events {
-  constructor({ user, connector }) {
-    this.user = user;
+  constructor({ connector }) {
     this.connector = connector;
   }
 
-  get(id, cached = true) {
-    return this.connector.get(id, cached);
+  get(idOrIds) {
+    return this.connector.get(idOrIds);
   }
 
-  getTimeline({ cursor, query }) {
-    return this.connector.getTimeline({ cursor, query, user: this.user });
+  getTimeline({ cursor, query }, context) {
+    return this.connector.getTimeline({ cursor, query }, context);
+  }
+
+  create(meta) {
+    return this.connector.create(meta);
   }
 }

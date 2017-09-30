@@ -1,0 +1,41 @@
+query expenses($cursor: Int!, $query: GetExpensesQuery!) {
+  expenses(cursor: $cursor, query: $query) {
+    expenses {
+      expense {
+        id
+        refNo
+        status
+        beneficiary {
+          __typename
+          id
+          displayName
+        }
+        dateCreated
+        items {
+          id
+          product {
+            id
+            displayName
+          }
+          qty
+          unitPrice
+        }
+        payments {
+          id
+          amount
+          status
+          dateCreated
+        }
+        date
+        lastModified
+      }
+      paid
+      total
+      balanceDue
+      isFullyPaid
+    }
+    cursor
+    prevCursor
+    length
+  }
+}

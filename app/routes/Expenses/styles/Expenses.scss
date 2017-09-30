@@ -1,0 +1,65 @@
+@import "variables";
+
+.center {
+  composes: center from "styles/_base.scss";
+}
+
+.root {
+  composes: d-flex flex-row from "styles/_base.scss";
+  // height: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+.page {
+  composes: d-flex flex-column from "styles/_base.scss";
+  // height: 100%;
+  // overflow-y: visible;
+  // max-width: $content-width;
+  // min-width: $content-width;
+
+  width: calc(100vw - 64px);
+
+  min-height: calc(100vh - 100px);
+
+  padding-bottom: 100px;
+}
+
+.pageHeader {
+  composes: d-flex flex-row justify-content-between from "styles/_base.scss";
+  padding: 35px 50px 0 25px;
+
+  background-image: linear-gradient(to top, #f6f8fb 0%, #f9fafb 100%);
+  background-color: #f3f5f8;
+  border-bottom: 1px solid #e3eaf3;
+}
+.pageBody {
+  margin-top: 70px;
+  margin-left: 25px;
+  margin-right: 35px;
+}
+
+.addButton {
+}
+
+.empty,
+.loading {
+  composes: flex-column from "styles/_base.scss";
+  composes: center from "styles/_base.scss";
+  margin: 35px 50px 0 25px;
+}
+
+.displayNameLink {
+}
+
+.errorLine {
+  composes: d-flex from "styles/_base.scss";
+
+  svg {
+    color: theme-color("danger");
+  }
+
+  div {
+    color: theme-color("warning");
+  }
+}

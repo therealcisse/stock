@@ -1,0 +1,12 @@
+query SalesReport {
+  getSalesReport {
+    sales {
+      total
+      openCount
+    }
+    payments {
+      total
+      paidCount
+    }
+  }
+}

@@ -1,0 +1,20 @@
+mutation AddClient($id: ID, $payload: AddClientPayload!) {
+  addClient(id: $id, payload: $payload) {
+    info {
+      client {
+        id
+        displayName
+        tel
+        email
+        address
+        taxId
+      }
+      openCount
+      balanceDue
+      totalPaid
+    }
+    error {
+      code
+    }
+  }
+}

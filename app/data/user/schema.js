@@ -74,6 +74,18 @@ export const schema = [
     business: Business
   }
 
+  extend type Mutation {
+    # auth
+    logIn(username: String, password: String): LogInResponse!
+
+    setPassword(payload: SetPasswordPayload!): SetPasswordResponse!
+    changeEmail(payload: ChangeEmailPayload!): ChangeEmailResponse!
+    updateAccountSettings(payload: UpdateAccountSettingsPayload!): UpdateAccountSettingsResponse!
+  }
+
+  extend type Query {
+    getUser(id: ID!): User!
+  }
 `,
 ];
 
@@ -109,7 +121,7 @@ export const resolvers = {
   Mutation: {
     async updateAccountSettings(_, { payload }, context) {
       if (!context.user) {
-        throw new Error('A user is required.');
+        throw new Error('Login required.');
       }
 
       try {
@@ -122,7 +134,7 @@ export const resolvers = {
     },
     async changeEmail(_, { payload }, context) {
       if (!context.user) {
-        throw new Error('A user is required.');
+        throw new Error('Login required.');
       }
       try {
         await emailValidations.asyncValidate(
@@ -136,7 +148,7 @@ export const resolvers = {
     },
     async setPassword(_, { payload }, context) {
       if (!context.user) {
-        throw new Error('A user is required.');
+        throw new Error('Login required.');
       }
       try {
         await passwordValidations.asyncValidate(
@@ -155,7 +167,7 @@ export const resolvers = {
         const user = await context.Users.logIn({ username, password });
         return { user };
       } catch (e) {
-        return { error: { code: e.code } };
+        return { error: { code: e.code || null } };
       }
     },
   },

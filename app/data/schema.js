@@ -1,3 +1,5 @@
+import graphqlResolvers from 'data/graphqlResolvers';
+
 import objectAssign from 'object-assign';
 
 // import R from 'R';
@@ -30,57 +32,174 @@ import {
   resolvers as eventResolvers,
 } from 'data/event/schema';
 
+import {
+  schema as clientSchema,
+  resolvers as clientResolvers,
+} from 'data/client/schema';
+
+import {
+  schema as supplierSchema,
+  resolvers as supplierResolvers,
+} from 'data/supplier/schema';
+
+import {
+  schema as saleSchema,
+  resolvers as saleResolvers,
+} from 'data/sale/schema';
+
+import {
+  schema as expenseSchema,
+  resolvers as expenseResolvers,
+} from 'data/expense/schema';
+
+import {
+  schema as productSchema,
+  resolvers as productResolvers,
+} from 'data/product/schema';
+
+import { Sale, Expense, TransactionStatus } from 'data/types';
+
 import { DEBUG } from 'vars';
 
 const log = require('log')('app:server:graphql');
 
 const rootSchema = [
   `
-    type Error {
-      code: Int
-      message: String
-      stack: String
-    }
 
-    type Deletion {
-      user: User!
-      date: Date!
-    }
+  enum Order {
+    asc
+    desc
+  }
 
-    scalar Date
+  type Error {
+    code: Int
+    message: String
+    stack: String
+  }
 
-    scalar JSON
+  scalar Date
 
-    type Query {
-      # Accounts
-      getUser(id: ID!): User
+  scalar JSON
 
-      # Events
-      timeline(cursor: Date, query: TimelineQuery!): TimelineResponse!
-    }
+  type Query {
+    dummy: Int!
+  }
 
-    type Mutation {
-      # auth
-      logIn(username: String, password: String): LogInResponse!
+  type Mutation {
+    dummy: Int!
+  }
 
-      setPassword(payload: SetPasswordPayload!): SetPasswordResponse!
-      changeEmail(payload: ChangeEmailPayload!): ChangeEmailResponse!
-      updateAccountSettings(payload: UpdateAccountSettingsPayload!): UpdateAccountSettingsResponse!
+  schema {
+    query: Query
+    mutation: Mutation
+  }
 
-      # Business
-      updateBusiness(payload: UpdateBusinessPayload!): UpdateBusinessResponse!
+  # -------------------------------------------------------------------
 
-    }
+  input AddPaymentPayload {
+    amount: Int!
+    dateCreated: Int!
+  }
 
-    schema {
-      query: Query
-      mutation: Mutation
-    }
+  union OperationInfo = SaleInfo | ExpenseInfo
+
+  type AddPaymentResponse {
+    foreign: OperationInfo
+    payment: Payment
+    events: [Event!]!
+    error: Error
+  }
+
+  union Operation = Sale | Expense
+
+  enum TransactionType {
+    SALE
+    EXPENSE
+  }
+
+  enum TransactionStatus {
+    CANCELLED
+  }
+
+  type Item {
+    id: ID!
+
+    type: TransactionType!
+
+    foreign: Operation!
+
+    product: Product!
+
+    qty: Int!
+
+    unitPrice: Int!
+
+    dateCreated: Date!
+
+    date: Date!
+  }
+
+  type Payment {
+    id: ID!
+
+    type: TransactionType!
+
+    foreign: Operation!
+
+    amount: Int!
+
+    status: TransactionStatus
+
+    dateCreated: Date!
+
+    date: Date!
+  }
 
   `,
 ];
 
 const rootResolvers = {
+  AddPaymentResponse: objectAssign(
+    {},
+    graphqlResolvers(['foreign', 'payment', 'events', 'error']),
+  ),
+
+  Item: objectAssign(
+    {},
+    {
+      foreign: (obj, {}, context) => {
+        switch (obj.type) {
+          case Sale.TYPE:
+            return context.Sales.get(obj.foreignId);
+          case Expense.TYPE:
+            return context.Expenses.get(obj.foreignId);
+        }
+        throw new Error(`Item is invalid: ${obj}`);
+      },
+      product: (obj, {}, context) => context.Products.get(obj.productId),
+      unitPrice: (obj, {}, context) => context.Money.fromDatabase(obj.unitPrice),
+    },
+    graphqlResolvers(['id', 'type', 'qty', 'dateCreated', 'date']),
+  ),
+
+  Payment: objectAssign(
+    {},
+    {
+      status: (obj, {}, context) => TransactionStatus.fromDatabase(obj.state),
+      foreign: (obj, {}, context) => {
+        switch (obj.type) {
+          case Sale.TYPE:
+            return context.Sales.get(obj.foreignId);
+          case Expense.TYPE:
+            return context.Expenses.get(obj.foreignId);
+        }
+        throw new Error(`Payment is invalid: ${obj}`);
+      },
+      amount: (obj, {}, context) => context.Money.fromDatabase(obj.amount),
+    },
+    graphqlResolvers(['id', 'type', 'dateCreated', 'date']),
+  ),
+
   Date: {
     __parseValue(value) {
       invariant(typeof value === 'number', 'Number required.');
@@ -122,7 +241,17 @@ const rootResolvers = {
   },
 };
 
-const schema = [...rootSchema, ...userSchema, ...businessSchema, ...eventSchema];
+const schema = [
+  ...rootSchema,
+  ...userSchema,
+  ...businessSchema,
+  ...eventSchema,
+  ...clientSchema,
+  ...supplierSchema,
+  ...productSchema,
+  ...saleSchema,
+  ...expenseSchema,
+];
 
 const resolvers = merge(
   {},
@@ -130,6 +259,11 @@ const resolvers = merge(
   userResolvers,
   businessResolvers,
   eventResolvers,
+  clientResolvers,
+  supplierResolvers,
+  productResolvers,
+  saleResolvers,
+  expenseResolvers,
 );
 
 export default makeExecutableSchema({

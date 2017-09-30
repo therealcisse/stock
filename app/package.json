@@ -1,6 +1,6 @@
 {
   "name": "stock",
-  "productName": "Mon Stock",
+  "productName": "Stock",
   "version": "1.0.0",
   "description": "Gestion de Stock",
   "main": "./main.prod.js",

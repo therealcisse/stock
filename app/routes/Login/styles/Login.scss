@@ -36,8 +36,8 @@
 .root {
   composes: d-flex flex-column from "styles/_base.scss";
   background-color: #eee;
-  height: 100%;
-  overflow-y: auto;
+  height: 100vh;
+  min-height: 100vh;
 
   .logo {
     align-self: center;

@@ -7,6 +7,4 @@ const dbPath = path.resolve(app.getPath('userData'), 'STOCK.DB');
 
 const db = new Database(dbPath, { fileMustExist: true });
 
-db.defaultSafeIntegers(true);
-
 export default db;

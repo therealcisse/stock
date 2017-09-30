@@ -1,6 +1,10 @@
 import React from 'react';
 import T from 'prop-types';
 
+import Typography from 'material-ui/Typography';
+
+import RootCloseWrapper from 'components/bootstrap/RootCloseWrapper';
+
 import objectAssign from 'object-assign';
 
 import { connect } from 'react-redux';
@@ -156,26 +160,9 @@ class Snackbar extends React.Component {
         onClick={action.click}
         ref="action"
       >
-        {action.title}
+        <Typography color="inherit">{action.title}</Typography>
       </button>
     ) : null;
-  }
-
-  /**
-   * @return {button}
-   */
-  getCloseButton() {
-    const { dismiss } = this.props;
-    return (
-      <button
-        type="button"
-        className={style.close}
-        aria-label={'Close'}
-        onClick={dismiss}
-      >
-        <span aria-hidden={true}>&times;</span>
-      </button>
-    );
   }
 
   /**
@@ -183,13 +170,16 @@ class Snackbar extends React.Component {
    * @return {Object}
    */
   render() {
-    const { closeable, message } = this.props.snackbar;
+    const { message } = this.props.snackbar;
     return (
-      <div className={this.getClass()} style={this.getStyle()} ref="snackbar">
-        <span>{message}</span>
-        {this.getAction()}
-        {closeable ? this.getCloseButton() : null}
-      </div>
+      <RootCloseWrapper onRootClose={this.props.dismiss}>
+        <div className={this.getClass()} style={this.getStyle()} ref="snackbar">
+          <Typography color="inherit">
+            <span>{message}</span>
+          </Typography>
+          {this.getAction()}
+        </div>
+      </RootCloseWrapper>
     );
   }
 }

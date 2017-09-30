@@ -28,12 +28,12 @@ export default class MenuBuilder {
     //
     // const menu = Menu.buildFromTemplate(template);
     // Menu.setApplicationMenu(menu);
-
-    return menu;
+    //
+    // return menu;
   }
 
   setupDevelopmentEnvironment() {
-    this.mainWindow.openDevTools();
+    this.mainWindow.openDevTools({ mode: 'undocked' });
     this.mainWindow.webContents.on('context-menu', (e, props) => {
       const { x, y } = props;
 
@@ -42,6 +42,7 @@ export default class MenuBuilder {
           label: 'Inspect element',
           click: () => {
             this.mainWindow.inspectElement(x, y);
+            this.mainWindow.devToolsWebContents.focus();
           },
         },
       ]).popup(this.mainWindow);

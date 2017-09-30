@@ -1,0 +1,40 @@
+query sales($cursor: Int!, $query: GetSalesQuery!) {
+  sales(cursor: $cursor, query: $query) {
+    sales {
+      sale {
+        id
+        refNo
+        status
+        client {
+          id
+          displayName
+        }
+        dateCreated
+        items {
+          id
+          product {
+            id
+            displayName
+          }
+          qty
+          unitPrice
+        }
+        payments {
+          id
+          amount
+          status
+          dateCreated
+        }
+        date
+        lastModified
+      }
+      paid
+      total
+      balanceDue
+      isFullyPaid
+    }
+    cursor
+    prevCursor
+    length
+  }
+}

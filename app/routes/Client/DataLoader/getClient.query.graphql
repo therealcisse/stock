@@ -1,0 +1,15 @@
+query Client($id: ID!) {
+  getClient(id: $id) {
+    client {
+      id
+      displayName
+      tel
+      email
+      address
+      taxId
+    }
+    openCount
+    balanceDue
+    totalPaid
+  }
+}

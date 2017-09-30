@@ -14,10 +14,8 @@ export class SnackState extends Record({
 }) {}
 
 export default function reducer(state = new SnackState(), action) {
-  switch (action.type) {
-    case UPDATE_SNACKBAR:
-      return state.merge(action.payload);
-    default:
-      return state;
+  if (action.type === UPDATE_SNACKBAR) {
+    return state.merge(action.payload);
   }
+  return state;
 }

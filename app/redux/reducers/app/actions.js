@@ -1,4 +1,4 @@
-import { READY, APP_STATE_CHANGE } from './constants';
+import { DB_STATUS, APP_STATE_CHANGE } from './constants';
 
 import debounce from 'debounce';
 
@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 
 // import SUBSCRIPTION from './app.subscription.graphql';
 
-export function ready() {
+export function dbStatus(status) {
   return (dispatch, getState, { client }) => {
     // const obs = client.subscribe({
     //   query: SUBSCRIPTION,
@@ -28,7 +28,8 @@ export function ready() {
     // });
 
     dispatch({
-      type: READY,
+      type: DB_STATUS,
+      status,
     });
   };
 }

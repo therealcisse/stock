@@ -1,0 +1,15 @@
+query AllClients($query: GetClientsQuery!) {
+  getAllClients(query: $query) {
+    client {
+      id
+      displayName
+      tel
+      email
+      address
+      taxId
+    }
+    openCount
+    balanceDue
+    totalPaid
+  }
+}

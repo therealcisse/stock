@@ -51,7 +51,7 @@ const configureStore = (initialState?: any) => {
     (__DEV__ || DEBUG) && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
       ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
           name: APP_NAME,
-          routerActions,
+          actionCreators,
         })
       : compose;
 

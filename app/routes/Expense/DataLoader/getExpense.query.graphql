@@ -1,0 +1,34 @@
+query Expense($id: ID!) {
+  getExpense(id: $id) {
+    expense {
+      id
+      refNo
+      dateCreated
+      beneficiary {
+        __typename
+        id
+        displayName
+      }
+      items {
+        id
+        product {
+          id
+          displayName
+          ref
+          unitPrice
+        }
+        qty
+        unitPrice
+      }
+      payments {
+        id
+        dateCreated
+        amount
+      }
+    }
+    paid
+    balanceDue
+    total
+    isFullyPaid
+  }
+}

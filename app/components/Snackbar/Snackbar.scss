@@ -1,15 +1,18 @@
 @import "variables";
 @import "animate";
-$app-color-black: #373a3c !default;
-$snackbar-action-color: #a1c2fa !default;
-$snackbar-action-hover-color: #bbdefb !default;
+// $app-color-black: #373a3c !default;
+// $snackbar-action-color: #a1c2fa !default;
+// $snackbar-action-hover-color: #bbdefb !default;
 
 .snackbar {
   animation-duration: 0.5s;
-  background: rgba($app-color-black, 0.9);
+  // background: rgba($app-color-black, 0.9);
+  background-color: #303030;
   border-radius: 4px;
-  box-shadow: 0 0 5px rgba($app-color-black, 0.1);
-  color: #fff;
+  // box-shadow: 0 0 5px rgba($app-color-black, 0.1);
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  color: rgba(255, 255, 255, 1);
   composes: flex-row align-content-between from "styles/_base.scss";
   font-size: 14px;
   line-height: 1.65em;
@@ -46,12 +49,16 @@ $snackbar-action-hover-color: #bbdefb !default;
 .btn-snackbar {
   background: none;
   border: 0;
-  color: $snackbar-action-color;
+  // color: $snackbar-action-color;
+  color: #ff4081;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   composes: btn btn-link align-self-center from "styles/_base.scss";
   cursor: pointer;
   font-weight: bold;
   height: 100%;
   line-height: 100%;
+  border-radius: 2px;
   margin: 0;
   padding: 0;
   text-transform: uppercase;
@@ -59,12 +66,10 @@ $snackbar-action-hover-color: #bbdefb !default;
   &:focus,
   &:hover {
     box-shadow: none;
-    color: $snackbar-action-hover-color;
+    // color: $snackbar-action-hover-color;
+    color: #ff4081;
+    background-color: rgba(255, 64, 129, 0.12);
     outline: 0;
     text-decoration: none;
   }
-}
-
-.close {
-  composes: close justify-content-end from "styles/_base.scss";
 }

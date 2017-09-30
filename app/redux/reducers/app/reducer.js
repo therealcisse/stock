@@ -1,20 +1,20 @@
-import { READY } from './constants';
+import { DB_STATUS, DBStatus } from './constants';
 
 import { INIT } from 'vars';
 
 import { Record } from 'immutable';
 
 export class AppState extends Record({
-  isReady: false,
+  dbStatus: DBStatus.PENDING,
 }) {}
 
 const initialState = new AppState();
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case READY:
+    case DB_STATUS:
       return state.merge({
-        isReady: true,
+        dbStatus: action.status,
       });
     case INIT: {
       return state.merge({});

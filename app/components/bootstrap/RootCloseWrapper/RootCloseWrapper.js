@@ -126,7 +126,7 @@ RootCloseWrapper.defaultProps = {
   preventMouseRootClose(e) {
     let el = e.target;
     try {
-      while (el !== document.body && el !== document) {
+      while (el && el !== document.body && el !== document) {
         if (el.hasAttribute('data-root-close-ignore')) {
           return true;
         }

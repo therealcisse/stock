@@ -6,8 +6,9 @@ const formats = {
   },
   number: {
     MAD: {
-      style: 'currency',
-      currency: 'MAD',
+      style: 'decimal',
+      // currency: 'MAD',
+      maximumFractionDigits: 2,
       minimumFractionDigits: 2,
 
       // currencyDisplay: oneOf(['symbol', 'code', 'name']),

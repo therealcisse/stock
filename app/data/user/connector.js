@@ -1,5 +1,3 @@
-import DataLoader from 'dataloader';
-
 import asTransaction from 'data/asTransaction';
 
 import * as passwordUtils from 'utils/password';
@@ -8,30 +6,20 @@ import { CURRENT_USER_COOKIE_NAME } from 'vars';
 
 import { User } from 'data/types';
 
+import Loaders from './loaders';
+
 export class UserConnector {
   constructor({ db }) {
     this.db = db;
-    this.users = new DataLoader(async function(ids) {
-      const objects = db
-        .prepare(
-          `SELECT * FROM users WHERE id IN (${ids.map(() => '?').join(', ')});`,
-        )
-        .all(ids)
-        .map(User.fromDatabase);
+    this.loaders = Loaders({ db });
 
-      return ids.map(id => {
-        const index = objects.findIndex(user => String(user.id) === id);
-        return index !== -1 ? objects[index] : new Error(`User ${id} not found`);
-      });
-    }, {});
-
-    this.setPassword = asTransaction(this.setPassword);
-    this.changeEmail = asTransaction(this.changeEmail);
-    this.updateAccountSettings = asTransaction(this.updateAccountSettings);
+    this.setPassword = asTransaction(this.setPassword.bind(this));
+    this.changeEmail = asTransaction(this.changeEmail.bind(this));
+    this.updateAccountSettings = asTransaction(this.updateAccountSettings.bind(this));
   }
 
   get(id) {
-    return this.users.load(id);
+    return this.loaders.ids.load(id);
   }
 
   // auth
@@ -41,14 +29,14 @@ export class UserConnector {
       .get({ username });
 
     if (user && (await passwordUtils.compare(password, user.password))) {
-      const serialized = UserConnector.fromDatabase(user);
+      const serializedUser = User.fromDatabase(user);
 
       sessionStorage.setItem(
         CURRENT_USER_COOKIE_NAME,
-        JSON.stringify(serialized),
+        JSON.stringify(serializedUser),
       );
 
-      return serialized;
+      return serializedUser;
     }
 
     return null;
@@ -66,7 +54,7 @@ export class UserConnector {
       .prepare('UPDATE users SET email = @email where id = @id;')
       .run({ id: user.id, email });
 
-    this.users.clear(user.id);
+    this.loaders.ids.clear(user.id);
 
     return Users.get(user.id);
   }
@@ -75,7 +63,7 @@ export class UserConnector {
       .prepare('UPDATE users SET displayName = @displayName where id = @id;')
       .run({ id: user.id, displayName });
 
-    this.users.clear(user.id);
+    this.loaders.ids.clear(user.id);
 
     return Users.get(user.id);
   }

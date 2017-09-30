@@ -4,7 +4,7 @@ import invariant from 'invariant';
 export default function graphqlResolvers(fields) {
   return fields.reduce(function(fields, fieldName) {
     fields[fieldName] = (obj, {}, {}, info) => {
-      const value = fieldName === 'id' ? obj.id : obj[fieldName];
+      const value = obj[fieldName];
       if (info.returnType instanceof GraphQLNonNull) {
         invariant(
           !(value === null || value === undefined),

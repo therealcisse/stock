@@ -1,0 +1,80 @@
+.salesReport {
+  max-height: 500px;
+  transition: opacity 0.1s linear 0.2s, max-height 0.05s linear 0.2s;
+
+  padding-left: 10px;
+  padding-right: 10px;
+
+  margin-top: 10px;
+}
+
+.moneyBar {
+  display: table;
+  table-layout: fixed;
+  box-sizing: border-box;
+
+  margin-top: 35px;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.tableRow {
+  display: table-row;
+  vertical-align: top;
+}
+
+.tableCell {
+  display: table-cell;
+}
+
+.bucket {
+  width: 100%;
+  padding-right: 5px;
+}
+
+.reportHeader {
+  padding-bottom: 2px;
+  color: rgb(104, 119, 155);
+}
+
+.table {
+  display: table;
+  table-layout: fixed;
+  box-sizing: border-box;
+
+  .bucket & {
+    width: 100%;
+    height: 68px;
+    text-transform: uppercase;
+  }
+}
+
+.box {
+  width: 100%;
+  color: rgb(255, 255, 255);
+  height: 60px;
+  // cursor: pointer;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAGXRFW…FUeNpiYGBg4GVAAErYFBtAfcNGvTbqtVGvjXqNAjZAgAEAEPYFfUaJz74AAAAASUVORK5CYII=);
+  padding: 10px;
+
+  .unpaid & {
+    background-color: rgb(242, 184, 53);
+  }
+
+  .paid & {
+    background-color: rgb(86, 179, 73);
+  }
+}
+
+.subBox {
+  height: 41px;
+  overflow: hidden;
+}
+
+.amount {
+  margin-bottom: 1px;
+  text-transform: none;
+  letter-spacing: -0.05em;
+  font-size: 1.2rem;
+}

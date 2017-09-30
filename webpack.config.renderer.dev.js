@@ -58,6 +58,7 @@ export default merge.smart(baseConfig, {
       require('fbjs-scripts/third-party-module-map'),
       require('fbjs/module-map'),
       {
+        Clock: 'utils/Clock',
         validation: 'utils/validation',
         'validation-messages': 'utils/messages/validation-messages',
         countries: 'utils/countries',
@@ -109,6 +110,26 @@ export default merge.smart(baseConfig, {
         test: /\.graphql$/,
         exclude: [path.resolve(__dirname, 'node_modules')],
         use: ['graphql-tag/loader'],
+      },
+      {
+        test: /\.css$/,
+        exclude: [],
+        use: [
+          {
+            loader: 'cache-loader',
+            options: {
+              // provide a cache directory where cache items should be stored
+              cacheDirectory: path.resolve(__dirname, 'tmp', '.cache'),
+            },
+          },
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            query: {},
+          },
+        ],
       },
       {
         test: /\.scss$/,

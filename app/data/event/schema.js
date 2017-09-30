@@ -4,17 +4,36 @@ import objectAssign from 'object-assign';
 
 import invariant from 'invariant';
 
-import { DOC_FOREIGN_KEY } from 'data/constants';
-
 export const schema = [
   `
 
   enum EventNS {
-    TRANSACTIONS
+    SALES
+    EXPENSES
+    PRODUCTS
+    CLIENTS
+    SUPPLIERS
   }
 
   enum EventType {
+    NEW_PRODUCT
+    NEW_CLIENT
+    NEW_SUPPLIER
     NEW_SALE
+    NEW_EXPENSE
+
+    CLIENT_UPDATED
+    SUPPLIER_UPDATED
+    PRODUCT_UPDATED
+
+    EXPENSE_PAYMENT
+    SALE_PAYMENT
+
+    VOID_SALE
+    VOID_EXPENSE
+
+    VOID_EXPENSE_PAYMENT
+    VOID_SALE_PAYMENT
   }
 
   # Queries
@@ -22,10 +41,11 @@ export const schema = [
   input TimelineQuery {
     ns: EventNS
     types: [EventType!]
+    id: ID
   }
 
   type TimelineResponse {
-    result: [Event!]!
+    events: [Event!]!
     prevCursor: Date
     cursor: Date
   }
@@ -40,14 +60,29 @@ export const schema = [
 
     ns: EventNS!
 
+    payment: Payment
+
+    sale: Sale
+
+    expense: Expense
+
+    product: Product
+
+    client: Client
+
+    supplier: Supplier
+
     type: EventType!
     metadata: JSON!
-
-    user: User
   }
 
-  type NewEventResponse {
-    event: Event!
+  extend type Mutation {
+  }
+
+  extend type Query {
+    # Events
+    timeline(cursor: Date, query: TimelineQuery!): TimelineResponse!
+
   }
 
 `,
@@ -57,18 +92,28 @@ export const resolvers = {
   Event: objectAssign(
     {},
     {
-      user(event, {}, context) {
-        return context.Users.get(event.userId);
-      },
+      metadata: event => (event.metadata ? JSON.parse(event.metadata) : {}),
+      sale: (event, {}, context) =>
+        event.saleId ? context.Sales.get(event.saleId) : null,
+      expense: (event, {}, context) =>
+        event.expenseId ? context.Expenses.get(event.expenseId) : null,
+      payment: (event, {}, context) =>
+        event.paymentId ? context.Sales.getPayment(event.itemId) : null,
+      product: (event, {}, context) =>
+        event.productId ? context.Products.get(event.productId) : null,
+      client: (event, {}, context) =>
+        event.clientId ? context.Clients.get(event.clientId) : null,
+      supplier: (event, {}, context) =>
+        event.supplierId ? context.Suppliers.get(event.supplierId) : null,
     },
-    graphqlResolvers(['metadata', 'id', 'ns', 'type', 'timestamp']),
+    graphqlResolvers(['id', 'ns', 'type', 'timestamp']),
   ),
 
   Mutation: {},
 
   Query: {
     timeline(obj, { cursor, query }, context) {
-      return context.Events.getTimeline({ cursor, query });
+      return context.Events.getTimeline({ cursor, query }, context);
     },
   },
 };

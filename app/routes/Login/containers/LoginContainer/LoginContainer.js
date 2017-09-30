@@ -2,7 +2,7 @@ import React from 'react';
 import T from 'prop-types';
 
 import { locationHelper } from 'redux/configureStore';
-import { Link } from 'react-router-dom';
+import Link from 'react-router-dom/Link';
 
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -147,25 +147,25 @@ export class LoginContainer extends React.Component {
           </Link>
           <div className={style.form}>{this._renderForm()}</div>
         </div>
-        <footer>
-          <ul>
-            <li className={style.footerLink}>
-              <a target="_blank" href={LINK_TERMS_OF_SERVICE}>
-                {intl.formatMessage(messages.termsOfService)}
-              </a>
-            </li>
-            <li className={style.footerLink}>
-              <a target="_blank" href={LINK_SUPPORT}>
-                {intl.formatMessage(messages.support)}
-              </a>
-            </li>
-            <li className={style.footerLink}>
-              <a target="_blank" href={LINK_PRIVACY_POLICY}>
-                {intl.formatMessage(messages.privacyPolicy)}
-              </a>
-            </li>
-          </ul>
-        </footer>
+        {/* <footer> */}
+        {/*   <ul> */}
+        {/*     <li className={style.footerLink}> */}
+        {/*       <a target="_blank" href={LINK_TERMS_OF_SERVICE}> */}
+        {/*         {intl.formatMessage(messages.termsOfService)} */}
+        {/*       </a> */}
+        {/*     </li> */}
+        {/*     <li className={style.footerLink}> */}
+        {/*       <a target="_blank" href={LINK_SUPPORT}> */}
+        {/*         {intl.formatMessage(messages.support)} */}
+        {/*       </a> */}
+        {/*     </li> */}
+        {/*     <li className={style.footerLink}> */}
+        {/*       <a target="_blank" href={LINK_PRIVACY_POLICY}> */}
+        {/*         {intl.formatMessage(messages.privacyPolicy)} */}
+        {/*       </a> */}
+        {/*     </li> */}
+        {/*   </ul> */}
+        {/* </footer> */}
       </div>
     );
   }

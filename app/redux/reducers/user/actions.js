@@ -1,18 +1,18 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT } from './constants';
 
-import debounce from 'debounce';
+import { DBStatus } from 'redux/reducers/app/constants';
 
 import invariant from 'invariant';
 
 import debug from 'log';
+
+import addSamples from 'data/addSamples';
 
 import { CURRENT_USER_COOKIE_NAME } from 'vars';
 
 import LOG_IN_MUTATION from './logIn.mutation.graphql';
 
 const log = debug('app:client:auth');
-
-// import SUBSCRIPTION from 'redux/reducers/app/app.subscription.graphql';
 
 function logIn(username, password) {
   return async (dispatch, getState, { client }) => {
@@ -35,29 +35,20 @@ function logIn(username, password) {
       } finally {
       }
 
-      // const obs = client.subscribe({
-      //   query: SUBSCRIPTION,
-      //   variables: {},
-      // });
-      //
-      // obs.subscribe({
-      //   next: debounce(function({ onEvent: { event } }) {
-      //     // Refresh relevants queries
-      //     try {
-      //       const QUERIES = [];
-      //
-      //       QUERIES.forEach(async q => {
-      //         client.queryManager.refetchQueryByName(q);
-      //       });
-      //     } catch (e) {}
-      //   }, 1000),
-      //   error(error) {},
-      // });
-
       dispatch({
         type: USER_LOGGED_IN,
         payload: user,
       });
+
+      // Add samples if dbStatus === DBStatus.NEW
+      if (__DEV__ && getState().getIn(['app', 'dbStatus']) === DBStatus.NEW) {
+        try {
+          await addSamples();
+          log('Import success.');
+        } catch (e) {
+          log.error('Import failure:', e);
+        }
+      }
     }
   };
 }

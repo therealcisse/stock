@@ -22,7 +22,7 @@ export class Products {
   }
 
   newItem(item: {
-    type: Expense.TYPE | Sale.TYPE,
+    type: typeof Expense.TYPE | typeof Sale.TYPE,
     foreignId: String,
     productId: String,
     qty: number,

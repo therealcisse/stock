@@ -33,9 +33,9 @@ export class ProductConnector {
     dateNow,
     dateCreated,
   }: {
-    type: Expense.TYPE | Sale.TYPE,
-    foreignId: String,
-    productId: String,
+    type: typeof Expense.TYPE | typeof Sale.TYPE,
+    foreignId: string,
+    productId: string,
     qty: number,
     unitPrice: number,
     dateNow: number,

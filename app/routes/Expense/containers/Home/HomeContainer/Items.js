@@ -135,7 +135,7 @@ export default class Items extends React.PureComponent {
                 {items.map(item => {
                   return (
                     <TableRow hover tabIndex={-1} key={item.id}>
-                      <TableCell disablePadding>{''}</TableCell>
+                      <TableCell padding="none">{''}</TableCell>
                       <TableCell>
                         <Typography type="body1" noWrap>
                           {item.product.displayName}
@@ -148,9 +148,7 @@ export default class Items extends React.PureComponent {
                       <TableCell numeric>
                         {intl.formatNumber(item.total, { format: 'MAD' })}
                       </TableCell>
-                      <TableCell numeric disablePadding>
-                        {''}
-                      </TableCell>
+                      <TableCell padding="none">{''}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -168,7 +166,7 @@ export default class Items extends React.PureComponent {
 
               <TableBody>
                 <TableRow tabIndex={-1}>
-                  <TableCell disablePadding>{''}</TableCell>
+                  <TableCell padding="none">{''}</TableCell>
                   <TableCell>
                     <Typography type="headline" noWrap>
                       {'TOTAL'}
@@ -190,9 +188,7 @@ export default class Items extends React.PureComponent {
                   <TableCell numeric>
                     {intl.formatNumber(n.total, { format: 'MAD' })} MAD
                   </TableCell>
-                  <TableCell numeric disablePadding>
-                    {''}
-                  </TableCell>
+                  <TableCell padding="none">{''}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

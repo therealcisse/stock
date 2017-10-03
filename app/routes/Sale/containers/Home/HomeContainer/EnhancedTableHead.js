@@ -33,7 +33,7 @@ export default class EnhancedTableHead extends React.Component {
               <TableCell
                 key={column.id}
                 numeric={column.numeric}
-                disablePadding={column.disablePadding}
+                padding={column.disablePadding ? 'none' : 'default'}
               >
                 {column.disableSorting ? (
                   column.label

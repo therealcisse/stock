@@ -143,7 +143,7 @@ class Payments extends React.PureComponent {
                       key={payment.id}
                       className={style.payment}
                     >
-                      <TableCell disablePadding>{''}</TableCell>
+                      <TableCell padding="none">{''}</TableCell>
                       <TableCell>
                         <div className={style.dateCreated}>
                           <Typography>
@@ -171,9 +171,7 @@ class Payments extends React.PureComponent {
                       <TableCell numeric>
                         {intl.formatNumber(payment.amount, { format: 'MAD' })}
                       </TableCell>
-                      <TableCell numeric disablePadding>
-                        {''}
-                      </TableCell>
+                      <TableCell padding="none">{''}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -191,7 +189,7 @@ class Payments extends React.PureComponent {
 
               <TableBody>
                 <TableRow tabIndex={-1}>
-                  <TableCell disablePadding>{''}</TableCell>
+                  <TableCell padding="none">{''}</TableCell>
                   <TableCell>
                     <Typography type="headline" noWrap>
                       {'TOTAL'}
@@ -200,9 +198,7 @@ class Payments extends React.PureComponent {
                   <TableCell numeric>
                     {intl.formatNumber(n.paid, { format: 'MAD' })} MAD
                   </TableCell>
-                  <TableCell numeric disablePadding>
-                    {''}
-                  </TableCell>
+                  <TableCell padding="none">{''}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

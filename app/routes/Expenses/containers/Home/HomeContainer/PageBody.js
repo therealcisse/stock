@@ -117,7 +117,7 @@ class EnhancedTableHead extends React.Component {
               <TableCell
                 key={column.id}
                 numeric={column.numeric}
-                disablePadding={column.disablePadding}
+                padding={column.disablePadding ? 'none' : 'default'}
               >
                 {column.disableSorting ? (
                   column.label
@@ -168,7 +168,7 @@ class PageBody extends React.Component {
     const { intl } = this.props;
     return (
       <TableRow hover tabIndex={-1} key={n.expense.id}>
-        <TableCell disablePadding>{''}</TableCell>
+        <TableCell padding="none">{''}</TableCell>
         <TableCell>
           {intl.formatDate(n.expense.dateCreated, {
             day: 'numeric',

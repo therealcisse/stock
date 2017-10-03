@@ -97,7 +97,7 @@ class EnhancedTableHead extends React.Component {
               <TableCell
                 key={column.id}
                 numeric={column.numeric}
-                disablePadding={column.disablePadding}
+                padding={column.disablePadding ? 'none' : 'default'}
               >
                 {column.disableSorting ? (
                   column.label
@@ -215,7 +215,7 @@ class PageBody extends React.Component {
                   key={n.product.id}
                   className={style.product}
                 >
-                  <TableCell disablePadding>{''}</TableCell>
+                  <TableCell padding="none">{''}</TableCell>
                   <TableCell>
                     <div className={style.displayName}>
                       <Typography type="body1" noWrap>

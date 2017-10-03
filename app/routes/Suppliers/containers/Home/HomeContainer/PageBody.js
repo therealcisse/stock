@@ -97,7 +97,7 @@ class EnhancedTableHead extends React.Component {
               <TableCell
                 key={column.id}
                 numeric={column.numeric}
-                disablePadding={column.disablePadding}
+                padding={column.disablePadding ? 'none' : 'default'}
               >
                 {column.disableSorting ? (
                   column.label
@@ -177,7 +177,7 @@ class PageBody extends React.Component {
             {suppliers.map(n => {
               return (
                 <TableRow hover tabIndex={-1} key={n.supplier.id}>
-                  <TableCell disablePadding>{''}</TableCell>
+                  <TableCell padding="none">{''}</TableCell>
                   <TableCell>
                     <Link
                       to={PATH_SUPPLIER_PREFIX + '/' + n.supplier.id}

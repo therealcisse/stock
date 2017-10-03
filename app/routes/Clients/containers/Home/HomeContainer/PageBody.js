@@ -1,3 +1,5 @@
+import Store from 'Store';
+
 import React from 'react';
 import T from 'prop-types';
 
@@ -40,10 +42,17 @@ const styles = theme => ({
 });
 
 const columnData = [
+      {
+    id: 'prefix',
+    numeric: false,
+    disableSorting: true,
+    disablePadding: true,
+    label: '',
+  },
   {
     id: 'client.displayName',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'NOM DU CLIENT',
   },
   {
@@ -96,13 +105,17 @@ class EnhancedTableHead extends React.Component {
                 numeric={column.numeric}
                 disablePadding={column.disablePadding}
               >
-                <TableSortLabel
-                  active={orderBy === column.id}
-                  direction={order}
-                  onClick={this.createSortHandler(column.id)}
-                >
-                  {column.label}
-                </TableSortLabel>
+                {column.disableSorting ? (
+                  column.label
+                ) : (
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={order}
+                    onClick={this.createSortHandler(column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
+                )}
               </TableCell>
             );
           }, this)}
@@ -124,7 +137,17 @@ class PageBody extends React.Component {
       order = 'asc';
     }
 
-    this.props.data.refetch({ query: { order, orderBy } });
+    if (
+      this.props.data.variables.query.orderBy !== orderBy ||
+      this.props.data.variables.query.order !== order
+    ) {
+      Store.set({
+        'clients.order': order,
+        'clients.orderBy': orderBy,
+      });
+
+      this.props.data.refetch({ query: { order, orderBy } });
+    }
   };
 
   render() {
@@ -160,12 +183,13 @@ class PageBody extends React.Component {
             {clients.map(n => {
               return (
                 <TableRow hover tabIndex={-1} key={n.client.id}>
-                  <TableCell disablePadding>
+                  <TableCell disablePadding>{''}</TableCell>
+                  <TableCell>
                     <Link
                       to={PATH_CLIENT_PREFIX + '/' + n.client.id}
                       className={style.displayNameLink}
                     >
-                      <Typography type="body1" noWrap>
+                      <Typography color="inherit" type="body1" noWrap>
                         {n.client.displayName}
                       </Typography>
                     </Link>

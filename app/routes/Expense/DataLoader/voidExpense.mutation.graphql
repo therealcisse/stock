@@ -1,0 +1,43 @@
+mutation VoidExpense($id: ID!) {
+  voidExpense(id: $id) {
+    error {
+      code
+    }
+    info {
+      expense {
+        id
+        status
+        refNo
+        dateCreated
+        beneficiary {
+          __typename
+          id
+          displayName
+        }
+        items {
+          id
+          product {
+            id
+            displayName
+            ref
+            unitPrice
+          }
+          qty
+          unitPrice
+        }
+        payments {
+          id
+          status
+          dateCreated
+          amount
+          dateCreated
+          date
+        }
+      }
+      paid
+      total
+      balanceDue
+      isFullyPaid
+    }
+  }
+}

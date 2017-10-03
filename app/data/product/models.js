@@ -1,4 +1,4 @@
-import { Sale, Expense } from 'data/types';
+// @flow
 
 export class Products {
   constructor({ connector }) {
@@ -21,15 +21,7 @@ export class Products {
     return this.connector.addProduct(id, payload, context);
   }
 
-  newItem(item: {
-    type: typeof Expense.TYPE | typeof Sale.TYPE,
-    foreignId: String,
-    productId: String,
-    qty: number,
-    unitPrice: number,
-    dateNow: number,
-    dateCreated: number,
-  }): Promise<string> {
+  newItem(item): Promise<string> {
     return this.connector.newItem(item);
   }
 }

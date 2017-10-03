@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { TransactionStatus } from 'data/types';
+
 import Typography from 'material-ui/Typography';
 
 import style from 'routes/Expense/styles';
@@ -10,7 +12,7 @@ export default class Report extends React.Component {
   render() {
     const {
       intl,
-      expense: { isFullyPaid, paid, total, balanceDue },
+      expense: { isFullyPaid, paid, total, balanceDue, expense },
     } = this.props;
 
     if (isFullyPaid) {
@@ -26,7 +28,7 @@ export default class Report extends React.Component {
             >
               Montant
             </div>
-            <div className={style.amount}>
+            <div className={cx(style.amount, expense.status === TransactionStatus.CANCELLED && style.cancelled)}>
               {intl.formatNumber(total, { format: 'MAD' })} MAD
             </div>
           </div>
@@ -46,7 +48,7 @@ export default class Report extends React.Component {
           >
             Solde à payé
           </div>
-          <div className={style.amount}>
+          <div className={cx(style.amount, expense.status === TransactionStatus.CANCELLED && style.cancelled)}>
             {intl.formatNumber(balanceDue, { format: 'MAD' })} MAD
           </div>
         </div>

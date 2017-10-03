@@ -220,7 +220,7 @@ export class ExpenseConnector {
       });
 
     const event = await Events.create({
-      ns: Event.NS_PAYMENTS,
+      ns: Event.NS_EXPENSES,
       type: Event.TYPE_EXPENSE_PAYMENT,
       expenseId: id,
       paymentId,
@@ -232,12 +232,12 @@ export class ExpenseConnector {
   }
 
   async delPay(id, { Now, Events, Suppliers, Clients }) {
-    const { foreignId } = db
+    const { foreignId } = this.db
       .prepare(`SELECT * from payments WHERE id = @id;`)
       .get({ id });
 
     this.loaders.ids.clear(foreignId);
-    this.loaders.info.clear(id);
+    this.loaders.info.clear(foreignId);
     this.loaders.payments.clear(foreignId);
     this.loaders.payment.clear(id);
 
@@ -258,7 +258,7 @@ export class ExpenseConnector {
       .run({ id: foreignId, lastModified: Now() });
 
     const event = await Events.create({
-      ns: Event.NS_PAYMENTS,
+      ns: Event.NS_EXPENSES,
       type: Event.TYPE_VOID_EXPENSE_PAYMENT,
       expenseId: foreignId,
       paymentId: id,

@@ -122,12 +122,12 @@ class ProductForm extends React.Component {
   onKeyDown = e => {};
 
   onBlur = e => {
-    const { intl, dispatch, change } = this.props;
+    const { intl, dispatch, blur } = this.props;
 
     const n = parseMoney(e.target.value);
 
     dispatch([
-      change('unitPrice', n ? intl.formatNumber(n, { format: 'MONEY' }) : null),
+      blur('unitPrice', n ? intl.formatNumber(n, { format: 'MONEY' }) : null),
     ]);
   };
 

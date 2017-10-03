@@ -1,3 +1,5 @@
+import Store from 'Store';
+
 import { graphql } from 'react-apollo';
 
 import AllProductsQuery from './getAllProducts.query.graphql';
@@ -8,8 +10,8 @@ const products = graphql(AllProductsQuery, {
   options: () => ({
     variables: {
       query: {
-        order: 'desc',
-        orderBy: 'stock',
+        order: Store.get('products.order', 'desc'),
+        orderBy: Store.get('products.orderBy', 'stock'),
       },
     },
   }),

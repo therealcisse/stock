@@ -44,6 +44,8 @@ export const PATH_SUPPLIER_PREFIX = '/supplier';
 export const PATH_SALE_PREFIX = '/sale';
 export const PATH_EXPENSE_PREFIX = '/expense';
 
+export const DATE_FORMAT = 'YYYY-MM-DD';
+
 // Settings
 export const PATH_SETTINGS_BASE = '/account';
 export const PATH_SETTINGS_ACCOUNT = 'info';

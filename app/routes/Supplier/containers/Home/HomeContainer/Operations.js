@@ -1,7 +1,7 @@
+import Store from 'Store';
+
 import React from 'react';
 import T from 'prop-types';
-
-import Typography from 'material-ui/Typography';
 
 import Link from 'react-router-dom/Link';
 
@@ -10,6 +10,10 @@ import * as DataLoader from 'routes/Supplier/DataLoader';
 import compose from 'redux/lib/compose';
 
 import { withStyles } from 'material-ui/styles';
+
+import Typography from 'material-ui/Typography';
+
+import { PATH_EXPENSE_PREFIX } from 'vars';
 
 import Table, {
   TableBody,
@@ -39,9 +43,16 @@ const styles = theme => ({
 
 const columnData = [
   {
+    id: 'prefix',
+    numeric: false,
+    disableSorting: true,
+    disablePadding: true,
+    label: '',
+  },
+  {
     id: 'expense.dateCreated',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'DATE',
   },
   {
@@ -88,13 +99,17 @@ class EnhancedTableHead extends React.Component {
                 numeric={column.numeric}
                 disablePadding={column.disablePadding}
               >
-                <TableSortLabel
-                  active={orderBy === column.id}
-                  direction={order}
-                  onClick={this.createSortHandler(column.id)}
-                >
-                  {column.label}
-                </TableSortLabel>
+                {column.disableSorting ? (
+                  column.label
+                ) : (
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={order}
+                    onClick={this.createSortHandler(column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
+                )}
               </TableCell>
             );
           }, this)}
@@ -116,7 +131,17 @@ class Operations extends React.Component {
       order = 'asc';
     }
 
-    this.props.data.refetch({ query: { order, orderBy } });
+    if (
+      this.props.data.variables.query.orderBy !== orderBy ||
+      this.props.data.variables.query.order !== order
+    ) {
+      Store.set({
+        'supplier.expenses.order': order,
+        'supplier.expenses.orderBy': orderBy,
+      });
+
+      this.props.data.refetch({ query: { order, orderBy } });
+    }
   };
 
   render() {
@@ -148,7 +173,8 @@ class Operations extends React.Component {
             {n.expenses.map(n => {
               return (
                 <TableRow hover tabIndex={-1} key={n.expense.id}>
-                  <TableCell disablePadding>
+                  <TableCell disablePadding>{''}</TableCell>
+                  <TableCell>
                     {intl.formatDate(n.expense.dateCreated, {
                       day: 'numeric',
                       month: 'short',
@@ -156,7 +182,11 @@ class Operations extends React.Component {
                     })}
                   </TableCell>
                   <TableCell>
-                    {n.expense.refNo || <span>&mdash;</span>}
+                    <Link to={PATH_EXPENSE_PREFIX + '/' + n.expense.id}>
+                      <Typography color="inherit">
+                        {n.expense.refNo || <span>&mdash;</span>}
+                      </Typography>
+                    </Link>
                   </TableCell>
                   <TableCell numeric>
                     {intl.formatNumber(n.balanceDue, { format: 'MAD' })}

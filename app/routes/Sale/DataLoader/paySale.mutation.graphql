@@ -1,0 +1,51 @@
+mutation PaySale($id: ID!, $payload: AddPaymentPayload!) {
+  paySale(id: $id, payload: $payload) {
+    error {
+      code
+    }
+    foreign {
+      sale {
+        id
+        status
+        refNo
+        dateCreated
+        client {
+          __typename
+          id
+          displayName
+        }
+        items {
+          id
+          product {
+            id
+            displayName
+            ref
+            unitPrice
+          }
+          qty
+          unitPrice
+        }
+        payments {
+          id
+          status
+          dateCreated
+          amount
+          dateCreated
+          date
+        }
+      }
+      paid
+      total
+      balanceDue
+      isFullyPaid
+    }
+    payment {
+      id
+      status
+      dateCreated
+      amount
+      dateCreated
+      date
+    }
+  }
+}

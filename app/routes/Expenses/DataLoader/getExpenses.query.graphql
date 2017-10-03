@@ -1,4 +1,4 @@
-query expenses($cursor: Int!, $query: GetExpensesQuery!) {
+query Expenses($cursor: Int!, $query: GetExpensesQuery!) {
   expenses(cursor: $cursor, query: $query) {
     expenses {
       expense {
@@ -22,9 +22,11 @@ query expenses($cursor: Int!, $query: GetExpensesQuery!) {
         }
         payments {
           id
-          amount
           status
           dateCreated
+          amount
+          dateCreated
+          date
         }
         date
         lastModified

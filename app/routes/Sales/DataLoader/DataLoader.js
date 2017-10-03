@@ -1,3 +1,5 @@
+import Store from 'Store';
+
 import { graphql } from 'react-apollo';
 
 import SalesQuery from './getSales.query.graphql';
@@ -13,8 +15,8 @@ const sales = graphql(SalesQuery, {
     variables: {
       cursor: 0,
       query: {
-        order: 'desc',
-        orderBy: 'balanceDue',
+        order: Store.get('sales.order', 'desc'),
+        orderBy: Store.get('sales.orderBy', 'balanceDue'),
       },
     },
   }),

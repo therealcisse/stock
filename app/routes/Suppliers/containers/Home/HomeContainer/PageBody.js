@@ -1,3 +1,5 @@
+import Store from 'Store';
+
 import React from 'react';
 import T from 'prop-types';
 
@@ -40,10 +42,17 @@ const styles = theme => ({
 });
 
 const columnData = [
+      {
+    id: 'prefix',
+    numeric: false,
+    disableSorting: true,
+    disablePadding: true,
+    label: '',
+  },
   {
     id: 'supplier.displayName',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'NOM DU FOURNISSEUR',
   },
   {
@@ -90,13 +99,17 @@ class EnhancedTableHead extends React.Component {
                 numeric={column.numeric}
                 disablePadding={column.disablePadding}
               >
-                <TableSortLabel
-                  active={orderBy === column.id}
-                  direction={order}
-                  onClick={this.createSortHandler(column.id)}
-                >
-                  {column.label}
-                </TableSortLabel>
+                {column.disableSorting ? (
+                  column.label
+                ) : (
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={order}
+                    onClick={this.createSortHandler(column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
+                )}
               </TableCell>
             );
           }, this)}
@@ -118,7 +131,17 @@ class PageBody extends React.Component {
       order = 'asc';
     }
 
-    this.props.data.refetch({ query: { order, orderBy } });
+    if (
+      this.props.data.variables.query.orderBy !== orderBy ||
+      this.props.data.variables.query.order !== order
+    ) {
+      Store.set({
+        'suppliers.order': order,
+        'suppliers.orderBy': orderBy,
+      });
+
+      this.props.data.refetch({ query: { order, orderBy } });
+    }
   };
 
   render() {
@@ -154,12 +177,13 @@ class PageBody extends React.Component {
             {suppliers.map(n => {
               return (
                 <TableRow hover tabIndex={-1} key={n.supplier.id}>
-                  <TableCell disablePadding>
+                  <TableCell disablePadding>{''}</TableCell>
+                  <TableCell>
                     <Link
                       to={PATH_SUPPLIER_PREFIX + '/' + n.supplier.id}
                       className={style.displayNameLink}
                     >
-                      <Typography type="body1" noWrap>
+                      <Typography color="inherit" type="body1" noWrap>
                         {n.supplier.displayName}
                       </Typography>
                     </Link>

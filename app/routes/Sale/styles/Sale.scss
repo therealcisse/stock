@@ -207,3 +207,24 @@
     visibility: hidden;
   }
 }
+
+.errorLine {
+  composes: d-flex from "styles/_base.scss";
+
+  svg {
+    color: theme-color("danger");
+  }
+
+  div {
+    color: theme-color("warning");
+  }
+}
+
+.center {
+  composes: center from "styles/_base.scss";
+  height: 150px;
+}
+
+.cancelled {
+  text-decoration: line-through;
+}

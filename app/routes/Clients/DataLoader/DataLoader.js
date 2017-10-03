@@ -1,3 +1,5 @@
+import Store from 'Store';
+
 import { graphql } from 'react-apollo';
 
 import AllClientsQuery from './getAllClients.query.graphql';
@@ -8,8 +10,8 @@ const clients = graphql(AllClientsQuery, {
   options: () => ({
     variables: {
       query: {
-        order: 'desc',
-        orderBy: 'balanceDue',
+        order: Store.get('clients.order', 'desc'),
+        orderBy: Store.get('clients.orderBy', 'balanceDue'),
       },
     },
   }),

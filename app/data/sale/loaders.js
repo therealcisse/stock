@@ -190,13 +190,12 @@ export default function({ db }) {
             s.id AS saleId,
             SUM(i.qty * i.unitPrice) AS total
           FROM items i LEFT JOIN sales s on (s.id = i.foreignId)
-          WHERE s.state <> ? AND type = ? AND s.id IN (${ids
+          WHERE type = ? AND s.id IN (${ids
             .map(() => '?')
             .join(', ')})
           GROUP BY s.id;`,
         )
         .all([
-          TransactionStatus.toDatabase(TransactionStatus.CANCELLED),
           Sale.TYPE,
           ...ids,
         ]);
@@ -209,13 +208,12 @@ export default function({ db }) {
             s.id AS saleId,
             SUM(p.amount) as totalPaid
           FROM payments p LEFT JOIN sales s ON (s.id = p.foreignId)
-          WHERE s.state <> ? AND p.state <> ? AND type = ? AND s.id IN (${ids
+          WHERE p.state <> ? AND type = ? AND s.id IN (${ids
             .map(() => '?')
             .join(', ')})
           GROUP BY s.id;`,
         )
         .all([
-          TransactionStatus.toDatabase(TransactionStatus.CANCELLED),
           TransactionStatus.toDatabase(TransactionStatus.CANCELLED),
           Sale.TYPE,
           ...ids,
@@ -242,7 +240,7 @@ export default function({ db }) {
           balanceDue,
           paid,
           total,
-          isFullyPaid: total === paid,
+          isFullyPaid: balanceDue === 0,
         };
       });
     }, {}),

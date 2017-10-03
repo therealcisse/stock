@@ -1,3 +1,5 @@
+import Store from 'Store';
+
 import React from 'react';
 import T from 'prop-types';
 
@@ -50,7 +52,14 @@ const options = ['Modifier'];
 const ITEM_HEIGHT = 48;
 
 const columnData = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'NOM DU PRODUIT' },
+  {
+    id: 'prefix',
+    numeric: false,
+    disableSorting: true,
+    disablePadding: true,
+    label: '',
+  },
+  { id: 'name', numeric: false, disablePadding: false, label: 'NOM DU PRODUIT' },
   {
     id: 'ref',
     numeric: false,
@@ -90,13 +99,17 @@ class EnhancedTableHead extends React.Component {
                 numeric={column.numeric}
                 disablePadding={column.disablePadding}
               >
-                <TableSortLabel
-                  active={orderBy === column.id}
-                  direction={order}
-                  onClick={this.createSortHandler(column.id)}
-                >
-                  {column.label}
-                </TableSortLabel>
+                {column.disableSorting ? (
+                  column.label
+                ) : (
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={order}
+                    onClick={this.createSortHandler(column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
+                )}
               </TableCell>
             );
           }, this)}
@@ -151,7 +164,17 @@ class PageBody extends React.Component {
       order = 'asc';
     }
 
-    this.props.data.refetch({ query: { order, orderBy } });
+    if (
+      this.props.data.variables.query.orderBy !== orderBy ||
+      this.props.data.variables.query.order !== order
+    ) {
+      Store.set({
+        'products.order': order,
+        'products.orderBy': orderBy,
+      });
+
+      this.props.data.refetch({ query: { order, orderBy } });
+    }
   };
 
   render() {
@@ -186,8 +209,14 @@ class PageBody extends React.Component {
           <TableBody>
             {products.map(n => {
               return (
-                <TableRow hover tabIndex={-1} key={n.product.id}>
-                  <TableCell disablePadding>
+                <TableRow
+                  hover
+                  tabIndex={-1}
+                  key={n.product.id}
+                  className={style.product}
+                >
+                  <TableCell disablePadding>{''}</TableCell>
+                  <TableCell>
                     <div className={style.displayName}>
                       <Typography type="body1" noWrap>
                         {n.product.displayName}

@@ -1,4 +1,4 @@
-query sales($cursor: Int!, $query: GetSalesQuery!) {
+query Sales($cursor: Int!, $query: GetSalesQuery!) {
   sales(cursor: $cursor, query: $query) {
     sales {
       sale {

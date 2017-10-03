@@ -34,6 +34,7 @@ export default merge.smart(baseConfig, {
       require('fbjs-scripts/third-party-module-map'),
       require('fbjs/module-map'),
       {
+        Store: 'utils/Store',
         Clock: 'utils/Clock',
         validation: 'utils/validation',
         'validation-messages': 'utils/messages/validation-messages',

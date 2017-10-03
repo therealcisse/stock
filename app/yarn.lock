@@ -70,12 +70,12 @@ bcrypt@^1.0.3:
     node-pre-gyp "0.6.36"
 
 better-sqlite3@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-4.0.2.tgz#3a5542252e199ffcc3a58116255a39882fe06eeb"
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-4.0.3.tgz#e1968227e9181f57cfde40087f399a2b019c8bf0"
   dependencies:
     bindings "^1.2.1"
     integer "^1.0.1"
-    lzz-gyp "^0.3.5"
+    lzz-gyp "^0.4.2"
     to-descriptor "^1.0.1"
 
 bindings@^1.2.1:
@@ -348,9 +348,9 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-lzz-gyp@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/lzz-gyp/-/lzz-gyp-0.3.5.tgz#0ec67d00f4bdaa5bc5c5eecd1eb3beed181032e5"
+lzz-gyp@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/lzz-gyp/-/lzz-gyp-0.4.2.tgz#495c44034a1f50c48a60f0ef9c28d42763a5b297"
 
 mime-db@~1.30.0:
   version "1.30.0"

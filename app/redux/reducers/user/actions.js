@@ -41,7 +41,7 @@ function logIn(username, password) {
       });
 
       // Add samples if dbStatus === DBStatus.NEW
-      if (__DEV__ && getState().getIn(['app', 'dbStatus']) === DBStatus.NEW) {
+      if (getState().getIn(['app', 'dbStatus']) === DBStatus.NEW) {
         try {
           await addSamples();
           log('Import success.');

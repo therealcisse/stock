@@ -1,0 +1,43 @@
+mutation VoidSale($id: ID!) {
+  voidSale(id: $id) {
+    error {
+      code
+    }
+    info {
+      sale {
+        id
+        status
+        refNo
+        dateCreated
+        client {
+          __typename
+          id
+          displayName
+        }
+        items {
+          id
+          product {
+            id
+            displayName
+            ref
+            unitPrice
+          }
+          qty
+          unitPrice
+        }
+        payments {
+          id
+          status
+          dateCreated
+          amount
+          dateCreated
+          date
+        }
+      }
+      paid
+      total
+      balanceDue
+      isFullyPaid
+    }
+  }
+}

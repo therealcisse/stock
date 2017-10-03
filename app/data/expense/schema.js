@@ -132,12 +132,12 @@ export const resolvers = {
         const info = await context.Expenses.addExpense(payload, context);
 
         const [expense, events] = await Promise.all([
-          context.Expenses.get(info.id),
+          context.Expenses.getExpense(info.id),
           context.Events.get(info.events),
         ]);
 
         return {
-          info: { expense },
+          info: expense,
           events,
         };
       } catch (e) {
@@ -152,14 +152,14 @@ export const resolvers = {
       try {
         const info = await context.Expenses.pay(id, payload, context);
 
-        const [expense, payment, events] = await Promise.all([
-          context.Expenses.get(info.id),
+        const [foreign, payment, events] = await Promise.all([
+          context.Expenses.getExpense(info.id),
           context.Expenses.getPayment(info.paymentId),
           context.Events.get(info.events),
         ]);
 
         return {
-          foreign: { info: expense },
+          foreign,
           payment,
           events,
         };
@@ -173,14 +173,14 @@ export const resolvers = {
       try {
         const info = await context.Expenses.delPay(id, context);
 
-        const [expense, payment, events] = await Promise.all([
-          context.Expenses.get(info.id),
+        const [foreign, payment, events] = await Promise.all([
+          context.Expenses.getExpense(info.id),
           context.Expenses.getPayment(info.paymentId),
           context.Events.get(info.events),
         ]);
 
         return {
-          foreign: { info: expense },
+          foreign,
           payment,
           events,
         };
@@ -195,7 +195,7 @@ export const resolvers = {
         const info = await context.Expenses.void(id, context);
 
         const [expense, events] = await Promise.all([
-          context.Expenses.get(info.id),
+          context.Expenses.getExpense(info.id),
           context.Events.get(info.events),
         ]);
 

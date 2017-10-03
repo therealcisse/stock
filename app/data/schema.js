@@ -98,7 +98,7 @@ const rootSchema = [
 
   input AddPaymentPayload {
     amount: Int!
-    dateCreated: Int!
+    dateCreated: Date!
   }
 
   union OperationInfo = SaleInfo | ExpenseInfo
@@ -159,6 +159,18 @@ const rootSchema = [
 ];
 
 const rootResolvers = {
+  OperationInfo: {
+    __resolveType(data, context, info) {
+      if (data.expense) {
+        return info.schema.getType('ExpenseInfo');
+      }
+      if (data.sale) {
+        return info.schema.getType('SaleInfo');
+      }
+      return null;
+    },
+  },
+
   AddPaymentResponse: objectAssign(
     {},
     graphqlResolvers(['foreign', 'payment', 'events', 'error']),

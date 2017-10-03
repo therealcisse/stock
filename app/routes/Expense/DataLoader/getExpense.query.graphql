@@ -2,6 +2,7 @@ query Expense($id: ID!) {
   getExpense(id: $id) {
     expense {
       id
+      status
       refNo
       dateCreated
       beneficiary {
@@ -22,8 +23,11 @@ query Expense($id: ID!) {
       }
       payments {
         id
+        status
         dateCreated
         amount
+        dateCreated
+        date
       }
     }
     paid

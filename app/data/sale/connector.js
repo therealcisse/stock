@@ -196,7 +196,7 @@ export class SaleConnector {
     return { id, events: [event] };
   }
 
-  async pay({ id, amount, dateCreated }, { Now, Events, Clients }) {
+  async pay(id, { amount, dateCreated }, { Now, Events, Clients }) {
     this.loaders.salesReport.clear('sales');
 
     this.loaders.ids.clear(id);
@@ -228,7 +228,7 @@ export class SaleConnector {
       });
 
     const event = await Events.create({
-      ns: Event.NS_PAYMENTS,
+      ns: Event.NS_SALES,
       type: Event.TYPE_SALE_PAYMENT,
       saleId: id,
       paymentId,
@@ -242,12 +242,12 @@ export class SaleConnector {
   async delPay(id, { Now, Events, Clients }) {
     this.loaders.salesReport.clear('sales');
 
-    const { foreignId } = db
+    const { foreignId } = this.db
       .prepare(`SELECT * from payments WHERE id = @id;`)
       .get({ id });
 
     this.loaders.ids.clear(foreignId);
-    this.loaders.info.clear(id);
+    this.loaders.info.clear(foreignId);
     this.loaders.payments.clear(foreignId);
     this.loaders.payment.clear(id);
 
@@ -265,7 +265,7 @@ export class SaleConnector {
       .run({ id: foreignId, lastModified: Now() });
 
     const event = await Events.create({
-      ns: Event.NS_PAYMENTS,
+      ns: Event.NS_SALES,
       type: Event.TYPE_VOID_SALE_PAYMENT,
       expenseId: foreignId,
       paymentId: id,

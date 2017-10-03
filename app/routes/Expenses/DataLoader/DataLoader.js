@@ -1,3 +1,5 @@
+import Store from 'Store';
+
 import { graphql } from 'react-apollo';
 
 import ExpensesQuery from './getExpenses.query.graphql';
@@ -9,8 +11,8 @@ const expenses = graphql(ExpensesQuery, {
     variables: {
       cursor: 0,
       query: {
-        order: 'desc',
-        orderBy: 'expense.dateCreated',
+        order: Store.get('expenses.order', 'desc'),
+        orderBy: Store.get('expenses.orderBy', 'expense.dateCreated'),
       },
     },
   }),

@@ -1,23 +1,30 @@
 import React from 'react';
 import Link from 'react-router-dom/Link';
 
-import { PATH_EXPENSES } from 'vars';
+import compose from 'redux/lib/compose';
+
+import { PATH_EXPENSES, DATE_FORMAT } from 'vars';
 
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 
+import { TransactionStatus } from 'data/types';
+
 import Report from './Report';
 
-import pick from 'lodash.pick';
+import moment from 'moment';
 
-// import ExpenseForm from 'routes/Expenses/containers/Home/HomeContainer/ExpenseForm';
+import pick from 'lodash.pick';
 
 import style from 'routes/Expense/styles';
 
 import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
+
+import VoidForm from './VoidForm';
+import PaymentForm from './PaymentForm';
 
 const styles = theme => ({
   button: {},
@@ -27,17 +34,18 @@ const ITEM_HEIGHT = 48;
 
 class PageHeader extends React.Component {
   state = {
+    option: null,
     anchorEl: null,
     open: false,
     dialogOpen: false,
   };
 
-  handleClickOpen = () => {
-    this.setState({ dialogOpen: true, open: false, anchorEl: null });
+  handleClickOpen = option => {
+    this.setState({ dialogOpen: true, option, open: false, anchorEl: null });
   };
 
   handleDialogClose = () => {
-    this.setState({ dialogOpen: false });
+    this.setState({ dialogOpen: false, option: null });
   };
 
   handleClick = event => {
@@ -45,7 +53,9 @@ class PageHeader extends React.Component {
   };
 
   handleRequestClose = () => {
-    this.setState({ open: false });
+    this.setState({
+      open: false,
+    });
   };
 
   render() {
@@ -56,10 +66,10 @@ class PageHeader extends React.Component {
 
     if (n) {
       if (!n.isFullyPaid) {
-        options.push('Enregistrer un paiement');
+        options.push({ id: 'pay', displayName: 'Enregistrer un paiement' });
       }
 
-      options.push('Annuler');
+      options.push({ id: 'void', displayName: 'Annuler' });
     }
 
     return (
@@ -80,7 +90,7 @@ class PageHeader extends React.Component {
                   #{n.expense.refNo}
                 </Typography>,
 
-                <div className={style.actions}>
+                n.expense.status === TransactionStatus.CANCELLED ? null : <div className={style.actions}>
                   <IconButton
                     aria-label="Actions"
                     aria-owns={this.state.open ? 'long-menu' : null}
@@ -102,8 +112,11 @@ class PageHeader extends React.Component {
                     }}
                   >
                     {options.map(option => (
-                      <MenuItem key={option} onClick={this.handleClickOpen}>
-                        {option}
+                      <MenuItem
+                        key={option.id}
+                        onClick={this.handleClickOpen.bind(this, option.id)}
+                      >
+                        {option.displayName}
                       </MenuItem>
                     ))}
                   </Menu>
@@ -114,25 +127,39 @@ class PageHeader extends React.Component {
 
         <div>{n ? <Report intl={intl} expense={n} /> : null}</div>
 
-        {/* {this.state.dialogOpen ? ( */}
-        {/*   <ExpenseForm */}
-        {/*     onClose={this.handleDialogClose} */}
-        {/*     initialValues={{ */}
-        {/*       ...pick(n.client, [ */}
-        {/*         'displayName', */}
-        {/*         'tel', */}
-        {/*         'email', */}
-        {/*         'address', */}
-        {/*         'taxId', */}
-        {/*       ]), */}
-        {/*     }} */}
-        {/*     id={n.client.id} */}
-        {/*     title="Nouveau client" */}
-        {/*   /> */}
-        {/* ) : null} */}
+        {(() => {
+          const { dialogOpen, option } = this.state;
+
+          if (!dialogOpen) {
+            return null;
+          }
+
+          if (option === 'pay') {
+            return (
+              <PaymentForm
+                id={n.expense.id}
+                balanceDue={n.balanceDue}
+                initialValues={{
+                  dateCreated: moment().format(DATE_FORMAT),
+                  balanceDue: n.balanceDue,
+                }}
+                handleRequestClose={this.handleDialogClose}
+              />
+            );
+          }
+
+          if (option === 'void') {
+            return (
+              <VoidForm
+                id={n.expense.id}
+                handleRequestClose={this.handleDialogClose}
+              />
+            );
+          }
+        })()}
       </div>
     );
   }
 }
 
-export default withStyles(styles)(PageHeader);
+export default compose(withStyles(styles))(PageHeader);

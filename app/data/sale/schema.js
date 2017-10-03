@@ -128,12 +128,12 @@ export const resolvers = {
         const info = await context.Sales.addSale(payload, context);
 
         const [sale, events] = await Promise.all([
-          context.Sales.get(info.id),
+          context.Sales.getSale(info.id),
           context.Events.get(info.events),
         ]);
 
         return {
-          info: { sale },
+          info: sale,
           events,
         };
       } catch (e) {
@@ -150,14 +150,14 @@ export const resolvers = {
       try {
         const info = await context.Sales.pay(id, payload, context);
 
-        const [sale, payment, events] = await Promise.all([
-          context.Sales.get(info.id),
+        const [foreign, payment, events] = await Promise.all([
+          context.Sales.getSale(info.id),
           context.Sales.getPayment(info.paymentId),
           context.Events.get(info.events),
         ]);
 
         return {
-          foreign: { info: sale },
+          foreign,
           payment,
           events,
         };
@@ -173,14 +173,14 @@ export const resolvers = {
       try {
         const info = await context.Sales.delPay(id, context);
 
-        const [sale, payment, events] = await Promise.all([
-          context.Sales.get(info.id),
+        const [foreign, payment, events] = await Promise.all([
+          context.Sales.getSale(info.id),
           context.Sales.getPayment(info.paymentId),
           context.Events.get(info.events),
         ]);
 
         return {
-          foreign: { info: sale },
+          foreign,
           payment,
           events,
         };
@@ -197,7 +197,7 @@ export const resolvers = {
         const info = await context.Sales.void(id, context);
 
         const [sale, events] = await Promise.all([
-          context.Sales.get(info.id),
+          context.Sales.getSale(info.id),
           context.Events.get(info.events),
         ]);
 

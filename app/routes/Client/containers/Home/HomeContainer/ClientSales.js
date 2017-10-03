@@ -1,3 +1,5 @@
+import Store from 'Store';
+
 import React from 'react';
 import T from 'prop-types';
 
@@ -13,7 +15,7 @@ import { withStyles } from 'material-ui/styles';
 
 import Empty from './Empty';
 
-import { SALE_REF_NO_BASE } from 'vars';
+import { SALE_REF_NO_BASE, PATH_SALE_PREFIX } from 'vars';
 
 import Table, {
   TableBody,
@@ -41,9 +43,16 @@ const styles = theme => ({
 
 const columnData = [
   {
+    id: 'prefix',
+    numeric: false,
+    disableSorting: true,
+    disablePadding: true,
+    label: '',
+  },
+  {
     id: 'sale.dateCreated',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'DATE',
   },
   {
@@ -90,13 +99,17 @@ class EnhancedTableHead extends React.Component {
                 numeric={column.numeric}
                 disablePadding={column.disablePadding}
               >
-                <TableSortLabel
-                  active={orderBy === column.id}
-                  direction={order}
-                  onClick={this.createSortHandler(column.id)}
-                >
-                  {column.label}
-                </TableSortLabel>
+                {column.disableSorting ? (
+                  column.label
+                ) : (
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={order}
+                    onClick={this.createSortHandler(column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
+                )}
               </TableCell>
             );
           }, this)}
@@ -118,7 +131,17 @@ class ClientSales extends React.Component {
       order = 'asc';
     }
 
-    this.props.data.refetch({ query: { order, orderBy } });
+    if (
+      this.props.data.variables.query.orderBy !== orderBy ||
+      this.props.data.variables.query.order !== order
+    ) {
+      Store.set({
+        'client.sales.order': order,
+        'client.sales.orderBy': orderBy,
+      });
+
+      this.props.data.refetch({ query: { order, orderBy } });
+    }
   };
 
   render() {
@@ -155,14 +178,21 @@ class ClientSales extends React.Component {
             {n.sales.map(n => {
               return (
                 <TableRow hover tabIndex={-1} key={n.sale.id}>
-                  <TableCell disablePadding>
+                  <TableCell disablePadding>{''}</TableCell>
+                  <TableCell>
                     {intl.formatDate(n.sale.dateCreated, {
                       day: 'numeric',
                       month: 'short',
                       year: 'numeric',
                     })}
                   </TableCell>
-                  <TableCell>{n.sale.refNo + SALE_REF_NO_BASE}</TableCell>
+                  <TableCell>
+                    <Link to={PATH_SALE_PREFIX + '/' + n.sale.id}>
+                      <Typography color="inherit">
+                        {n.sale.refNo + SALE_REF_NO_BASE}
+                      </Typography>
+                    </Link>
+                  </TableCell>
                   <TableCell numeric>
                     {intl.formatNumber(n.balanceDue, { format: 'MAD' })}
                   </TableCell>

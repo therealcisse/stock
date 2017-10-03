@@ -13,7 +13,6 @@
     "postinstall":
       "npm rebuild --runtime=electron --target=1.8.0 --disturl=https://atom.io/download/atom-shell --build-from-source"
   },
-  "license": "MIT",
   "dependencies": {
     "bcrypt": "^1.0.3",
     "better-sqlite3": "^4.0.2"

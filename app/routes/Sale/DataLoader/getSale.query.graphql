@@ -2,6 +2,7 @@ query Sale($id: ID!) {
   getSale(id: $id) {
     sale {
       id
+      status
       refNo
       dateCreated
       client {

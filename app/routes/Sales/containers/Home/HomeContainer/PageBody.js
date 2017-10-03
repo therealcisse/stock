@@ -1,5 +1,9 @@
+import Store from 'Store';
+
 import React from 'react';
 import T from 'prop-types';
+
+import BatchRender from 'components/BatchRender';
 
 import Typography from 'material-ui/Typography';
 
@@ -41,9 +45,16 @@ const styles = theme => ({
 
 const columnData = [
   {
+    id: 'prefix',
+    numeric: false,
+    disableSorting: true,
+    disablePadding: true,
+    label: '',
+  },
+  {
     id: 'sale.dateCreated',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'DATE',
   },
   {
@@ -103,13 +114,17 @@ class EnhancedTableHead extends React.Component {
                 numeric={column.numeric}
                 disablePadding={column.disablePadding}
               >
-                <TableSortLabel
-                  active={orderBy === column.id}
-                  direction={order}
-                  onClick={this.createSortHandler(column.id)}
-                >
-                  {column.label}
-                </TableSortLabel>
+                {column.disableSorting ? (
+                  column.label
+                ) : (
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={order}
+                    onClick={this.createSortHandler(column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
+                )}
               </TableCell>
             );
           }, this)}
@@ -131,7 +146,59 @@ class PageBody extends React.Component {
       order = 'asc';
     }
 
-    this.props.data.refetch({ query: { order, orderBy } });
+    if (
+      this.props.data.variables.query.orderBy !== orderBy ||
+      this.props.data.variables.query.order !== order
+    ) {
+      Store.set({
+        'sales.order': order,
+        'sales.orderBy': orderBy,
+      });
+
+      this.props.data.refetch({ query: { order, orderBy } });
+    }
+  };
+
+  renderItem = n => {
+    const { intl } = this.props;
+    return (
+      <TableRow hover tabIndex={-1} key={n.sale.id}>
+        <TableCell disablePadding>{''}</TableCell>
+        <TableCell>
+          {intl.formatDate(n.sale.dateCreated, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+          })}
+        </TableCell>
+        <TableCell>
+          <Link
+            to={PATH_SALE_PREFIX + '/' + n.sale.id}
+            className={style.displayNameLink}
+          >
+            <Typography color="inherit" type="body1" noWrap>
+              {n.sale.refNo + SALE_REF_NO_BASE}
+            </Typography>
+          </Link>
+        </TableCell>
+        <TableCell>
+          <Link
+            to={PATH_CLIENT_PREFIX + '/' + n.sale.client.id}
+            className={style.displayNameLink}
+          >
+            <Typography type="body1" noWrap>
+              {n.sale.client.displayName}
+            </Typography>
+          </Link>
+        </TableCell>
+        <TableCell numeric>
+          {intl.formatNumber(n.balanceDue, { format: 'MAD' })}
+        </TableCell>
+        <TableCell numeric>
+          {intl.formatNumber(n.total, { format: 'MAD' })}
+        </TableCell>
+      </TableRow>
+    );
   };
 
   render() {
@@ -159,45 +226,7 @@ class PageBody extends React.Component {
             onRequestSort={this.handleRequestSort}
           />
           <TableBody>
-            {n.sales.map(n => {
-              return (
-                <TableRow hover tabIndex={-1} key={n.sale.id}>
-                  <TableCell disablePadding>
-                    {intl.formatDate(n.sale.dateCreated, {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      to={PATH_SALE_PREFIX + '/' + n.sale.id}
-                      className={style.displayNameLink}
-                    >
-                      <Typography type="body1" noWrap>
-                        {n.sale.refNo + SALE_REF_NO_BASE}
-                      </Typography>
-                    </Link>
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      to={PATH_CLIENT_PREFIX + '/' + n.sale.client.id}
-                      className={style.displayNameLink}
-                    >
-                      <Typography type="body1" noWrap>
-                        {n.sale.client.displayName}
-                      </Typography>
-                    </Link>
-                  </TableCell>
-                  <TableCell numeric>
-                    {intl.formatNumber(n.balanceDue, { format: 'MAD' })}
-                  </TableCell>
-                  <TableCell numeric>
-                    {intl.formatNumber(n.total, { format: 'MAD' })}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            <BatchRender items={n.sales} renderItem={this.renderItem} />
           </TableBody>
         </Table>
       </div>

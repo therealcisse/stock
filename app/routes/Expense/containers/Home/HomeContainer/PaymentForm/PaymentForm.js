@@ -134,7 +134,10 @@ class PaymentForm extends React.Component {
       amount: parseMoney(data.get('amount')),
     };
 
-    const { data: { payExpense: { error, sale } } } = await payExpense(id, payload);
+    const { data: { payExpense: { error, sale } } } = await payExpense(
+      id,
+      payload,
+    );
 
     if (error) {
       this.setState({ loading: false });

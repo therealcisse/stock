@@ -42,9 +42,7 @@ class VoidForm extends React.Component {
 
     const { handleRequestClose, id, voidSale } = this.props;
 
-    const {
-      data: { voidSale: { error } },
-    } = await voidSale(id);
+    const { data: { voidSale: { error } } } = await voidSale(id);
 
     if (error) {
       //

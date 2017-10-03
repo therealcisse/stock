@@ -28,7 +28,13 @@ export default class Report extends React.Component {
             >
               Montant
             </div>
-            <div className={cx(style.amount, expense.status === TransactionStatus.CANCELLED && style.cancelled)}>
+            <div
+              className={cx(
+                style.amount,
+                expense.status === TransactionStatus.CANCELLED &&
+                  style.cancelled,
+              )}
+            >
               {intl.formatNumber(total, { format: 'MAD' })} MAD
             </div>
           </div>
@@ -48,7 +54,12 @@ export default class Report extends React.Component {
           >
             Solde à payé
           </div>
-          <div className={cx(style.amount, expense.status === TransactionStatus.CANCELLED && style.cancelled)}>
+          <div
+            className={cx(
+              style.amount,
+              expense.status === TransactionStatus.CANCELLED && style.cancelled,
+            )}
+          >
             {intl.formatNumber(balanceDue, { format: 'MAD' })} MAD
           </div>
         </div>

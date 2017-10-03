@@ -54,4 +54,3 @@ export default class EnhancedTableHead extends React.Component {
     );
   }
 }
-

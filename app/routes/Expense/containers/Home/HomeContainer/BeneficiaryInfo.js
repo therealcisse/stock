@@ -40,4 +40,3 @@ export default function BeneficiaryInfo({ n }) {
     </div>
   );
 }
-

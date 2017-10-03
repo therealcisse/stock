@@ -42,7 +42,7 @@ const styles = theme => ({
 });
 
 const columnData = [
-      {
+  {
     id: 'prefix',
     numeric: false,
     disableSorting: true,

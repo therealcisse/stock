@@ -90,37 +90,39 @@ class PageHeader extends React.Component {
                   #{n.expense.refNo}
                 </Typography>,
 
-                n.expense.status === TransactionStatus.CANCELLED ? null : <div className={style.actions}>
-                  <IconButton
-                    aria-label="Actions"
-                    aria-owns={this.state.open ? 'long-menu' : null}
-                    aria-haspopup="true"
-                    onClick={this.handleClick}
-                  >
-                    <MoreHorizIcon />
-                  </IconButton>
-                  <Menu
-                    id="long-menu"
-                    anchorEl={this.state.anchorEl}
-                    open={this.state.open}
-                    onRequestClose={this.handleRequestClose}
-                    PaperProps={{
-                      style: {
-                        maxHeight: ITEM_HEIGHT * 4.5,
-                        width: 200,
-                      },
-                    }}
-                  >
-                    {options.map(option => (
-                      <MenuItem
-                        key={option.id}
-                        onClick={this.handleClickOpen.bind(this, option.id)}
-                      >
-                        {option.displayName}
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </div>,
+                n.expense.status === TransactionStatus.CANCELLED ? null : (
+                  <div className={style.actions}>
+                    <IconButton
+                      aria-label="Actions"
+                      aria-owns={this.state.open ? 'long-menu' : null}
+                      aria-haspopup="true"
+                      onClick={this.handleClick}
+                    >
+                      <MoreHorizIcon />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      anchorEl={this.state.anchorEl}
+                      open={this.state.open}
+                      onRequestClose={this.handleRequestClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: 200,
+                        },
+                      }}
+                    >
+                      {options.map(option => (
+                        <MenuItem
+                          key={option.id}
+                          onClick={this.handleClickOpen.bind(this, option.id)}
+                        >
+                          {option.displayName}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </div>
+                ),
               ]
             : null}
         </div>

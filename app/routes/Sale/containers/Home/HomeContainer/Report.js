@@ -10,7 +10,10 @@ import cx from 'classnames';
 
 export default class Report extends React.Component {
   render() {
-    const { intl, sale: { isFullyPaid, paid, total, balanceDue, sale } } = this.props;
+    const {
+      intl,
+      sale: { isFullyPaid, paid, total, balanceDue, sale },
+    } = this.props;
 
     if (isFullyPaid) {
       return (
@@ -25,7 +28,12 @@ export default class Report extends React.Component {
             >
               Montant
             </div>
-            <div className={cx(style.amount, sale.status === TransactionStatus.CANCELLED && style.cancelled)}>
+            <div
+              className={cx(
+                style.amount,
+                sale.status === TransactionStatus.CANCELLED && style.cancelled,
+              )}
+            >
               {intl.formatNumber(total, { format: 'MAD' })} MAD
             </div>
           </div>
@@ -45,7 +53,12 @@ export default class Report extends React.Component {
           >
             Solde à payé
           </div>
-          <div className={cx(style.amount, sale.status === TransactionStatus.CANCELLED && style.cancelled)}>
+          <div
+            className={cx(
+              style.amount,
+              sale.status === TransactionStatus.CANCELLED && style.cancelled,
+            )}
+          >
             {intl.formatNumber(balanceDue, { format: 'MAD' })} MAD
           </div>
         </div>

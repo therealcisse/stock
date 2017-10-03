@@ -28,7 +28,7 @@ const styles = theme => ({
 function DT(props) {
   const { classes, label, input, meta: { touched, error } } = props;
 
-  const hasError = touched && error && (error.required);
+  const hasError = touched && error && error.required;
 
   return (
     <FormControl

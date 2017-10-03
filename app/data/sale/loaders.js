@@ -190,15 +190,10 @@ export default function({ db }) {
             s.id AS saleId,
             SUM(i.qty * i.unitPrice) AS total
           FROM items i LEFT JOIN sales s on (s.id = i.foreignId)
-          WHERE type = ? AND s.id IN (${ids
-            .map(() => '?')
-            .join(', ')})
+          WHERE type = ? AND s.id IN (${ids.map(() => '?').join(', ')})
           GROUP BY s.id;`,
         )
-        .all([
-          Sale.TYPE,
-          ...ids,
-        ]);
+        .all([Sale.TYPE, ...ids]);
 
       // Payments
       const payments = db

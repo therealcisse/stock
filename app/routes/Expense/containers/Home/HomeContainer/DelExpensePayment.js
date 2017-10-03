@@ -42,9 +42,9 @@ class DelExpensePayment extends React.Component {
 
     const { handleRequestClose, id, delExpensePayment } = this.props;
 
-    const {
-      data: { delExpensePayment: { error } },
-    } = await delExpensePayment(id);
+    const { data: { delExpensePayment: { error } } } = await delExpensePayment(
+      id,
+    );
 
     if (error) {
       //

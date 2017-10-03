@@ -161,7 +161,9 @@ export default merge.smart(baseConfig, {
   },
 
   entry: {
-    renderer: Object.keys(dependencies || {}),
+    renderer: Object.keys(dependencies || {}).filter(
+      dependency => dependency !== 'electron-store',
+    ),
   },
 
   output: {

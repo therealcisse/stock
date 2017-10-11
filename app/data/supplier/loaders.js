@@ -22,6 +22,31 @@ export default function({ db }) {
       });
     }, {}),
 
+    q: new DataLoader(
+      async function(qs) {
+        return qs.map((q, index) => {
+          return db
+            .prepare(
+              `SELECT *
+                 FROM people
+                 WHERE id IN (
+                   SELECT id FROM people_index WHERE type = @type AND people_index MATCH @match LIMIT 5
+                 );`,
+            )
+            .all({
+              type: Supplier.TYPE,
+              match: q
+                .trim()
+                .split(/\s+/g)
+                .map(s => s + '*')
+                .join(' OR '),
+            })
+            .map(Supplier.fromDatabase);
+        });
+      },
+      { cache: false },
+    ),
+
     balance: new DataLoader(async function(ids) {
       // Expense from beneficiarys (not cancelled)
       const expenses = db

@@ -1,15 +1,7 @@
 import * as basicValidations from 'validation/basic-validations';
 import { generateValidation, addValidation } from 'validation';
 
-import { MONETARY_UNIT } from 'vars';
-
-function parseMoney(value) {
-  const n = value ? parseFloat(value.replace(/,/g, '.').replace(/\s+/g, '')) : 0;
-
-  return n && !Number.isNaN(n)
-    ? Math.trunc(n * MONETARY_UNIT) / MONETARY_UNIT
-    : 0;
-}
+import parseMoney from 'parseMoney';
 
 addValidation('balanceDue', (fieldName, amount, value, { balanceDue }) => {
   const args = [fieldName, amount, true, {}];

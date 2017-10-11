@@ -1,0 +1,10 @@
+query SearchSuppliers($q: String) {
+  searchSuppliers(q: $q) {
+    id
+    displayName
+    tel
+    email
+    address
+    taxId
+  }
+}

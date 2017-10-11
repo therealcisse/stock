@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import { Expense, Item, Payment, TransactionStatus } from 'data/types';
+import { Expense, Item, Payment, Supplier, TransactionStatus } from 'data/types';
 
 import { Money } from 'data/utils';
 
@@ -23,6 +23,36 @@ export default function({ db }) {
           : new Error(`Expense ${id} not found`);
       });
     }, {}),
+
+    q: new DataLoader(
+      async function(qs) {
+        return qs.map((q, index) => {
+          return db
+            .prepare(
+              `SELECT *
+               FROM expenses
+               WHERE beneficiaryId IN (
+                 SELECT id FROM people_index WHERE type = @personType AND people_index MATCH @match
+                 ) OR id IN (
+                 SELECT foreignId FROM items WHERE type = @type AND productId IN (
+                   SELECT id FROM products_index WHERE products_index MATCH @match
+                 )
+               ) OR id IN (SELECT id FROM expenses_index WHERE expenses_index MATCH @match) ORDER BY lastModified LIMIT 5;`,
+            )
+            .all({
+              personType: Supplier.TYPE,
+              type: Expense.TYPE,
+              match: q
+                .trim()
+                .split(/\s+/g)
+                .map(s => s + '*')
+                .join(' OR '),
+            })
+            .map(Expense.fromDatabase);
+        });
+      },
+      { cache: false },
+    ),
 
     payment: new DataLoader(async function(ids) {
       const objects = db
@@ -58,11 +88,15 @@ export default function({ db }) {
     payments: new DataLoader(async function(ids) {
       const objects = db
         .prepare(
-          `SELECT * FROM payments WHERE type = ? AND foreignId IN (${ids
+          `SELECT * FROM payments WHERE type = ? AND state <> ? AND foreignId IN (${ids
             .map(() => '?')
             .join(', ')});`,
         )
-        .all([Expense.TYPE, ...ids])
+        .all([
+          Expense.TYPE,
+          TransactionStatus.toDatabase(TransactionStatus.CANCELLED),
+          ...ids,
+        ])
         .map(Payment.fromDatabase);
 
       return ids.map(id => objects.filter(object => object.foreignId === id));

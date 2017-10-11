@@ -5,7 +5,11 @@ import Button from 'material-ui/Button';
 
 import style from 'routes/Expenses/styles';
 
-// import ExpenseForm from './ExpenseForm';
+import ExpenseForm from './ExpenseForm';
+
+import moment from 'moment';
+
+import { DATE_FORMAT } from 'vars';
 
 const styles = theme => ({
   button: {},
@@ -43,13 +47,15 @@ class PageHeader extends React.Component {
           >
             Nouvelle dépense
           </Button>
-          {/* {this.state.dialogOpen ? ( */}
-          {/*   <ExpenseForm */}
-          {/*     onClose={this.handleRequestClose} */}
-          {/*     initialValues={{}} */}
-          {/*     title="Nouveau client" */}
-          {/*   /> */}
-          {/* ) : null} */}
+          {this.state.dialogOpen ? (
+            <ExpenseForm
+              onClose={this.handleRequestClose}
+              initialValues={{
+                dateCreated: moment().format(DATE_FORMAT),
+                items: [],
+              }}
+            />
+          ) : null}
         </div>
       </div>
     );

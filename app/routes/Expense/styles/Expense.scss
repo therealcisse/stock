@@ -221,6 +221,16 @@
   }
 }
 
+.clientInfoRow {
+  composes: d-flex flex-row from "styles/_base.scss";
+}
+
+.clientInfoDate {
+  composes: d-flex flex-row align-items-center from "styles/_base.scss";
+  margin-left: 15px;
+  margin-top: 7px;
+}
+
 .center {
   composes: center from "styles/_base.scss";
   height: 150px;

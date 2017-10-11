@@ -1,7 +1,11 @@
 import React from 'react';
 import T from 'prop-types';
 
-import * as DataLoader from 'routes/Clients/DataLoader';
+import moment from 'moment';
+
+import { Map } from 'immutable';
+
+import * as DataLoader from 'routes/Sales/DataLoader';
 
 import Button from 'material-ui/Button';
 
@@ -9,8 +13,15 @@ import ErrorOutline from 'material-ui-icons/ErrorOutline';
 
 import { withStyles } from 'material-ui/styles';
 
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl, FormHelperText } from 'material-ui/Form';
+import IconButton from 'material-ui/IconButton';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+
+import CloseIcon from 'material-ui-icons/Close';
+
+import NextRefNo from './NextRefNo';
+
+import Typography from 'material-ui/Typography';
 
 import Dialog, {
   DialogActions,
@@ -24,7 +35,7 @@ import { connect } from 'react-redux';
 
 import validations from './validations';
 
-import style from 'routes/Clients/styles';
+import style from 'routes/Sales/styles';
 
 import { injectIntl } from 'react-intl';
 
@@ -36,175 +47,183 @@ import {
   propTypes as formPropTypes,
 } from 'redux-form/immutable';
 
+import BalanceDue from './BalanceDue';
+import ClientFieldAutosuggest from './ClientFieldAutosuggest';
+import DT from './DT';
+import ItemForm from './ItemForm';
+
+import Items from './Items';
+import SaveButton from './SaveButton';
+
 const styles = theme => ({
   root: {
     width: '100%',
     maxWidth: 360,
     background: theme.palette.background.paper,
   },
-  dialog: {
-    width: '80%',
-    maxHeight: 735,
+  dialog: {},
+  dialogContent: {
+    padding: 0,
+  },
+  button: {
+    margin: theme.spacing.unit,
   },
   formControl: {
     margin: theme.spacing.unit,
     width: '80%',
   },
+  appBar: {
+    position: 'relative',
+  },
+  flex: {
+    flex: 1,
+  },
 });
 
-function renderField({
-  classes,
-  onKeyDown,
-  label,
-  autoFocus,
-  input,
-  meta: { touched, error },
-  multiline = false,
-  rows,
-}) {
-  const hasError = touched && error && (error.required || error.email);
+class SaleForm extends React.Component {
+  state = {
+    open: true,
+    dialogOpen: false,
+  };
 
-  return (
-    <FormControl className={classes.formControl} error={hasError}>
-      <InputLabel htmlFor={input.name}>{label}</InputLabel>
-      <Input
-        id={input.name}
-        {...input}
-        onKeyDown={onKeyDown}
-        autoFocus={autoFocus}
-        multiline={multiline}
-        rows={rows}
-        rowsMax={7}
-      />
-      {hasError
-        ? [
-            error.required && (
-              <FormHelperText>{'Ce champ ne peut être vide.'}</FormHelperText>
-            ),
-            error.email && (
-              <FormHelperText>{'Entrer un e-mail valid.'}</FormHelperText>
-            ),
-          ]
-        : null}
-    </FormControl>
-  );
-}
+  onAddItemDialog = (e, item = undefined) =>
+    this.setState({ dialogOpen: true, item });
 
-class ClientForm extends React.Component {
+  onCloseAddItemDialog = () =>
+    this.setState({ dialogOpen: false, item: undefined });
+
+  addOrEditItem = (id, item) => {
+    const { array } = this.props;
+    if (typeof id === 'number') {
+      array.remove('items', id);
+      array.insert('items', id, item);
+    } else {
+      array.push('items', item);
+    }
+  };
+
+  removeItem = id => {
+    const { array } = this.props;
+    array.remove('items', id);
+  };
+
   onSave = async data => {
-    const { data: { error } } = await this.props.addClient(this.props.id, {
-      displayName: data.get('displayName'),
-      tel: data.get('tel'),
-      email: data.get('email'),
-      address: data.get('address'),
-      taxId: data.get('taxId'),
-    });
+    const { onClose, addSale } = this.props;
 
-    if (error) {
+    if (data.getIn(['items']).isEmpty()) {
       throw new SubmissionError({
-        _error: "Erreur d'enregistrement. Essayer à nouveau.",
+        _error: `Il faut au moins une ligne`,
       });
     }
 
-    this.props.onClose();
+    const payload = {
+      client: data.getIn(['client']).client.id,
+      dateCreated: +moment(data.getIn(['dateCreated'])),
+      items: data
+        .getIn(['items'])
+        .map(item => ({
+          productId: Map.isMap(item.product)
+            ? item.product.getIn(['product', 'id'])
+            : item.product.product.id,
+          qty: item.qty,
+          unitPrice: item.unitPrice,
+        }))
+        .toJS(),
+      isFullyPaid: false,
+    };
+
+    const { data: { error } } = await addSale(payload);
+
+    if (error) {
+      throw new SubmissionError({
+        _error: `Erreur d'enregistrement. Veuillez éssayer à nouveau.`,
+      });
+    }
+
+    this.onClose();
 
     this.context.snackbar.show({
       message: 'Succès',
-      action: {
-        title: 'undo',
-        click() {},
-      },
+      duration: 2500,
     });
   };
 
   onKeyDown = e => {};
 
+  onClose = () => this.setState({ open: false });
+
+  onDTRef = dateField => {
+    this.dateField = dateField;
+  };
+
+  onClientSelected = () => {
+    if (this.dateField) {
+      try {
+        setTimeout(() => {
+          this.dateField.focus();
+        }, 0);
+      } catch (e) {}
+    }
+  };
+
   render() {
     const {
       intl,
       classes,
-      title,
       pristine,
       submitting,
-      invalid,
+      valid,
       error,
       handleSubmit,
       onClose,
     } = this.props;
 
     const fields = [
-      <div key="space-0" style={{ marginTop: 15 }} />,
-      <div key="space1" style={{ marginTop: 15 }} />,
-
-      <div key="displayName">
+      <div className={style.formTopInfo}>
         <Field
-          name="displayName"
+          name="client"
+          component={ClientFieldAutosuggest}
+          props={{ onDone: this.onClientSelected }}
+        />
+        <BalanceDue intl={intl} />
+      </div>,
+
+      <div key="space-1" style={{ marginTop: 45 }} />,
+
+      <div key="dateCreated" className={style.fieldDate}>
+        <Field
+          name="dateCreated"
+          component={DT}
           props={{
+            onRef: this.onDTRef,
             classes,
-            autoFocus: true,
-            onKeyDown: this.onKeyDown,
-            label: 'Nom du client',
+            label: 'Date facture',
           }}
-          component={renderField}
         />
       </div>,
 
-      <div key="space-3" style={{ marginTop: 15 }} />,
+      <div key="space-2" style={{ marginTop: 60 }} />,
 
-      <div key="tel">
-        <Field
-          name="tel"
-          props={{
-            classes,
-            onKeyDown: this.onKeyDown,
-            label: 'Téléphone',
-          }}
-          component={renderField}
+      <div key="items" className={style.fieldItems}>
+        <Items
+          intl={intl}
+          editItem={this.onAddItemDialog}
+          removeItem={this.removeItem}
         />
+        <Field name="items" component={'input'} type="hidden" props={{}} />
       </div>,
 
-      <div key="space-4" style={{ marginTop: 15 }} />,
+      <div key="space-2" style={{ marginTop: 60 }} />,
 
-      <div key="email">
-        <Field
-          name="email"
-          props={{
-            classes,
-            onKeyDown: this.onKeyDown,
-            label: 'E-mail',
-          }}
-          component={renderField}
-        />
-      </div>,
-
-      <div key="space-5" style={{ marginTop: 15 }} />,
-
-      <div key="address">
-        <Field
-          name="address"
-          props={{
-            multiline: true,
-            rows: 5,
-            classes,
-            onKeyDown: this.onKeyDown,
-            label: 'Adresse',
-          }}
-          component={renderField}
-        />
-      </div>,
-
-      <div key="space-6" style={{ marginTop: 15 }} />,
-
-      <div key="taxId">
-        <Field
-          name="taxId"
-          props={{
-            classes,
-            onKeyDown: this.onKeyDown,
-            label: `Numéro d'indentification fiscale`,
-          }}
-          component={renderField}
-        />
+      <div key="ops" className={style.fieldOps}>
+        <Button
+          raised
+          onClick={this.onAddItemDialog}
+          color="primary"
+          className={classes.button}
+        >
+          Ajouter
+        </Button>
       </div>,
 
       <div key="space-x" style={{ marginTop: 15 }} />,
@@ -218,15 +237,38 @@ class ClientForm extends React.Component {
         }}
         ignoreBackdropClick
         ignoreEscapeKeyUp
-        open
+        open={this.state.open}
         transition={Slide}
-        onRequestClose={onClose}
+        onRequestClose={this.onClose}
+        onExited={onClose}
+        fullScreen
       >
-        <DialogTitle>{title}</DialogTitle>
-        <DialogContent>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="contrast"
+              onClick={this.onClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography type="title" color="inherit" className={classes.flex}>
+              Facture de vente <NextRefNo />
+            </Typography>
+            <SaveButton
+              disabled={submitting}
+              intl={intl}
+              onSave={handleSubmit(this.onSave)}
+            />
+          </Toolbar>
+        </AppBar>
+        <DialogContent
+          classes={{
+            root: classes.dialogContent,
+          }}
+        >
           {error
             ? [
-                <div key="space" style={{ marginTop: 15 }} />,
                 <div key="error" className={style.errorLine}>
                   <ErrorOutline width={32} height={32} />
                   <div style={{ marginLeft: 9 }}>{error}</div>
@@ -234,39 +276,43 @@ class ClientForm extends React.Component {
               ]
             : null}
           {fields}
+          {(() => {
+            const { dialogOpen, item = { index: null, value: {} } } = this.state;
+
+            if (!dialogOpen) {
+              return null;
+            }
+
+            return (
+              <ItemForm
+                initialValues={{ qty: 1, ...item.value }}
+                id={item.index}
+                addOrEditItem={this.addOrEditItem}
+                handleRequestClose={this.onCloseAddItemDialog}
+              />
+            );
+          })()}
         </DialogContent>
-        <DialogActions>
-          <Button disabled={submitting} onClick={onClose} color="primary">
-            Annuler
-          </Button>
-          <Button
-            disabled={pristine || submitting || invalid}
-            onClick={handleSubmit(this.onSave)}
-            color="primary"
-          >
-            Enregistrer
-          </Button>
-        </DialogActions>
       </Dialog>
     );
   }
 }
 
-ClientForm.propTypes = {
+SaleForm.propTypes = {
   ...formPropTypes,
 };
 
-ClientForm.defaultProps = {
+SaleForm.defaultProps = {
   id: null,
 };
 
-ClientForm.contextTypes = {
+SaleForm.contextTypes = {
   store: T.object.isRequired,
   snackbar: T.object.isRequired,
 };
 
 const WithForm = reduxForm({
-  form: 'client',
+  form: 'sale',
   keepDirtyOnReinitialize: false,
   enableReinitialize: true,
   destroyOnUnmount: true,
@@ -278,6 +324,6 @@ const WithForm = reduxForm({
 export default compose(
   withStyles(styles),
   injectIntl,
-  DataLoader.addClient,
+  DataLoader.addSale,
   WithForm,
-)(ClientForm);
+)(SaleForm);

@@ -26,7 +26,7 @@ const addExpense = graphql(AddExpenseMutation, {
           refetchQueries: [],
           variables: { payload },
           updateQueries: {
-            expenses(prev, { mutationResult }) {
+            Expenses(prev, { mutationResult }) {
               if (mutationResult.data.addExpense.error) {
                 return prev;
               }
@@ -34,7 +34,14 @@ const addExpense = graphql(AddExpenseMutation, {
               const newInfo = mutationResult.data.addExpense.info;
 
               return {
-                expenses: [newInfo, ...prev.expenses],
+                ...prev,
+                expenses: {
+                  ...prev.expenses,
+                  length: prev.expenses.length,
+                  cursor: prev.expenses.expenses.length,
+                  prevCursor: prev.expenses.expenses.length,
+                  expenses: [newInfo, ...prev.expenses.expenses],
+                },
               };
             },
           },

@@ -46,4 +46,12 @@ export class Sales {
   delPay(id, context) {
     return this.connector.delPay(id, context);
   }
+
+  getNextRefNo() {
+    return this.connector.getNextRefNo();
+  }
+
+  query(q: ?string) {
+    return this.connector.query(q);
+  }
 }

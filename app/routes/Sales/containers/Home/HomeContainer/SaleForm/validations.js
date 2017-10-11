@@ -1,13 +1,12 @@
 import { generateValidation } from 'validation';
 
 const validations = {
-  displayName: {
+  client: {
     required: true,
     validateOnBlur: true,
   },
-
-  email: {
-    email: true,
+  dateCreated: {
+    required: true,
     validateOnBlur: true,
   },
 };

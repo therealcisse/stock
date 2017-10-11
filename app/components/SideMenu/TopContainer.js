@@ -1,5 +1,11 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
+
+import { compose, bindActionCreators } from 'redux';
+
+import { toggleSearch } from 'redux/reducers/app/actions';
+
 import { withStyles } from 'material-ui/styles';
 import Tooltip from 'material-ui/Tooltip';
 
@@ -12,54 +18,132 @@ import style from './SideMenu.scss';
 
 import cx from 'classnames';
 
+import moment from 'moment';
+
+import { DATE_FORMAT } from 'vars';
+
+import SaleForm from 'routes/Sales/containers/Home/HomeContainer/SaleForm';
+import ExpenseForm from 'routes/Expenses/containers/Home/HomeContainer/ExpenseForm';
+
+import ClientForm from 'routes/Clients/containers/Home/HomeContainer/ClientForm';
+import SupplierForm from 'routes/Suppliers/containers/Home/HomeContainer/SupplierForm';
+
+import ProductForm from 'routes/Products/containers/Home/HomeContainer/ProductForm';
+
 const styles = theme => ({});
 
-function TopContainer({ classes }) {
-  return (
-    <div className={style['kfFTAe']}>
-      <Tooltip title="Rechercher" placement="right">
-        <div className={style['fSDZOA']}>
-          <span className={style['fcnKTg']}>
-            <span
-              style={{
-                display: 'inline-block',
-                lineHeight: 1,
-                width: 24,
-                height: 24,
-                color: 'currentcolor',
-                fill: 'white',
-              }}
-            >
-              <SearchButtonIcon width={24} height={24} />
-            </span>
-          </span>
-        </div>
-      </Tooltip>
+class TopContainer extends React.Component {
+  state = {
+    dialogOpen: null,
+  };
 
-      <Dropdown>
-        <Dropdown.Toggle componentClass={AddButton} />
-        <Dropdown.Menu className={style.addMenu}>
-          <MenuItem eventKey="sales" key="sales">
-            Vente
-          </MenuItem>
-          <MenuItem eventKey="expenses" key="expenses">
-            Dépense
-          </MenuItem>
-          <MenuItem key="0" divider />
-          <MenuItem eventKey="products" key="products">
-            Produit
-          </MenuItem>
-          <MenuItem key="1" divider />
-          <MenuItem eventKey="clients" key="clients">
-            Client
-          </MenuItem>
-          <MenuItem eventKey="suppliers" key="suppliers">
-            Fournisseur
-          </MenuItem>
-        </Dropdown.Menu>
-      </Dropdown>
-    </div>
-  );
+  handleClick = dialogOpen => this.setState({ dialogOpen });
+
+  handleRequestClose = () => this.setState({ dialogOpen: null });
+
+  render() {
+    const { classes, actions } = this.props;
+    return (
+      <div className={style['kfFTAe']}>
+        {(() => {
+          switch (this.state.dialogOpen) {
+            case 'sales':
+              return (
+                <SaleForm
+                  onClose={this.handleRequestClose}
+                  initialValues={{
+                    dateCreated: moment().format(DATE_FORMAT),
+                    items: [],
+                  }}
+                />
+              );
+
+            case 'expenses':
+              return (
+                <ExpenseForm
+                  onClose={this.handleRequestClose}
+                  initialValues={{
+                    dateCreated: moment().format(DATE_FORMAT),
+                    items: [],
+                  }}
+                />
+              );
+
+            case 'clients':
+              return (
+                <ClientForm
+                  onClose={this.handleRequestClose}
+                  initialValues={{}}
+                  title="Nouveau client"
+                />
+              );
+
+            case 'suppliers':
+              return (
+                <SupplierForm
+                  onClose={this.handleRequestClose}
+                  initialValues={{}}
+                  title="Nouveau fournisseur"
+                />
+              );
+
+            case 'products':
+              return (
+                <ProductForm
+                  onClose={this.handleRequestClose}
+                  initialValues={{}}
+                  title="Nouveau produit"
+                />
+              );
+
+            default:
+              return null;
+          }
+        })()}
+        <Tooltip title="Rechercher" placement="right">
+          <div onClick={actions.toggleSearch} className={style['fSDZOA']}>
+            <span className={style['fcnKTg']}>
+              <span
+                style={{
+                  display: 'inline-block',
+                  lineHeight: 1,
+                  width: 24,
+                  height: 24,
+                  color: 'currentcolor',
+                  fill: 'white',
+                }}
+              >
+                <SearchButtonIcon width={24} height={24} />
+              </span>
+            </span>
+          </div>
+        </Tooltip>
+
+        <Dropdown onSelect={this.handleClick}>
+          <Dropdown.Toggle componentClass={AddButton} />
+          <Dropdown.Menu className={style.addMenu}>
+            <MenuItem eventKey="sales" key="sales">
+              Vente
+            </MenuItem>
+            <MenuItem eventKey="expenses" key="expenses">
+              Dépense
+            </MenuItem>
+            <MenuItem key="0" divider />
+            <MenuItem eventKey="products" key="products">
+              Produit
+            </MenuItem>
+            <MenuItem key="1" divider />
+            <MenuItem eventKey="clients" key="clients">
+              Client
+            </MenuItem>
+            <MenuItem eventKey="suppliers" key="suppliers">
+              Fournisseur
+            </MenuItem>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+    );
+  }
 }
 
 function AddButton({ onClick, tabIndex, role }) {
@@ -112,4 +196,17 @@ function AddButton({ onClick, tabIndex, role }) {
   );
 }
 
-export default withStyles(styles)(TopContainer);
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        toggleSearch,
+      },
+      dispatch,
+    ),
+  };
+}
+
+const Connect = connect(null, mapDispatchToProps);
+
+export default compose(withStyles(styles), Connect)(TopContainer);

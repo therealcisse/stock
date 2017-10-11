@@ -91,6 +91,10 @@ function renderField({
 }
 
 class ClientForm extends React.Component {
+  state = {
+    open: true,
+  };
+
   onSave = async data => {
     const { data: { error } } = await this.props.addClient(this.props.id, {
       displayName: data.get('displayName'),
@@ -106,7 +110,7 @@ class ClientForm extends React.Component {
       });
     }
 
-    this.props.onClose();
+    this.onClose();
 
     this.context.snackbar.show({
       message: 'Succès',
@@ -118,6 +122,8 @@ class ClientForm extends React.Component {
   };
 
   onKeyDown = e => {};
+
+  onClose = () => this.setState({ open: false });
 
   render() {
     const {
@@ -218,9 +224,10 @@ class ClientForm extends React.Component {
         }}
         ignoreBackdropClick
         ignoreEscapeKeyUp
-        open
+        open={this.state.open}
         transition={Slide}
-        onRequestClose={onClose}
+        onRequestClose={this.onClose}
+        onExited={onClose}
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
@@ -236,7 +243,7 @@ class ClientForm extends React.Component {
           {fields}
         </DialogContent>
         <DialogActions>
-          <Button disabled={submitting} onClick={onClose} color="primary">
+          <Button disabled={submitting} onClick={this.onClose} color="primary">
             Annuler
           </Button>
           <Button

@@ -9,6 +9,8 @@ import * as DataLoader from 'routes/Sale/DataLoader';
 
 import moment from 'moment';
 
+import parseMoney from 'parseMoney';
+
 import style from 'routes/Sale/styles';
 
 import compose from 'redux/lib/compose';
@@ -30,8 +32,6 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import Slide from 'material-ui/transitions/Slide';
-
-import { MONETARY_UNIT } from 'vars';
 
 import { injectIntl } from 'react-intl';
 
@@ -62,16 +62,6 @@ const styles = theme => ({
 
 function parseDate(s) {
   return s ? +moment.utc(s) : null;
-}
-
-function parseMoney(value) {
-  const n = value
-    ? parseFloat(value.replace(/,/g, '.').replace(/\s+/g, ''))
-    : null;
-
-  return n && !Number.isNaN(n)
-    ? Math.trunc(n * MONETARY_UNIT) / MONETARY_UNIT
-    : null;
 }
 
 function renderField({
@@ -127,7 +117,7 @@ class PaymentForm extends React.Component {
   onPay = async data => {
     this.setState({ loading: true });
 
-    const { handleRequestClose, id, paySale } = this.props;
+    const { id, paySale } = this.props;
 
     const payload = {
       dateCreated: parseDate(data.get('dateCreated')),
@@ -142,7 +132,7 @@ class PaymentForm extends React.Component {
         _error: 'Erreur inconnu. Veuillez essayer à nouveau.',
       });
     } else {
-      handleRequestClose();
+      this.onClose();
     }
 
     this.context.snackbar.show({
@@ -153,7 +143,10 @@ class PaymentForm extends React.Component {
 
   state = {
     loading: false,
+    open: true,
   };
+
+  onClose = () => this.setState({ open: false });
 
   onKeyDown = e => {};
 
@@ -176,7 +169,6 @@ class PaymentForm extends React.Component {
       intl,
       classes,
       title,
-      pristine,
       submitting,
       invalid,
       error,
@@ -222,13 +214,15 @@ class PaymentForm extends React.Component {
 
     return (
       <Dialog
-        open
         classes={{
           paper: classes.dialog,
         }}
         ignoreBackdropClick
         ignoreEscapeKeyUp
+        open={this.state.open}
         transition={Slide}
+        onRequestClose={this.onClose}
+        onExited={handleRequestClose}
       >
         <DialogTitle>{'Règlement de vente'}</DialogTitle>
         {this.state.loading ? (
@@ -252,13 +246,13 @@ class PaymentForm extends React.Component {
             <DialogActions key="actions">
               <Button
                 disabled={submitting}
-                onClick={handleRequestClose}
+                onClick={this.onClose}
                 color="primary"
               >
                 Annuler
               </Button>
               <Button
-                disabled={pristine || submitting || invalid}
+                disabled={submitting || invalid}
                 onClick={handleSubmit(this.onPay)}
                 color="primary"
               >

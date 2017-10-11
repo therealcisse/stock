@@ -40,7 +40,7 @@ class DelSalePayment extends React.Component {
   onDelSalePayment = async () => {
     this.setState({ loading: true });
 
-    const { handleRequestClose, id, delSalePayment } = this.props;
+    const { id, delSalePayment } = this.props;
 
     const { data: { delSalePayment: { error } } } = await delSalePayment(id);
 
@@ -53,24 +53,29 @@ class DelSalePayment extends React.Component {
       duration: 2500,
     });
 
-    handleRequestClose();
+    this.onClose();
   };
+
+  onClose = () => this.setState({ open: false });
 
   state = {
     loading: false,
+    open: true,
   };
 
   render() {
     const { classes, handleRequestClose } = this.props;
     return (
       <Dialog
-        open
         classes={{
           paper: classes.dialog,
         }}
         ignoreBackdropClick
         ignoreEscapeKeyUp
+        open={this.state.open}
         transition={Slide}
+        onRequestClose={this.onClose}
+        onExited={handleRequestClose}
       >
         <DialogTitle>{'Annuler ce paiement?'}</DialogTitle>
         {this.state.loading ? (
@@ -86,7 +91,7 @@ class DelSalePayment extends React.Component {
               </DialogContentText>
             </DialogContent>,
             <DialogActions key="actions">
-              <Button onClick={handleRequestClose} color="primary">
+              <Button onClick={this.onClose} color="primary">
                 Retour
               </Button>
               <Button onClick={this.onDelSalePayment} color="primary">

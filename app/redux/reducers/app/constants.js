@@ -2,6 +2,7 @@ import keyOf from 'fbjs/lib/keyOf';
 
 export const DB_STATUS = keyOf({ DB_STATUS: null });
 export const APP_STATE_CHANGE = keyOf({ APP_STATE_CHANGE: null });
+export const TOGGLE_SEARCH = keyOf({ TOGGLE_SEARCH: null });
 
 export class DBStatus {
   static PENDING = keyOf({ 'DB_STATUS/pending': null });

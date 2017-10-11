@@ -40,7 +40,7 @@ class VoidForm extends React.Component {
   onVoid = async () => {
     this.setState({ loading: true });
 
-    const { handleRequestClose, id, voidExpense } = this.props;
+    const { id, voidExpense } = this.props;
 
     const { data: { voidExpense: { error } } } = await voidExpense(id);
 
@@ -53,23 +53,29 @@ class VoidForm extends React.Component {
       duration: 2500,
     });
 
-    handleRequestClose();
+    this.onClose();
   };
+
+  onClose = () => this.setState({ open: false });
+
   state = {
     loading: false,
+    open: true,
   };
 
   render() {
     const { classes, handleRequestClose } = this.props;
     return (
       <Dialog
-        open
         classes={{
           paper: classes.dialog,
         }}
         ignoreBackdropClick
         ignoreEscapeKeyUp
+        open={this.state.open}
         transition={Slide}
+        onRequestClose={this.onClose}
+        onExited={handleRequestClose}
       >
         <DialogTitle>{'Annuler cette opération?'}</DialogTitle>
         {this.state.loading ? (
@@ -85,7 +91,7 @@ class VoidForm extends React.Component {
               </DialogContentText>
             </DialogContent>,
             <DialogActions key="actions">
-              <Button onClick={handleRequestClose} color="primary">
+              <Button onClick={this.onClose} color="primary">
                 Retour
               </Button>
               <Button onClick={this.onVoid} color="primary">

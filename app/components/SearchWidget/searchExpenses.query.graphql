@@ -1,0 +1,32 @@
+query SearchExpenses($q: String) {
+  searchExpenses(q: $q) {
+    id
+    refNo
+    status
+    beneficiary {
+      __typename
+      id
+      displayName
+    }
+    dateCreated
+    items {
+      id
+      product {
+        id
+        displayName
+      }
+      qty
+      unitPrice
+    }
+    payments {
+      id
+      status
+      dateCreated
+      amount
+      dateCreated
+      date
+    }
+    date
+    lastModified
+  }
+}

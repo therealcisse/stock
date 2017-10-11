@@ -1,0 +1,29 @@
+query SearchSales($q: String) {
+  searchSales(q: $q) {
+    id
+    refNo
+    status
+    client {
+      id
+      displayName
+    }
+    dateCreated
+    items {
+      id
+      product {
+        id
+        displayName
+      }
+      qty
+      unitPrice
+    }
+    payments {
+      id
+      amount
+      status
+      dateCreated
+    }
+    date
+    lastModified
+  }
+}

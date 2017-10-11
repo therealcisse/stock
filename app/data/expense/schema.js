@@ -4,6 +4,8 @@ import objectAssign from 'object-assign';
 
 import invariant from 'invariant';
 
+import isEmpty from 'isEmpty';
+
 import { TransactionStatus, Expense, Client, Supplier } from 'data/types';
 
 export const schema = [
@@ -82,6 +84,7 @@ export const schema = [
     expenses(cursor: Int, query: GetExpensesQuery!): ExpensesQueryResponse!
     getExpense(id: ID!): ExpenseInfo!
 
+    searchExpenses(q: String): [Expense!]!
   }
 `,
 ];
@@ -224,6 +227,13 @@ export const resolvers = {
     },
     getExpense: (_, { id }, context) => {
       return context.Expenses.getExpense(id);
+    },
+    searchExpenses: (_, { q }, context) => {
+      if (isEmpty(q)) {
+        return [];
+      }
+
+      return context.Expenses.query(q);
     },
   },
 };

@@ -4,6 +4,8 @@ import objectAssign from 'object-assign';
 
 import invariant from 'invariant';
 
+import isEmpty from 'isEmpty';
+
 import { TransactionStatus, Sale } from 'data/types';
 
 export const schema = [
@@ -93,7 +95,9 @@ export const schema = [
     sales(cursor: Int, query: GetSalesQuery!): SalesQueryResponse!
     getSalesReport: SalesReport!
     getSale(id: ID!): SaleInfo!
+    getNextRefNo: Int!
 
+    searchSales(q: String): [Sale!]!
   }
 
 `,
@@ -220,6 +224,16 @@ export const resolvers = {
     },
     getSale: (_, { id }, context) => {
       return context.Sales.getSale(id);
+    },
+    getNextRefNo: (_, {}, context) => {
+      return context.Sales.getNextRefNo();
+    },
+    searchSales: (_, { q }, context) => {
+      if (isEmpty(q)) {
+        return [];
+      }
+
+      return context.Sales.query(q);
     },
   },
 };

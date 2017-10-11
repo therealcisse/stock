@@ -1,0 +1,10 @@
+query SearchClients($q: String) {
+  searchClients(q: $q) {
+    id
+    displayName
+    tel
+    email
+    address
+    taxId
+  }
+}

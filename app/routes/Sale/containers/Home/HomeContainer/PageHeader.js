@@ -1,9 +1,17 @@
 import React from 'react';
 import Link from 'react-router-dom/Link';
 
+import { print } from 'redux/reducers/app/actions';
+
 import compose from 'redux/lib/compose';
 
-import { PATH_SALES, SALE_REF_NO_BASE, DATE_FORMAT } from 'vars';
+import { connect } from 'react-redux';
+
+import { bindActionCreators } from 'redux';
+
+import { PATH_SALES, SALES_REF_NO_BASE, DATE_FORMAT } from 'vars';
+
+import parseMoney from 'parseMoney';
 
 import { TransactionStatus } from 'data/types';
 
@@ -41,7 +49,14 @@ class PageHeader extends React.Component {
   };
 
   handleClickOpen = option => {
-    this.setState({ dialogOpen: true, option, open: false, anchorEl: null });
+    if (option === 'print') {
+      this.setState({ dialogOpen: false, open: false, option: null });
+      this.props.actions.print(`
+      <p>Hello, world 3322!</p>
+      `);
+    } else {
+      this.setState({ dialogOpen: true, option, open: false, anchorEl: null });
+    }
   };
 
   handleDialogClose = () => {
@@ -67,6 +82,8 @@ class PageHeader extends React.Component {
         options.push({ id: 'pay', displayName: 'Reçevoir un paiement' });
       }
 
+      options.push({ id: 'print', displayName: 'Imprimer' });
+
       options.push({ id: 'void', displayName: 'Annuler' });
     }
     return (
@@ -84,7 +101,7 @@ class PageHeader extends React.Component {
                   type="title"
                   gutterBottom
                 >
-                  #{n.sale.refNo + SALE_REF_NO_BASE}
+                  #{n.sale.refNo + SALES_REF_NO_BASE}
                 </Typography>,
 
                 n.sale.status === TransactionStatus.CANCELLED ? null : (
@@ -141,6 +158,7 @@ class PageHeader extends React.Component {
                 initialValues={{
                   dateCreated: moment().format(DATE_FORMAT),
                   balanceDue: n.balanceDue,
+                  amount: intl.formatNumber(n.balanceDue, { format: 'MAD' }),
                 }}
                 handleRequestClose={this.handleDialogClose}
               />
@@ -161,4 +179,21 @@ class PageHeader extends React.Component {
   }
 }
 
-export default compose(withStyles(styles))(PageHeader);
+function mapStateToProps() {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        print,
+      },
+      dispatch,
+    ),
+  };
+}
+
+const Connect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(withStyles(styles), Connect)(PageHeader);

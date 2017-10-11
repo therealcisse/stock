@@ -15,7 +15,7 @@ import { withStyles } from 'material-ui/styles';
 
 import Empty from './Empty';
 
-import { SALE_REF_NO_BASE, PATH_SALE_PREFIX } from 'vars';
+import { SALES_REF_NO_BASE, PATH_SALE_PREFIX } from 'vars';
 
 import Table, {
   TableBody,
@@ -189,7 +189,7 @@ class ClientSales extends React.Component {
                   <TableCell>
                     <Link to={PATH_SALE_PREFIX + '/' + n.sale.id}>
                       <Typography color="inherit">
-                        {n.sale.refNo + SALE_REF_NO_BASE}
+                        {n.sale.refNo + SALES_REF_NO_BASE}
                       </Typography>
                     </Link>
                   </TableCell>

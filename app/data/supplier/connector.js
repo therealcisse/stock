@@ -135,4 +135,8 @@ export class SupplierConnector {
       return { id: newId, events: [newSupplier] };
     }
   }
+
+  query(q: ?string) {
+    return this.loaders.q.load(q);
+  }
 }

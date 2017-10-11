@@ -19,7 +19,7 @@ export const ADMIN_KEY = '00000000-0000-0000-0000-000000000000';
 export const BUSINESS_KEY = '49d9988e-d550-4e64-a8fb-a9295c44cb02';
 export const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
 
-export const SALE_REF_NO_BASE = 1000;
+export const SALES_REF_NO_BASE = 1000;
 
 export const CURRENT_USER_COOKIE_NAME = 'currentUser';
 

@@ -6,6 +6,8 @@ import { configureStore, history } from 'redux/configureStore';
 
 import { ApolloProvider } from 'react-apollo';
 
+import MouseTrap from 'mousetrap';
+
 import { Provider } from 'react-redux';
 
 import IntlProvider from 'IntlProvider';
@@ -16,7 +18,7 @@ import { createSelector } from 'utils/reselect';
 
 import { client as apolloClient } from 'apollo';
 
-import { dbStatus } from 'redux/reducers/app/actions';
+import { dbStatus, toggleSearch } from 'redux/reducers/app/actions';
 
 import { DBStatus } from 'redux/reducers/app/constants';
 
@@ -32,6 +34,20 @@ import 'typeface-roboto';
 
 const APP_MOUNT_NODE = document.querySelector('main');
 const SNACKBAR_MOUNT_NODE = document.querySelector('#snackbar');
+
+MouseTrap.bind(['command+left', 'ctrl+left'], () => {
+  if (history.length) {
+    history.goBack();
+  }
+});
+
+MouseTrap.bind(['command+right', 'ctrl+right'], () => {
+  history.goForward();
+});
+
+MouseTrap.bind(['command+f', 'ctrl+f'], () => {
+  store.dispatch(toggleSearch());
+});
 
 const store = configureStore();
 

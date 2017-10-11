@@ -25,4 +25,8 @@ export class Clients {
   getClientExpense(id, query, context) {
     return this.connector.getClientExpense(id, query, context);
   }
+
+  query(q: ?string) {
+    return this.connector.query(q);
+  }
 }

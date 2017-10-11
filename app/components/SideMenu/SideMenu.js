@@ -9,44 +9,7 @@ import TopContainer from './TopContainer';
 import BottomContainer from './BottomContainer';
 import NavigationContainer from './NavigationContainer';
 
-export default function SideMenu({
-  loading = false,
-  intl,
-  user,
-  onLogOut,
-  selectedItem,
-}) {
-  if (loading) {
-    return (
-      <div className={style.menu} data-is-closed>
-        <nav className={style['nav']}>
-          <div className={style['nav--left']}>
-            <div className={style['nav--left-top']}>
-              <ul className={style['nav--items']}>
-                <li />
-                <li />
-                <li />
-                <li className={style['icon']} />
-                <li className={style['icon-sub']} />
-                <li className={style['icon-sub']} />
-                <li className={style['icon-sub']} />
-                <li className={style['icon-sub']} />
-                <li className={style['icon-sub']} />
-                <li className={style['icon-sub']} />
-              </ul>
-            </div>
-            <div className={style['nav--left-bottom']}>
-              <div className={style['nav--left-bottom-wrapper']}>
-                <div className={style['nav--item-help']} />
-                <div className={style['nav--item-profile']} />
-              </div>
-            </div>
-          </div>
-        </nav>
-      </div>
-    );
-  }
-
+export default function SideMenu({ intl, user, onLogOut, selectedItem }) {
   return (
     <div
       className={style.menu2}

@@ -2,6 +2,8 @@ import graphqlResolvers from 'data/graphqlResolvers';
 
 import objectAssign from 'object-assign';
 
+import isEmpty from 'isEmpty';
+
 export const schema = [
   `
   input GetSuppliersQuery {
@@ -53,6 +55,7 @@ export const schema = [
     getSupplier(id: ID!): SupplierInfo!
     getSupplierExpenses(id: ID!, query: GetExpensesQuery!): ExpensesQueryResponse!
 
+    searchSuppliers(q: String): [Supplier!]!
   }
 
 `,
@@ -119,6 +122,13 @@ export const resolvers = {
     },
     getSupplierExpenses(_, { id, query }, context) {
       return context.Suppliers.getSupplierExpenses(id, query, context);
+    },
+    searchSuppliers(_, { q }, context) {
+      if (isEmpty(q)) {
+        return [];
+      }
+
+      return context.Suppliers.query(q);
     },
   },
 };

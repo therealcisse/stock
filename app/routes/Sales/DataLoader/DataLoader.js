@@ -4,6 +4,8 @@ import { graphql } from 'react-apollo';
 
 import SalesQuery from './getSales.query.graphql';
 
+import NextRefNoQuery from './getNextRefNo.query.graphql';
+
 import SalesReportQuery from './getSalesReport.query.graphql';
 
 import AddSaleMutation from './addSale.mutation.graphql';
@@ -22,6 +24,12 @@ const sales = graphql(SalesQuery, {
   }),
 });
 
+const nextRefNo = graphql(NextRefNoQuery, {
+  options: () => ({
+    cachePolicy: 'network-only',
+  }),
+});
+
 const addSale = graphql(AddSaleMutation, {
   props({ mutate }) {
     return {
@@ -30,7 +38,7 @@ const addSale = graphql(AddSaleMutation, {
           refetchQueries: [],
           variables: { payload },
           updateQueries: {
-            sales(prev, { mutationResult }) {
+            Sales(prev, { mutationResult }) {
               if (mutationResult.data.addSale.error) {
                 return prev;
               }
@@ -38,7 +46,14 @@ const addSale = graphql(AddSaleMutation, {
               const newInfo = mutationResult.data.addSale.info;
 
               return {
-                sales: [newInfo, ...prev.sales],
+                ...prev,
+                sales: {
+                  ...prev.sales,
+                  length: prev.sales.sales.length,
+                  cursor: prev.sales.sales.length,
+                  prevCursor: prev.sales.sales.length,
+                  sales: [newInfo, ...prev.sales.sales],
+                },
               };
             },
           },
@@ -47,4 +62,4 @@ const addSale = graphql(AddSaleMutation, {
   },
 });
 
-export default { salesReport, sales, addSale };
+export default { salesReport, nextRefNo, sales, addSale };

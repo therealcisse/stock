@@ -15,7 +15,7 @@ import compose from 'redux/lib/compose';
 
 import { withStyles } from 'material-ui/styles';
 
-import { PATH_CLIENT_PREFIX, PATH_SALE_PREFIX, SALE_REF_NO_BASE } from 'vars';
+import { PATH_CLIENT_PREFIX, PATH_SALE_PREFIX, SALES_REF_NO_BASE } from 'vars';
 
 import Table, {
   TableBody,
@@ -177,7 +177,7 @@ class PageBody extends React.Component {
             className={style.displayNameLink}
           >
             <Typography color="inherit" type="body1" noWrap>
-              {n.sale.refNo + SALE_REF_NO_BASE}
+              {n.sale.refNo + SALES_REF_NO_BASE}
             </Typography>
           </Link>
         </TableCell>

@@ -26,6 +26,10 @@ export class SaleConnector {
     this.delPay = asTransaction(this.delPay.bind(this));
   }
 
+  getNextRefNo() {
+    return this.loaders.nextRefNo.load('sales');
+  }
+
   getSalesReport() {
     return this.loaders.salesReport.load('sales');
   }
@@ -85,6 +89,7 @@ export class SaleConnector {
     { client, dateCreated, items, isFullyPaid },
     { Now, Events, Products, Clients },
   ) {
+    this.loaders.nextRefNo.clear('sales');
     this.loaders.length.clear('sales');
     this.loaders.salesReport.clear('sales');
 
@@ -274,5 +279,9 @@ export class SaleConnector {
     });
 
     return { id: foreignId, paymentId: id, events: [event] };
+  }
+
+  query(q: ?string) {
+    return this.loaders.q.load(q);
   }
 }

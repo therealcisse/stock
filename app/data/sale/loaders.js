@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import { Sale, Item, Payment, TransactionStatus } from 'data/types';
+import { Sale, Item, Payment, Client, TransactionStatus } from 'data/types';
 
 import { Money } from 'data/utils';
 
@@ -21,6 +21,43 @@ export default function({ db }) {
         return index !== -1 ? objects[index] : new Error(`Sale ${id} not found`);
       });
     }, {}),
+
+    q: new DataLoader(
+      async function(qs) {
+        return qs.map((q, index) => {
+          return db
+            .prepare(
+              `SELECT *
+               FROM sales
+               WHERE clientId IN (
+                 SELECT id FROM people_index WHERE type = @personType AND people_index MATCH @match
+                 ) OR id IN (
+                 SELECT foreignId FROM items WHERE type = @type AND productId IN (
+                   SELECT id FROM products_index WHERE products_index MATCH @match
+                 )
+               ) OR id IN (SELECT id FROM sales_index WHERE sales_index MATCH @match) ORDER BY lastModified LIMIT 5;`,
+            )
+            .all({
+              personType: Client.TYPE,
+              type: Sale.TYPE,
+              match: q
+                .trim()
+                .split(/\s+/g)
+                .map(s => s + '*')
+                .join(' OR '),
+            })
+            .map(Sale.fromDatabase);
+        });
+      },
+      { cache: false },
+    ),
+
+    nextRefNo: new DataLoader(async function(ids) {
+      const { maxRefNo } = db
+        .prepare(`SELECT MAX(refNo) AS maxRefNo FROM sales;`)
+        .get();
+      return ids.map(() => maxRefNo + 1);
+    }),
 
     salesReport: new DataLoader(
       async function(ids) {

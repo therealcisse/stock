@@ -9,6 +9,8 @@ import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 
+import parseMoney from 'parseMoney';
+
 import { TransactionStatus } from 'data/types';
 
 import Report from './Report';
@@ -144,6 +146,7 @@ class PageHeader extends React.Component {
                 initialValues={{
                   dateCreated: moment().format(DATE_FORMAT),
                   balanceDue: n.balanceDue,
+                  amount: intl.formatNumber(n.balanceDue, { format: 'MAD' }),
                 }}
                 handleRequestClose={this.handleDialogClose}
               />

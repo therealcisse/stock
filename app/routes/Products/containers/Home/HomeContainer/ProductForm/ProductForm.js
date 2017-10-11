@@ -3,7 +3,7 @@ import T from 'prop-types';
 
 import * as DataLoader from 'routes/Products/DataLoader';
 
-import { MONETARY_UNIT } from 'vars';
+import parseMoney from 'parseMoney';
 
 import Button from 'material-ui/Button';
 
@@ -53,16 +53,6 @@ const styles = theme => ({
   },
 });
 
-function parseMoney(value) {
-  const n = value
-    ? parseFloat(value.replace(/,/g, '.').replace(/\s+/g, ''))
-    : null;
-
-  return n && !Number.isNaN(n)
-    ? Math.trunc(n * MONETARY_UNIT) / MONETARY_UNIT
-    : null;
-}
-
 function renderField({
   classes,
   onBlur,
@@ -99,6 +89,10 @@ function renderField({
 }
 
 class ProductForm extends React.Component {
+  state = {
+    open: true,
+  };
+
   onSave = async data => {
     const { data: { error } } = await this.props.addProduct(this.props.id, {
       displayName: data.get('displayName'),
@@ -112,7 +106,7 @@ class ProductForm extends React.Component {
       });
     }
 
-    this.props.onClose();
+    this.onClose();
 
     this.context.snackbar.show({
       message: 'Succès',
@@ -120,6 +114,8 @@ class ProductForm extends React.Component {
   };
 
   onKeyDown = e => {};
+
+  onClose = () => this.setState({ open: false });
 
   onBlur = e => {
     const { intl, dispatch, blur } = this.props;
@@ -201,9 +197,10 @@ class ProductForm extends React.Component {
         }}
         ignoreBackdropClick
         ignoreEscapeKeyUp
-        open
+        open={this.state.open}
         transition={Slide}
-        onRequestClose={onClose}
+        onRequestClose={this.onClose}
+        onExited={onClose}
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
@@ -219,7 +216,7 @@ class ProductForm extends React.Component {
           {fields}
         </DialogContent>
         <DialogActions>
-          <Button disabled={submitting} onClick={onClose} color="primary">
+          <Button disabled={submitting} onClick={this.onClose} color="primary">
             Annuler
           </Button>
           <Button

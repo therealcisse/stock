@@ -40,7 +40,7 @@ class DelExpensePayment extends React.Component {
   onDelExpensePayment = async () => {
     this.setState({ loading: true });
 
-    const { handleRequestClose, id, delExpensePayment } = this.props;
+    const { id, delExpensePayment } = this.props;
 
     const { data: { delExpensePayment: { error } } } = await delExpensePayment(
       id,
@@ -50,28 +50,34 @@ class DelExpensePayment extends React.Component {
       //
     }
 
+    this.onClose();
+
     this.context.snackbar.show({
       message: error ? 'Erreur inconnu. Veuillez ré-essayer.' : 'Succès',
       duration: 2500,
     });
-
-    handleRequestClose();
   };
+
   state = {
     loading: false,
+    open: true,
   };
+
+  onClose = () => this.setState({ open: false });
 
   render() {
     const { classes, handleRequestClose } = this.props;
     return (
       <Dialog
-        open
         classes={{
           paper: classes.dialog,
         }}
         ignoreBackdropClick
         ignoreEscapeKeyUp
+        open={this.state.open}
         transition={Slide}
+        onRequestClose={this.onClose}
+        onExited={handleRequestClose}
       >
         <DialogTitle>{'Annuler ce paiement?'}</DialogTitle>
         {this.state.loading ? (
@@ -87,7 +93,7 @@ class DelExpensePayment extends React.Component {
               </DialogContentText>
             </DialogContent>,
             <DialogActions key="actions">
-              <Button onClick={handleRequestClose} color="primary">
+              <Button onClick={this.onClose} color="primary">
                 Retour
               </Button>
               <Button onClick={this.onDelExpensePayment} color="primary">

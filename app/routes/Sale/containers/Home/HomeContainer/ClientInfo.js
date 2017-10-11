@@ -2,7 +2,9 @@ import React from 'react';
 
 import Link from 'react-router-dom/Link';
 
-import { PATH_CLIENT_PREFIX } from 'vars';
+import moment from 'moment';
+
+import { PATH_CLIENT_PREFIX, DATE_FORMAT } from 'vars';
 
 import style from 'routes/Sale/styles';
 
@@ -21,10 +23,16 @@ export default function ClientInfo({ n }) {
         >
           Client
         </div>
-        <div className={style.amount}>
-          <Link to={PATH_CLIENT_PREFIX + '/' + n.sale.client.id}>
-            {n.sale.client.displayName}
-          </Link>
+
+        <div className={style.clientInfoRow}>
+          <div className={style.amount}>
+            <Link to={PATH_CLIENT_PREFIX + '/' + n.sale.client.id}>
+              {n.sale.client.displayName}
+            </Link>
+          </div>
+          <div className={style.clientInfoDate}>
+            <b>{moment(n.sale.dateCreated).format(DATE_FORMAT)}</b>
+          </div>
         </div>
       </div>
     </div>

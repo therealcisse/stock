@@ -268,4 +268,8 @@ export class ExpenseConnector {
 
     return { id: foreignId, paymentId: id, events: [event] };
   }
+
+  query(q: ?string) {
+    return this.loaders.q.load(q);
+  }
 }

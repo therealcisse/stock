@@ -29,6 +29,18 @@ export default class BatchRender extends React.PureComponent<{
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.items !== nextProps.items) {
+      const batches = chunk(nextProps.items, 15);
+
+      this.setState({
+        // currentIndex: 1,
+        batches,
+        length: batches.length,
+      });
+    }
+  }
+
   nextBatch = () =>
     this.setState(
       ({ length, currentIndex }) =>
@@ -75,7 +87,7 @@ class Batch extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
     // When should be visible
     if (this.props.index < nextProps.currentIndex) {
-      if (!this.state.el) {
+      if (!this.state.el || this.props.batch !== nextProps.batch) {
         this.setState({ el: this.getEl(nextProps) });
       }
     }

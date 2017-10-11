@@ -14,6 +14,8 @@ CheckNodeEnv('development');
 
 const dist = path.resolve(process.cwd(), 'dll');
 
+const ignoredList = ['autosuggest-highlight', 'typeface-roboto'];
+
 export default merge.smart(baseConfig, {
   context: process.cwd(),
 
@@ -161,7 +163,9 @@ export default merge.smart(baseConfig, {
   },
 
   entry: {
-    renderer: Object.keys(dependencies || {}),
+    renderer: Object.keys(dependencies || {}).filter(
+      dep => !ignoredList.includes(dep),
+    ),
   },
 
   output: {

@@ -42,4 +42,8 @@ export class Expenses {
   delPay(id, context) {
     return this.connector.delPay(id, context);
   }
+
+  query(q: ?string) {
+    return this.connector.query(q);
+  }
 }

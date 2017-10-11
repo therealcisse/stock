@@ -21,4 +21,8 @@ export class Suppliers {
   getSupplierExpenses(id, query, context) {
     return this.connector.getSupplierExpenses(id, query, context);
   }
+
+  query(q: ?string) {
+    return this.connector.query(q);
+  }
 }

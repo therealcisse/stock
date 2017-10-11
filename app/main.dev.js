@@ -13,6 +13,8 @@
 import { app, BrowserWindow } from 'electron';
 import MenuBuilder from './menu';
 
+import Store from './utils/Store';
+
 import fs from 'fs';
 import path from 'path';
 
@@ -20,11 +22,17 @@ import debug from './utils/log';
 
 import { DBStatus } from './redux/reducers/app/constants';
 
-import { ADMIN_KEY, BUSINESS_KEY, APP_NAME, COUNTRY } from './vars';
+import {
+  ADMIN_KEY,
+  BUSINESS_KEY,
+  APP_NAME,
+  COUNTRY,
+  SALES_REF_NO_BASE,
+} from './vars';
 
 const log = debug('app:main');
 
-let mainWindow = null;
+let win = null;
 
 if (process.env.NODE_ENV === 'production' || process.env.DEBUG_PROD === 'true') {
   const sourceMapSupport = require('source-map-support');
@@ -118,6 +126,41 @@ const setupDB = new Promise(resolve => {
               date          INTEGER NOT NULL,
               lastModified  INTEGER NOT NULL
             ) WITHOUT ROWID;
+
+            CREATE VIRTUAL TABLE products_index USING fts5(
+              displayName,
+              ref,
+              id UNINDEXED,
+              tokenize=porter
+            );
+
+            -- Trigger on CREATE
+            CREATE TRIGGER after_products_insert AFTER INSERT ON products BEGIN
+              INSERT INTO products_index (
+                id,
+                displayName,
+                ref
+              )
+              VALUES(
+                new.id,
+                new.displayName,
+                new.ref
+              );
+            END;
+
+            -- Trigger on UPDATE
+            CREATE TRIGGER after_products_update__displayName UPDATE OF displayName ON products BEGIN
+              UPDATE products_index SET displayName = new.displayName WHERE id = old.id;
+            END;
+            CREATE TRIGGER after_products_update__ref UPDATE OF ref ON products BEGIN
+              UPDATE products_index SET ref = new.ref WHERE id = old.id;
+            END;
+
+            -- Trigger on DELETE
+            CREATE TRIGGER after_products_delete AFTER DELETE ON products BEGIN
+                DELETE FROM products_index WHERE id = old.id;
+            END;
+
             `,
           );
 
@@ -138,6 +181,30 @@ const setupDB = new Promise(resolve => {
               date          INTEGER NOT NULL,
               lastModified  INTEGER NOT NULL
             );
+
+            CREATE VIRTUAL TABLE sales_index USING fts5(
+              refNo,
+              id UNINDEXED,
+              tokenize=porter
+            );
+
+            -- Trigger on CREATE
+            CREATE TRIGGER after_sales_insert AFTER INSERT ON sales BEGIN
+              INSERT INTO sales_index (
+                id,
+                refNo
+              )
+              VALUES(
+                new.id,
+                new.refNo + ${SALES_REF_NO_BASE}
+              );
+            END;
+
+            -- Trigger on DELETE
+            CREATE TRIGGER after_sales_delete AFTER DELETE ON sales BEGIN
+              DELETE FROM sales_index WHERE id = old.id;
+            END;
+
             `,
           );
 
@@ -164,6 +231,30 @@ const setupDB = new Promise(resolve => {
               date          INTEGER NOT NULL,
               lastModified  INTEGER NOT NULL
             ) WITHOUT ROWID;
+
+            CREATE VIRTUAL TABLE expenses_index USING fts5(
+              refNo,
+              id UNINDEXED,
+              tokenize=porter
+            );
+
+            -- Trigger on CREATE
+            CREATE TRIGGER after_expenses_insert AFTER INSERT ON expenses BEGIN
+              INSERT INTO expenses_index (
+                id,
+                refNo
+              )
+              VALUES(
+                new.id,
+                new.refNo
+              );
+            END;
+
+            -- Trigger on DELETE
+            CREATE TRIGGER after_expenses_delete AFTER DELETE ON expenses BEGIN
+              DELETE FROM expenses_index WHERE id = old.id;
+            END;
+
             `,
           );
 
@@ -236,6 +327,62 @@ const setupDB = new Promise(resolve => {
               date          INTEGER NOT NULL,
               lastModified  INTEGER NOT NULL
             ) WITHOUT ROWID;
+
+            CREATE VIRTUAL TABLE people_index USING fts5(
+              displayName,
+              email,
+              tel,
+              taxId,
+              address,
+              type UNINDEXED,
+              id UNINDEXED,
+              tokenize=porter
+            );
+
+            -- Trigger on CREATE
+            CREATE TRIGGER after_people_insert AFTER INSERT ON people BEGIN
+              INSERT INTO people_index (
+                id,
+                displayName,
+                email,
+                tel,
+                taxId,
+                address,
+                type
+              )
+              VALUES(
+                new.id,
+                new.displayName,
+                new.email,
+                new.tel,
+                new.taxId,
+                new.address,
+                new.type
+              );
+            END;
+
+            -- Trigger on UPDATE
+            CREATE TRIGGER after_people_update__displayName UPDATE OF displayName ON people BEGIN
+              UPDATE people_index SET displayName = new.displayName WHERE id = old.id;
+            END;
+            CREATE TRIGGER after_people_update__email UPDATE OF email ON people BEGIN
+              UPDATE people_index SET email = new.email WHERE id = old.id;
+            END;
+            CREATE TRIGGER after_people_update__tel UPDATE OF tel ON people BEGIN
+              UPDATE people_index SET tel = new.tel WHERE id = old.id;
+            END;
+            CREATE TRIGGER after_people_update__taxId UPDATE OF taxId ON people BEGIN
+              UPDATE people_index SET taxId = new.taxId WHERE id = old.id;
+            END;
+            CREATE TRIGGER after_people_update__address UPDATE OF address ON people BEGIN
+            UPDATE people_index SET address = new.address WHERE id = old.id;
+            END;
+
+            -- Trigger on DELETE
+            CREATE TRIGGER after_people_delete AFTER DELETE ON people BEGIN
+                DELETE FROM people_index WHERE id = old.id;
+            END;
+
             `,
           );
 
@@ -369,9 +516,9 @@ const setupDB = new Promise(resolve => {
 const isSecondInstance = app.makeSingleInstance(
   (commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      mainWindow.focus();
+    if (win) {
+      if (win.isMinimized()) win.restore();
+      win.focus();
     }
   },
 );
@@ -388,10 +535,14 @@ app.on('ready', async () => {
     await installExtensions();
   }
 
-  mainWindow = new BrowserWindow({
-    show: false,
+  const bounds = Store.get('window.bounds') || {
     width: 1281,
     height: 768,
+  };
+
+  win = new BrowserWindow({
+    show: false,
+    ...bounds,
     title: APP_NAME,
   });
 
@@ -402,30 +553,36 @@ app.on('ready', async () => {
     hash: '/',
   });
 
-  mainWindow.loadURL(url);
+  win.loadURL(url);
 
-  mainWindow.once('ready-to-show', () => {
-    if (!mainWindow) {
-      throw new Error(`'mainWindow' is not defined`);
+  win.once('ready-to-show', () => {
+    if (!win) {
+      throw new Error(`'win' is not defined`);
     }
-    mainWindow.show();
-    mainWindow.focus();
+    win.show();
+    win.focus();
   });
 
-  mainWindow.webContents.on('did-finish-load', async () => {
-    if (!mainWindow) {
-      throw new Error(`'mainWindow' is not defined`);
+  win.webContents.on('did-finish-load', async () => {
+    if (!win) {
+      throw new Error(`'win' is not defined`);
     }
 
-    mainWindow.webContents.send('db-status', {
+    win.webContents.send('db-status', {
       status: await setupDB,
     });
   });
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
+  win.on('close', () => {
+    Store.set({
+      'window.bounds': win ? win.getBounds() : {},
+    });
   });
 
-  const menuBuilder = new MenuBuilder(mainWindow);
+  win.on('closed', () => {
+    win = null;
+  });
+
+  const menuBuilder = new MenuBuilder(win);
   menuBuilder.buildMenu();
 });

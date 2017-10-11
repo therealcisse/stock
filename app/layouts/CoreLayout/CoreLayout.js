@@ -27,6 +27,8 @@ import cx from 'classnames';
 
 // import Notification from 'components/notification';
 
+import SearchWidget from 'components/SearchWidget';
+
 import Loading from 'components/Loading';
 
 class CoreLayout extends React.Component {
@@ -63,15 +65,18 @@ class CoreLayout extends React.Component {
       );
     }
 
-    return (
+    return [
+      /* <Notification />, */
+
       <div className={style.root}>
         <Title
           title={intl.formatMessage(messages.title, { appName: APP_NAME })}
         />
-        {/* <Notification /> */}
         {children}
-      </div>
-    );
+      </div>,
+
+      <SearchWidget />,
+    ];
   }
 }
 

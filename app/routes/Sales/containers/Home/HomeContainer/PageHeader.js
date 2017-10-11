@@ -7,7 +7,11 @@ import style from 'routes/Sales/styles';
 
 import SalesReport from './SalesReport';
 
-// import SaleForm from './SaleForm';
+import SaleForm from './SaleForm';
+
+import moment from 'moment';
+
+import { DATE_FORMAT } from 'vars';
 
 const styles = theme => ({
   button: {},
@@ -46,13 +50,15 @@ class PageHeader extends React.Component {
             >
               Nouvelle facture
             </Button>
-            {/* {this.state.dialogOpen ? ( */}
-            {/*   <SaleForm */}
-            {/*     onClose={this.handleRequestClose} */}
-            {/*     initialValues={{}} */}
-            {/*     title="Nouveau client" */}
-            {/*   /> */}
-            {/* ) : null} */}
+            {this.state.dialogOpen ? (
+              <SaleForm
+                onClose={this.handleRequestClose}
+                initialValues={{
+                  dateCreated: moment().format(DATE_FORMAT),
+                  items: [],
+                }}
+              />
+            ) : null}
           </div>
         </div>
         <SalesReport />

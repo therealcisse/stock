@@ -161,4 +161,8 @@ export class ClientConnector {
       return { id: newId, events: [newClient] };
     }
   }
+
+  query(q: ?string) {
+    return this.loaders.q.load(q);
+  }
 }

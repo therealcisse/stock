@@ -14,6 +14,10 @@ export function minLength(field, value, prop) {
   return prop && value ? value.length < prop : false;
 }
 
+export function notEmpty(field, value, prop) {
+  return prop && value ? value.isEmpty() : false;
+}
+
 export function date(field, value) {
   return value
     ? !dateIsValid(value instanceof Date ? value : new Date(value))
@@ -22,12 +26,22 @@ export function date(field, value) {
 
 export function number(field, value) {
   return value
-    ? !isNumber((value || '').replace(/,/, '.').replace(/\s+/g, ''))
+    ? !isNumber(
+        String(value || '')
+          .replace(/,/, '.')
+          .replace(/\s+/g, ''),
+      )
     : false;
 }
 
 export function numberRequired(field, value, prop) {
-  return prop ? !isNumber(value) : false;
+  return prop
+    ? !isNumber(
+        String(value || '')
+          .replace(/,/, '.')
+          .replace(/\s+/g, ''),
+      )
+    : false;
 }
 
 export function email(field, value, prop) {

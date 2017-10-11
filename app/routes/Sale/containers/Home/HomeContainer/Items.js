@@ -32,7 +32,7 @@ const itemsColumnData = [
     id: 'product.displayName',
     numeric: false,
     disablePadding: false,
-    label: 'Produit',
+    label: 'PRODUIT',
   },
   {
     id: 'qty',

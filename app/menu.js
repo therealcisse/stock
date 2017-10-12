@@ -27,7 +27,7 @@ export default class MenuBuilder {
     // }
     //
     // const menu = Menu.buildFromTemplate(template);
-    // Menu.setApplicationMenu(menu);
+    Menu.setApplicationMenu(null);
     //
     // return menu;
   }

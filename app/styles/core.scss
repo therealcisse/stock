@@ -18,7 +18,8 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 
-  min-height: 100vh;
+  height: 100vh;
+  overflow: auto;
 }
 
 button {
@@ -40,7 +41,6 @@ button {
   composes: d-flex flex-column;
   min-height: 100vh;
   min-width: 1281px;
-  overflow-x: auto;
 }
 
 .error {

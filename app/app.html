@@ -40,6 +40,12 @@
             .map(script => '<script defer src="' + script + '"><\/script>')
             .join('')
         );
+
+        if (process.platform !== 'darwin') {
+          document.write(
+           '<link rel="stylesheet" href="data:text/css;charset=utf-8;base64,LyogVHVybiBvbiBjdXN0b20gOHB4IHdpZGUgc2Nyb2xsYmFyICovDQo6Oi13ZWJraXQtc2Nyb2xsYmFyIHsNCiAgd2lkdGg6IDhweDsgLyogMXB4IHdpZGVyIHRoYW4gTGlvbi4gKi8NCiAgLyogVGhpcyBpcyBtb3JlIHVzYWJsZSBmb3IgdXNlcnMgdHJ5aW5nIHRvIGNsaWNrIGl0LiAqLw0KICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDAsMCwwLDApOw0KICAtd2Via2l0LWJvcmRlci1yYWRpdXM6IDEwMHB4Ow0KfQ0KLyogaG92ZXIgZWZmZWN0IGZvciBib3RoIHNjcm9sbGJhciBhcmVhLCBhbmQgc2Nyb2xsYmFyICd0aHVtYicgKi8NCjo6LXdlYmtpdC1zY3JvbGxiYXI6aG92ZXIgew0KICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDAsIDAsIDAsIDAuMDkpOw0KfQ0KDQovKiBUaGUgc2Nyb2xsYmFyICd0aHVtYicgLi4udGhhdCBtYXJxdWUgb3ZhbCBzaGFwZSBpbiBhIHNjcm9sbGJhciAqLw0KOjotd2Via2l0LXNjcm9sbGJhci10aHVtYjp2ZXJ0aWNhbCB7DQogIC8qIFRoaXMgaXMgdGhlIEVYQUNUIGNvbG9yIG9mIE1hYyBPUyBzY3JvbGxiYXJzLg0KICBZZXMsIEkgcHVsbGVkIG91dCBkaWdpdGFsIGNvbG9yIG1ldGVyICovDQpiYWNrZ3JvdW5kOiByZ2JhKDAsMCwwLDAuNSk7DQotd2Via2l0LWJvcmRlci1yYWRpdXM6IDEwMHB4Ow0KfQ0KOjotd2Via2l0LXNjcm9sbGJhci10aHVtYjp2ZXJ0aWNhbDphY3RpdmUgew0KICBiYWNrZ3JvdW5kOiByZ2JhKDAsMCwwLDAuNjEpOyAvKiBTb21lIGRhcmtlciBjb2xvciB3aGVuIHlvdSBjbGljayBpdCAqLw0KICAtd2Via2l0LWJvcmRlci1yYWRpdXM6IDEwMHB4Ow0KfQ0K"><\/script>'
+          );
+        }
       }
     </script>
   </body>

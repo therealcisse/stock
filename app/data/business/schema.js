@@ -21,20 +21,22 @@ export const schema = [
     id: ID!
 
     displayName: String
-    description: String
     url: String
 
     country: Country
-    addressLine1: String
-    addressLine2: String
     city: String
-    stateProvince: String
+    address: String
     postalCode: String
 
     phone: String
-    taxId: String
+    fax: String
+    email: String
 
-    lastRefNo: Int!
+    patente: String
+    taxId: String
+    rc: String
+    ice: String
+    cnss: String
 
     date: Date!
     lastModified: Date!
@@ -44,21 +46,23 @@ export const schema = [
   # Update user business
   # ------------------------------------
   input UpdateBusinessPayload {
-    displayName: String!
-    description: String
+    displayName: String
     url: String
 
-    country: String
-    addressLine1: String
-    addressLine2: String
+    country: Country
     city: String
-    stateProvince: String
+    address: String
     postalCode: String
 
     phone: String
-    taxId: String
+    fax: String
+    email: String
 
-    lastRefNo: Int!
+    patente: String
+    taxId: String
+    rc: String
+    ice: String
+    cnss: String
   }
 
   type UpdateBusinessResponse {
@@ -72,6 +76,7 @@ export const schema = [
   }
 
   extend type Query {
+    business: Business!
   }
 
 `,
@@ -83,20 +88,22 @@ export const resolvers = {
     graphqlResolvers([
       'id',
       'displayName',
-      'description',
       'url',
 
       'country',
-      'addressLine1',
-      'addressLine2',
       'city',
-      'stateProvince',
+      'address',
       'postalCode',
 
       'phone',
-      'taxId',
+      'fax',
+      'email',
 
-      'lastRefNo',
+      'patente',
+      'taxId',
+      'ice',
+      'rc',
+      'cnss',
 
       'date',
       'lastModified',
@@ -124,5 +131,9 @@ export const resolvers = {
     },
   },
 
-  Query: {},
+  Query: {
+    business(_, {}, context) {
+      return context.Business.get();
+    },
+  },
 };

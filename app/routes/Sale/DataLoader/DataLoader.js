@@ -1,10 +1,20 @@
 import { graphql } from 'react-apollo';
 
+import BusinessQuery from './business.query.graphql';
+
 import SaleQuery from './getSale.query.graphql';
 
 import PaySaleMutation from './paySale.mutation.graphql';
 import DelSalePaymentMutation from './delSalePayment.mutation.graphql';
 import VoidSaleMutation from './voidSale.mutation.graphql';
+
+const business = graphql(BusinessQuery, {
+  props({ data }) {
+    return {
+      business: data.business || {},
+    };
+  },
+});
 
 const sale = graphql(SaleQuery, {
   options: ({ id }) => ({
@@ -66,4 +76,10 @@ const voidSale = graphql(VoidSaleMutation, {
   },
 });
 
-export default { sale, paySale, delSalePayment, voidSale };
+export default {
+  business,
+  sale,
+  paySale,
+  delSalePayment,
+  voidSale,
+};

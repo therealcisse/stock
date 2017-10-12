@@ -1,0 +1,19 @@
+query Business {
+  business {
+    id
+    displayName
+    url
+    country
+    city
+    address
+    postalCode
+    phone
+    fax
+    email
+    patente
+    taxId
+    ice
+    rc
+    cnss
+  }
+}

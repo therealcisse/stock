@@ -58,6 +58,7 @@ export default merge.smart(baseConfig, {
       require('fbjs-scripts/third-party-module-map'),
       require('fbjs/module-map'),
       {
+        intersperse: 'utils/intersperse',
         parseMoney: 'utils/parseMoney',
         Store: 'utils/Store',
         Clock: 'utils/Clock',

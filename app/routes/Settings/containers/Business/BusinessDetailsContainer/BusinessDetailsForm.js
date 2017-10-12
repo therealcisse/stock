@@ -60,24 +60,29 @@ export class BusinessDetailsForm extends React.Component {
 
     const { intl } = this.props;
 
+    const payload = {
+      displayName: data.get('displayName'),
+      url: data.get('url'),
+      country: data.get('country'),
+      city: data.get('city'),
+      address: data.get('address'),
+      postalCode: data.get('postalCode'),
+      phone: data.get('phone'),
+      fax: data.get('fax'),
+      email: data.get('email'),
+      taxId: data.get('taxId'),
+      rc: data.get('rc'),
+      ice: data.get('ice'),
+      cnss: data.get('cnss'),
+      patente: data.get('patente'),
+    };
+
     const {
-      data: { updateUserBusiness: { errors } },
+      data: { updateBusiness: { errors } },
     } = await this.props.client.mutate({
       mutation: MUTATION,
       variables: {
-        payload: {
-          displayName: data.get('displayName'),
-          description: data.get('description'),
-          url: data.get('url'),
-          country: data.get('country'),
-          addressLine1: data.get('addressLine1'),
-          addressLine2: data.get('addressLine2'),
-          city: data.get('city'),
-          stateProvince: data.get('stateProvince'),
-          postalCode: data.get('postalCode'),
-          phone: data.get('phone'),
-          taxId: data.get('taxId'),
-        },
+        payload,
       },
       updateQueries: {
         getUser: (prev, { mutationResult }) => {
@@ -126,11 +131,6 @@ export class BusinessDetailsForm extends React.Component {
             onKeyDown={this.onKeyDown}
           />
           <Field
-            name="description"
-            component={BusinessDescriptionField}
-            label={intl.formatMessage(messages.labelBusinessDescription)}
-          />
-          <Field
             name="url"
             component={OptionalTextInputField}
             label={intl.formatMessage(messages.labelURL)}
@@ -147,29 +147,16 @@ export class BusinessDetailsForm extends React.Component {
             onKeyDown={this.onKeyDown}
           />
           <Field
-            name="addressLine1"
-            component={OptionalTextInputField}
-            label={intl.formatMessage(messages.labelAddressLine1)}
-            onKeyDown={this.onKeyDown}
-          />
-          <Field
-            name="addressLine2"
-            component={OptionalTextInputField}
-            label={intl.formatMessage(messages.labelAddressLine2)}
-            onKeyDown={this.onKeyDown}
-          />
-          <Field
             name="city"
             component={OptionalTextInputField}
             label={intl.formatMessage(messages.labelCity)}
             onKeyDown={this.onKeyDown}
           />
           <Field
-            name="stateProvince"
+            name="address"
             component={OptionalTextInputField}
-            label={intl.formatMessage(messages.labelStateProvince)}
+            label={intl.formatMessage(messages.labelAddress)}
             onKeyDown={this.onKeyDown}
-            className={style.width15Percent}
           />
           <Field
             name="postalCode"
@@ -193,9 +180,53 @@ export class BusinessDetailsForm extends React.Component {
             </div>
           </Field>
           <Field
+            name="fax"
+            component={OptionalTextInputField}
+            label={intl.formatMessage(messages.labelFax)}
+            onKeyDown={this.onKeyDown}
+          >
+            <div className={style.formControlFeedback} when={'phoneNumber'}>
+              {intl.formatMessage(validationMessages.phoneInvalid)}
+            </div>
+          </Field>
+          <Field
+            name="email"
+            component={OptionalTextInputField}
+            label={intl.formatMessage(messages.labelEmail)}
+            onKeyDown={this.onKeyDown}
+          >
+            <div className={style.formControlFeedback} when={'email'}>
+              {intl.formatMessage(validationMessages.emailInvalid)}
+            </div>
+          </Field>
+          <Field
+            name="patente"
+            component={OptionalTextInputField}
+            label={intl.formatMessage(messages.labelPatente)}
+            onKeyDown={this.onKeyDown}
+          />
+          <Field
             name="taxId"
             component={OptionalTextInputField}
             label={intl.formatMessage(messages.labelTaxId)}
+            onKeyDown={this.onKeyDown}
+          />
+          <Field
+            name="ice"
+            component={OptionalTextInputField}
+            label={intl.formatMessage(messages.labelICE)}
+            onKeyDown={this.onKeyDown}
+          />
+          <Field
+            name="rc"
+            component={OptionalTextInputField}
+            label={intl.formatMessage(messages.labelRC)}
+            onKeyDown={this.onKeyDown}
+          />
+          <Field
+            name="cnss"
+            component={OptionalTextInputField}
+            label={intl.formatMessage(messages.labelCNSS)}
             onKeyDown={this.onKeyDown}
           />
           <div className={style.formGroup}>

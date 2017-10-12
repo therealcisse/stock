@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'settings-page.label-country',
     defaultMessage: 'Pays',
   },
+  labelCity: {
+    id: 'settings-page.label-city',
+    defaultMessage: 'Ville',
+  },
   labelURL: {
     id: 'settings-page.label-url',
     defaultMessage: 'Site Web',
@@ -96,26 +100,9 @@ export default defineMessages({
     defaultMessage: 'Raison sociale',
   },
 
-  labelBusinessDescription: {
-    id: 'settings-page.business.business-description-label',
-    defaultMessage: 'La description',
-  },
-
-  labelAddressLine1: {
-    id: 'settings-page.business.business-address-line1-label',
-    defaultMessage: 'Adresse 1',
-  },
-  labelAddressLine2: {
-    id: 'settings-page.business.business-address-line2-label',
-    defaultMessage: 'Adresse 2',
-  },
-  labelCity: {
-    id: 'settings-page.business.business-city-label',
-    defaultMessage: 'Ville',
-  },
-  labelStateProvince: {
-    id: 'settings-page.business.business-state-province-label',
-    defaultMessage: 'État / Province',
+  labelAddress: {
+    id: 'settings-page.business.business-address-label',
+    defaultMessage: 'Adresse',
   },
   labelPostalCode: {
     id: 'settings-page.business.business-postal-code-label',
@@ -129,6 +116,26 @@ export default defineMessages({
   labelTaxId: {
     id: 'settings-page.business.business-tax-id-label',
     defaultMessage: 'Numéro d’identification fiscale',
+  },
+  labelPatente: {
+    id: 'settings-page.business.business-patente-label',
+    defaultMessage: 'Patente',
+  },
+  labelRC: {
+    id: 'settings-page.business.business-rc-label',
+    defaultMessage: 'RC',
+  },
+  labelFax: {
+    id: 'settings-page.business.business-fax-label',
+    defaultMessage: 'Fax',
+  },
+  labelCNSS: {
+    id: 'settings-page.business.business-cnss-label',
+    defaultMessage: 'CNSS',
+  },
+  labelICE: {
+    id: 'settings-page.business.business-ice-label',
+    defaultMessage: 'ICE',
   },
 
   titleChangeEmail: {

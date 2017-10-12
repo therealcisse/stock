@@ -12,7 +12,12 @@ import * as htmlPdf from 'html-pdf-chrome';
 
 import Queue from 'async/queue';
 
-const pdfOptions = {};
+const pdfOptions = {
+  printOptions: {
+    printBackground: true,
+    paperHeight: 14,
+  },
+};
 
 const DEFAULT_INVOICE_FILENAME = 'Facture.pdf';
 
@@ -36,7 +41,7 @@ const q = Queue(async function({ name, html }, callback) {
       await resp.toFile(url);
     }
 
-    callback();
+    callback(null, url);
   } catch (e) {
     callback(`Erreur d'impression. Veuillez essayer encore.`);
   }
@@ -49,12 +54,20 @@ q.drain = function() {};
 
 export function print(html) {
   return (dispatch, _, { snackbar }) => {
-    q.push({ html }, function(err) {
-      snackbar.show({
-        message: err || 'Succès',
-        type: err ? 'danger' : undefined,
-        duration: 3000,
-      });
+    q.push({ html }, function(err, url) {
+      url &&
+        snackbar.show({
+          message: err || 'Succès',
+          type: err ? 'danger' : undefined,
+          duration: 7000,
+          action: {
+            title: 'AFFICHER',
+            click() {
+              this.dismiss();
+              remote.shell.openItem(path.dirname(url));
+            },
+          },
+        });
     });
   };
 }

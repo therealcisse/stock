@@ -9,8 +9,6 @@ html {
 
 html,
 body {
-  // height: 100%;
-  // min-height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -43,7 +41,6 @@ button {
   min-height: 100vh;
   min-width: 1281px;
   overflow-x: auto;
-  // height: 100%;
 }
 
 .error {
@@ -55,12 +52,7 @@ button {
   }
 }
 
-:global .pageload-overlay {
-  display: none;
-}
-
 main {
-  // height: 100%;
 }
 
 main,

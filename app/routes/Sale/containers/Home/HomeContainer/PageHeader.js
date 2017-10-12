@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom/server';
 import Link from 'react-router-dom/Link';
 
 import { print } from 'redux/reducers/app/actions';
@@ -34,6 +35,8 @@ import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
 import VoidForm from './VoidForm';
 import PaymentForm from './PaymentForm';
 
+import PDF from './templates/PDF';
+
 const styles = theme => ({
   button: {},
 });
@@ -48,12 +51,24 @@ class PageHeader extends React.Component {
     dialogOpen: false,
   };
 
-  handleClickOpen = option => {
+  handleClickOpen = async option => {
     if (option === 'print') {
-      this.setState({ dialogOpen: false, open: false, option: null });
-      this.props.actions.print(`
-      <p>Hello, world 3322!</p>
-      `);
+      this.setState({
+        dialogOpen: false,
+        open: false,
+        option: null,
+      });
+
+      const html = ReactDOM.renderToStaticMarkup(
+        <PDF
+          business={this.props.business}
+          intl={this.props.intl}
+          n={this.props.data.getSale}
+        />,
+      );
+
+      console.log(html);
+      this.props.actions.print('<!DOCTYPE html >' + html);
     } else {
       this.setState({ dialogOpen: true, option, open: false, anchorEl: null });
     }

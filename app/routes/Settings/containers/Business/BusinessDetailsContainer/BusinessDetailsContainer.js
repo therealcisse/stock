@@ -47,19 +47,20 @@ function BusinessDetailsContainer({
           initialValues={{
             id: currentBusiness ? currentBusiness.id : null,
             displayName: currentBusiness ? currentBusiness.displayName : null,
-            description: currentBusiness ? currentBusiness.description : null,
             url: currentBusiness ? currentBusiness.url : null,
             country: currentBusiness
               ? currentBusiness.country || COUNTRY
               : COUNTRY,
-            addressLine1: currentBusiness ? currentBusiness.addressLine1 : null,
-            addressLine2: currentBusiness ? currentBusiness.addressLine2 : null,
             city: currentBusiness ? currentBusiness.city : null,
-            stateProvince: currentBusiness
-              ? currentBusiness.stateProvince
-              : null,
+            address: currentBusiness ? currentBusiness.address : null,
             postalCode: currentBusiness ? currentBusiness.postalCode : null,
             phone: currentBusiness ? currentBusiness.phone : null,
+            fax: currentBusiness ? currentBusiness.fax : null,
+            email: currentBusiness ? currentBusiness.email : null,
+            patente: currentBusiness ? currentBusiness.patente : null,
+            ice: currentBusiness ? currentBusiness.ice : null,
+            rc: currentBusiness ? currentBusiness.rc : null,
+            cnss: currentBusiness ? currentBusiness.cnss : null,
             taxId: currentBusiness ? currentBusiness.taxId : null,
           }}
         />

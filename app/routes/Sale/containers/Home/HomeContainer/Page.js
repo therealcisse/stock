@@ -14,15 +14,15 @@ import PageBody from './PageBody';
 
 class Page extends React.Component {
   render() {
-    const { data, intl } = this.props;
+    const { data, business, intl } = this.props;
 
     return (
       <div className={style.page}>
-        <PageHeader intl={intl} data={data} />
+        <PageHeader business={business} intl={intl} data={data} />
         <PageBody data={data} />
       </div>
     );
   }
 }
 
-export default compose(injectIntl, DataLoader.sale)(Page);
+export default compose(injectIntl, DataLoader.sale, DataLoader.business)(Page);

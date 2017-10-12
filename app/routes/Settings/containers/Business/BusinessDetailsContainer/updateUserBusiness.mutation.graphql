@@ -1,18 +1,21 @@
-mutation updateUserBusiness($payload: UpdateUserBusinessPayload!) {
-  updateUserBusiness(payload: $payload) {
+mutation updateBusiness($payload: UpdateBusinessPayload!) {
+  updateBusiness(payload: $payload) {
     business {
       id
       displayName
-      description
       url
       country
-      addressLine1
-      addressLine2
       city
-      stateProvince
+      address
       postalCode
       phone
+      fax
+      email
+      patente
       taxId
+      ice
+      rc
+      cnss
     }
     errors
   }

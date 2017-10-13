@@ -67,7 +67,6 @@ class PageHeader extends React.Component {
         />,
       );
 
-      console.log(html);
       this.props.actions.print('<!DOCTYPE html >' + html);
     } else {
       this.setState({ dialogOpen: true, option, open: false, anchorEl: null });

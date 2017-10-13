@@ -1,4 +1,9 @@
-import { DB_STATUS, APP_STATE_CHANGE, TOGGLE_SEARCH } from './constants';
+import {
+  DB_STATUS,
+  APP_STATE_CHANGE,
+  TOGGLE_SEARCH,
+  CHROME_REMOTE_DEBUGGING_PORT,
+} from './constants';
 
 import path from 'path';
 
@@ -13,6 +18,7 @@ import * as htmlPdf from 'html-pdf-chrome';
 import Queue from 'async/queue';
 
 const pdfOptions = {
+  port: CHROME_REMOTE_DEBUGGING_PORT,
   printOptions: {
     printBackground: true,
     paperHeight: 14,
@@ -55,19 +61,20 @@ q.drain = function() {};
 export function print(html) {
   return (dispatch, _, { snackbar }) => {
     q.push({ html }, function(err, url) {
-      url &&
-        snackbar.show({
-          message: err || 'Succès',
-          type: err ? 'danger' : undefined,
-          duration: 7000,
-          action: {
-            title: 'AFFICHER',
-            click() {
-              this.dismiss();
-              remote.shell.openItem(path.dirname(url));
-            },
-          },
-        });
+      snackbar.show({
+        message: err || 'Succès',
+        type: err ? 'danger' : undefined,
+        duration: 7000,
+        action: url
+          ? {
+              title: 'AFFICHER',
+              click() {
+                this.dismiss();
+                remote.shell.openItem(path.dirname(url));
+              },
+            }
+          : null,
+      });
     });
   };
 }

@@ -22,12 +22,15 @@ import debug from './utils/log';
 
 import { DBStatus } from './redux/reducers/app/constants';
 
+import puppeteer from 'puppeteer';
+
 import {
   ADMIN_KEY,
   BUSINESS_KEY,
   APP_NAME,
   COUNTRY,
   SALES_REF_NO_BASE,
+  CHROME_REMOTE_DEBUGGING_PORT,
 } from './vars';
 
 const log = debug('app:main');
@@ -588,4 +591,10 @@ app.on('ready', async () => {
 
   const menuBuilder = new MenuBuilder(win);
   menuBuilder.buildMenu();
+
+  (async () => {
+    await puppeteer.launch({
+      args: [`--remote-debugging-port=${CHROME_REMOTE_DEBUGGING_PORT}`],
+    });
+  })();
 });

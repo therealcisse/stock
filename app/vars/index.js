@@ -58,3 +58,5 @@ export const LINK_PRIVACY_POLICY = '';
 export const LINK_SUPPORT = '';
 
 export const APOLLO_DEFAULT_REDUX_ROOT_KEY = 'apollo';
+
+export const CHROME_REMOTE_DEBUGGING_PORT = 9222;

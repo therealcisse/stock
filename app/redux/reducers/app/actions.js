@@ -1,9 +1,6 @@
-import {
-  DB_STATUS,
-  APP_STATE_CHANGE,
-  TOGGLE_SEARCH,
-  CHROME_REMOTE_DEBUGGING_PORT,
-} from './constants';
+import { DB_STATUS, APP_STATE_CHANGE, TOGGLE_SEARCH } from './constants';
+
+import { CHROME_REMOTE_DEBUGGING_PORT } from 'vars';
 
 import path from 'path';
 

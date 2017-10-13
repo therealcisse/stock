@@ -36,6 +36,7 @@ import {
 const log = debug('app:main');
 
 let win = null;
+let browser = null;
 
 if (process.env.NODE_ENV === 'production' || process.env.DEBUG_PROD === 'true') {
   const sourceMapSupport = require('source-map-support');
@@ -94,6 +95,10 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+app.on('will-quit', () => {
+  browser.close();
 });
 
 const setupDB = new Promise(resolve => {
@@ -593,7 +598,8 @@ app.on('ready', async () => {
   menuBuilder.buildMenu();
 
   (async () => {
-    await puppeteer.launch({
+    browser = await puppeteer.launch({
+      handleSIGINT: false,
       args: [`--remote-debugging-port=${CHROME_REMOTE_DEBUGGING_PORT}`],
     });
   })();

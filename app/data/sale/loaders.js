@@ -52,13 +52,6 @@ export default function({ db }) {
       { cache: false },
     ),
 
-    nextRefNo: new DataLoader(async function(ids) {
-      const { maxRefNo } = db
-        .prepare(`SELECT MAX(refNo) AS maxRefNo FROM sales;`)
-        .get();
-      return ids.map(() => maxRefNo + 1);
-    }),
-
     salesReport: new DataLoader(
       async function(ids) {
         const LAST_YEAR = +moment()

@@ -35,7 +35,7 @@ const addSale = graphql(AddSaleMutation, {
     return {
       addSale: payload =>
         mutate({
-          refetchQueries: [],
+          refetchQueries: ['SalesReport'],
           variables: { payload },
           updateQueries: {
             Sales(prev, { mutationResult }) {

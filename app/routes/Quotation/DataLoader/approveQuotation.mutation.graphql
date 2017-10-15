@@ -1,0 +1,33 @@
+mutation ApproveSale($id: ID!) {
+  approveSale(id: $id) {
+    error {
+      code
+    }
+    quotation {
+      id
+      status
+      refNo
+      dateCreated
+      sale {
+        id
+      }
+      client {
+        __typename
+        id
+        displayName
+      }
+      items {
+        id
+        product {
+          id
+          displayName
+          ref
+          unitPrice
+        }
+        qty
+        unitPrice
+      }
+    }
+    total
+  }
+}

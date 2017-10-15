@@ -24,6 +24,8 @@ export default class PDF extends React.Component {
 
     const g = Math.min(Math.max(0, sale.items.length - 3), 9);
 
+    const includeQty = sale.items.some(item => item.qty > 1);
+
     const Line_1 = intersperse(
       [
         intersperse(
@@ -102,11 +104,7 @@ export default class PDF extends React.Component {
                 WebkitUserSelect: 'none',
               }}
             />
-            <Layout
-              paid={!!paid}
-              g={g}
-              h={business.displayName.toUpperCase().length}
-            />
+            <Layout g={g} h={business.displayName.toUpperCase().length} />
             <div id="t1_1" className="t s1_1">
               Adressé à:
             </div>
@@ -126,14 +124,18 @@ export default class PDF extends React.Component {
               {sale.client.tel || <span>&mdash;</span>}
             </div>
             <div id="tb_1" className="t s3_1">
-              PRODUIT
+              PRODUIT / PRESTATION
             </div>
-            <div id="tc_1" className="t s3_1">
-              QTÉ
-            </div>
-            <div id="td_1" className="t s3_1">
-              P. U.
-            </div>
+            {includeQty ? (
+              <div id="tc_1" className="t s3_1">
+                QTÉ
+              </div>
+            ) : null}
+            {includeQty ? (
+              <div id="td_1" className="t s3_1">
+                P. U.
+              </div>
+            ) : null}
             <div id="tf_1" className="t s3_1">
               MONTANT
             </div>
@@ -142,12 +144,16 @@ export default class PDF extends React.Component {
                 <div style={{ top: 432 + 32 * i }} id="tg" className="t s2_1">
                   {product.displayName}
                 </div>,
-                <div style={{ top: 432 + 32 * i }} id="th" className="t s1_1">
-                  {qty}
-                </div>,
-                <div style={{ top: 432 + 32 * i }} id="ti" className="t s1_1">
-                  {intl.formatNumber(unitPrice, { format: 'MAD' })}
-                </div>,
+                includeQty ? (
+                  <div style={{ top: 432 + 32 * i }} id="th" className="t s1_1">
+                    {qty}
+                  </div>
+                ) : null,
+                includeQty ? (
+                  <div style={{ top: 432 + 32 * i }} id="ti" className="t s1_1">
+                    {intl.formatNumber(unitPrice, { format: 'MAD' })}
+                  </div>
+                ) : null,
                 <div
                   style={{ top: 432 + 32 * i, left: 786 }}
                   id="tk"
@@ -157,25 +163,25 @@ export default class PDF extends React.Component {
                 </div>,
               ];
             })}
-            <div style={{ top: 553 + 32 * g }} id="tq_1" className="t s1_1">
-              Mode de paiement:
-            </div>
-            <div style={{ top: 584 + 32 * g }} id="tr_1" className="t s1_1">
-              Nº:
-            </div>
-            <div style={{ top: 616 + 32 * g }} id="ts_1" className="t s1_1">
-              Date de paiement:
-            </div>
-            <div style={{ top: 553 + 32 * g }} id="tt_1" className="t s2_1" />
-            <div style={{ top: 616 + 32 * g }} id="tu_1" className="t s2_1">
-              {paymentDate !== false ? (
-                formatDate(moment.utc(paymentDate).toDate())
-              ) : (
-                <span>&mdash;</span>
-              )}
-            </div>
+            {/* <div style={{ top: 553 + 32 * g }} id="tq_1" className="t s1_1"> */}
+            {/*   Mode de paiement: */}
+            {/* </div> */}
+            {/* <div style={{ top: 584 + 32 * g }} id="tr_1" className="t s1_1"> */}
+            {/*   Nº: */}
+            {/* </div> */}
+            {/* <div style={{ top: 616 + 32 * g }} id="ts_1" className="t s1_1"> */}
+            {/*   Date de paiement: */}
+            {/* </div> */}
+            {/* <div style={{ top: 553 + 32 * g }} id="tt_1" className="t s2_1" /> */}
+            {/* <div style={{ top: 616 + 32 * g }} id="tu_1" className="t s2_1"> */}
+            {/*   {paymentDate !== false ? ( */}
+            {/*     formatDate(moment.utc(paymentDate).toDate()) */}
+            {/*   ) : ( */}
+            {/*     <span>&mdash;</span> */}
+            {/*   )} */}
+            {/* </div> */}
             <div style={{ top: 544 + g * 32 }} id="tv_1" className="t s1_1">
-              Total TTC
+              Total HT
             </div>
             <div
               style={{ top: 544 + g * 32, left: 786 }}
@@ -184,71 +190,51 @@ export default class PDF extends React.Component {
             >
               {intl.formatNumber(total, { format: 'MAD' })}
             </div>
-            {paid
-              ? [
-                  <div
-                    style={{ top: 566 + g * 32 }}
-                    id="tx_1"
-                    className="t s1_1"
-                  >
-                    MONTANT REÇU
-                  </div>,
-                  <div
-                    style={{ top: 566 + g * 32, left: 786 }}
-                    id="ty_1"
-                    className="t s1_1"
-                  >
-                    {intl.formatNumber(paid, { format: 'MAD' })}
-                  </div>,
-                ]
-              : null}
-            {isFullyPaid
-              ? null
-              : [
-                  <div
-                    style={{
-                      top:
-                        589 +
-                        (paid ? 0 : 5) +
-                        (paid ? g : Math.max(0, g - 1)) * 32,
-                    }}
-                    id="tz_1"
-                    className="t s2_1"
-                  >
-                    SOLDE À PAYÉ
-                  </div>,
-                  <div
-                    style={{
-                      top:
-                        589 +
-                        (paid ? 0 : 5) +
-                        (paid ? g : Math.max(0, g - 1)) * 32,
-                      left: 786,
-                    }}
-                    id="t10_1"
-                    className="t s1_1"
-                  >
-                    {intl.formatNumber(balanceDue, { format: 'MAD' })}
-                  </div>,
-                ]}
-            {paid
-              ? [
-                  <div
-                    style={{ top: 686 + 32 * g }}
-                    id="t13_1"
-                    className="t s1_1"
-                  >
-                    Arrête la présente facture à la somme de:
-                  </div>,
-                  <div
-                    style={{ top: 686 + 32 * g }}
-                    id="t14_1"
-                    className="t s2_1"
-                  >
-                    {writtenNumber(paid, { lang: 'fr' }).toUpperCase()} DIRHAMS
-                  </div>,
-                ]
-              : null}
+            <div style={{ top: 566 + g * 32 }} id="tx_1" className="t s1_1">
+              TVA 20%
+            </div>
+            <div
+              style={{ top: 566 + g * 32, left: 786 }}
+              id="ty_1"
+              className="t s1_1"
+            >
+              {intl.formatNumber(0.2 * total, { format: 'MAD' })}
+            </div>
+            <div
+              style={{
+                top:
+                  32 +
+                  589 +
+                  (paid ? 0 : 5) +
+                  (paid ? g : Math.max(0, g - 1)) * 32,
+              }}
+              id="tz_1"
+              className="t s2_1"
+            >
+              Total TTC
+            </div>
+            <div
+              style={{
+                top:
+                  32 +
+                  589 +
+                  (paid ? 0 : 5) +
+                  (paid ? g : Math.max(0, g - 1)) * 32,
+                left: 786,
+              }}
+              id="t10_1"
+              className="t s1_1"
+            >
+              {intl.formatNumber(total + total * 0.2, { format: 'MAD' })}
+            </div>
+            {/*                */}
+            <div style={{ top: 686 + 32 * g }} id="t13_1" className="t s1_1">
+              Arrête la présente facture à la somme de:
+            </div>
+            <div style={{ top: 686 + 32 * g }} id="t14_1" className="t s2_1">
+              {writtenNumber(total, { lang: 'fr' }).toUpperCase()} DIRHAMS TTC
+            </div>
+            {/*                */}
             <div style={{ top: 756 + 32 * g }} id="t15_1" className="t s1_1">
               Cadre reservé à la société
             </div>
@@ -273,11 +259,6 @@ export default class PDF extends React.Component {
               {/* {`Tél : +212606759789 · Fax : +212376709700 · E-mail : rachid.boukhari@epsilon.ma · Web : www.epsilon.ma`} */}
               {Line_2}
             </div>
-            {isFullyPaid ? (
-              <div id="t1c_1" className="t m1_1 s5_1">
-                PAYÉ
-              </div>
-            ) : null}
           </div>
         </body>
       </html>
@@ -359,7 +340,7 @@ const STYLE_2 = (
       #t11_1{left:633px;top:611px;}
       #t12_1{left:813px;top:611px;}
       #t13_1{left:198px;top:686px;}
-      #t14_1{left:527px;top:686px;}
+      #t14_1{left:450px;top:686px;}
       #t15_1{left:453px;top:756px;word-spacing:-0.1px;}
       #t16_1{left:688px;top:35px;}
       #t17_1{left:709px;top:91px;}

@@ -1,0 +1,29 @@
+query Quotation($id: ID!) {
+  getQuotation(id: $id) {
+    quotation {
+      id
+      status
+      refNo
+      dateCreated
+      sale {
+        id
+      }
+      client {
+        id
+        displayName
+      }
+      items {
+        id
+        product {
+          id
+          displayName
+          ref
+          unitPrice
+        }
+        qty
+        unitPrice
+      }
+    }
+    total
+  }
+}

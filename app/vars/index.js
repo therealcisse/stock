@@ -32,6 +32,7 @@ export const PASSWORD_MIN_SCORE = 2;
 
 export const PATH_LOGIN = '/login';
 
+export const PATH_QUOTATIONS = '/quotations';
 export const PATH_SALES = '/sales';
 export const PATH_EXPENSES = '/expenses';
 export const PATH_PRODUCTS = '/products';
@@ -41,6 +42,7 @@ export const PATH_SUPPLIERS = '/suppliers';
 export const PATH_CLIENT_PREFIX = '/client';
 export const PATH_SUPPLIER_PREFIX = '/supplier';
 
+export const PATH_QUOTATION_PREFIX = '/quotation';
 export const PATH_SALE_PREFIX = '/sale';
 export const PATH_EXPENSE_PREFIX = '/expense';
 

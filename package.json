@@ -215,6 +215,10 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "@vx/group": "^0.0.140",
+    "@vx/mock-data": "^0.0.136",
+    "@vx/scale": "^0.0.140",
+    "@vx/shape": "^0.0.142",
     "apollo-local-query": "^0.3.0",
     "autosuggest-highlight": "^3.1.0",
     "bootstrap": "v4.0.0-beta",

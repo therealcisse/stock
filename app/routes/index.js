@@ -8,6 +8,7 @@ import LandingRoute from 'routes/Landing';
 import LoginRoute from 'routes/Login';
 
 import SalesRoute from 'routes/Sales';
+import QuotationsRoute from 'routes/Quotations';
 import ExpensesRoute from 'routes/Expenses';
 
 import ProductsRoute from 'routes/Products';
@@ -21,6 +22,7 @@ import SupplierRoute from 'routes/Supplier';
 import ClientRoute from 'routes/Client';
 
 import SaleRoute from 'routes/Sale';
+import QuotationRoute from 'routes/Quotation';
 import ExpenseRoute from 'routes/Expense';
 
 const [_0, _1, _2, _3, _4] = SettingsRoute;
@@ -31,6 +33,7 @@ export default () => (
       {LandingRoute}
       {LoginRoute}
       {SalesRoute}
+      {QuotationsRoute}
       {ExpensesRoute}
       {ProductsRoute}
       {ClientsRoute}
@@ -38,6 +41,7 @@ export default () => (
       {SupplierRoute}
       {ClientRoute}
       {SaleRoute}
+      {QuotationRoute}
       {ExpenseRoute}
       <Switch>
         {_1}

@@ -1,0 +1,31 @@
+mutation AddQuotation($payload: AddQuotationPayload!) {
+  addQuotation(payload: $payload) {
+    info {
+      quotation {
+        id
+        refNo
+        status
+        client {
+          id
+          displayName
+        }
+        dateCreated
+        items {
+          id
+          product {
+            id
+            displayName
+          }
+          qty
+          unitPrice
+        }
+        date
+        lastModified
+      }
+      total
+    }
+    error {
+      code
+    }
+  }
+}

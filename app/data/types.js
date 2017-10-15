@@ -55,6 +55,27 @@ export class Expense extends Record({
   }
 }
 
+export class Quotation extends Record({
+  id: null,
+  refNo: null,
+  clientId: null,
+  dateCreated: null,
+  state: null,
+
+  saleId: null,
+
+  date: null,
+  lastModified: null,
+}) {
+  static TYPE = 'QUOTATION';
+
+  static fromDatabase({ ...props }) {
+    return {
+      ...props,
+    };
+  }
+}
+
 export class Sale extends Record({
   id: null,
   refNo: null,
@@ -186,12 +207,14 @@ export class Event extends Record({
   static NS_SUPPLIERS = 'SUPPLIERS';
   static NS_CLIENTS = 'CLIENTS';
   static NS_SALES = 'SALES';
+  static NS_QUOTATIONS = 'QUOTATIONS';
   static NS_EXPENSES = 'EXPENSES';
 
   static TYPE_NEW_PRODUCT = 'NEW_PRODUCT';
   static TYPE_NEW_CLIENT = 'NEW_CLIENT';
   static TYPE_NEW_SUPPLIER = 'NEW_SUPPLIER';
   static TYPE_NEW_SALE = 'NEW_SALE';
+  static TYPE_NEW_QUOTATION = 'NEW_QUOTATION';
   static TYPE_NEW_EXPENSE = 'NEW_EXPENSE';
 
   static TYPE_CLIENT_UPDATED = 'CLIENT_UPDATED';
@@ -202,10 +225,13 @@ export class Event extends Record({
   static TYPE_SALE_PAYMENT = 'SALE_PAYMENT';
 
   static TYPE_VOID_SALE = 'VOID_SALE';
+  static TYPE_VOID_QUOTATION = 'VOID_QUOTATION';
   static TYPE_VOID_EXPENSE = 'VOID_EXPENSE';
 
   static TYPE_VOID_EXPENSE_PAYMENT = 'VOID_EXPENSE_PAYMENT';
   static TYPE_VOID_SALE_PAYMENT = 'VOID_SALE_PAYMENT';
+
+  static TYPE_APPROVE_QUOTATION = 'APPROVE_QUOTATION';
 
   static fromDatabase({ ...props }) {
     return {
@@ -215,13 +241,30 @@ export class Event extends Record({
 }
 
 export class TransactionStatus {
-  static CANCELLED = 'CANCELLED';
+  static CANCELLED = 'CANCELLED'; // 2
+  static APPROVED = 'APPROVED'; // 3
 
   static fromDatabase(value: ?number) {
-    return value === 2 ? TransactionStatus.CANCELLED : null;
+    if (value === 2) {
+      return TransactionStatus.CANCELLED;
+    }
+
+    if (value === 3) {
+      return TransactionStatus.APPROVED;
+    }
+
+    return null;
   }
 
   static toDatabase(value: typeof TransactionStatus.CANCELLED | null) {
-    return value === TransactionStatus.CANCELLED ? 2 : 1;
+    if (value === TransactionStatus.CANCELLED) {
+      return 2;
+    }
+
+    if (value === TransactionStatus.APPROVED) {
+      return 3;
+    }
+
+    return 1; // pending or valid
   }
 }

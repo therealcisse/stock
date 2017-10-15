@@ -22,6 +22,7 @@ import moment from 'moment';
 
 import { DATE_FORMAT } from 'vars';
 
+import QuotationForm from 'routes/Quotations/containers/Home/HomeContainer/QuotationForm';
 import SaleForm from 'routes/Sales/containers/Home/HomeContainer/SaleForm';
 import ExpenseForm from 'routes/Expenses/containers/Home/HomeContainer/ExpenseForm';
 
@@ -47,6 +48,17 @@ class TopContainer extends React.Component {
       <div className={style['kfFTAe']}>
         {(() => {
           switch (this.state.dialogOpen) {
+            case 'quotations':
+              return (
+                <QuotationForm
+                  onClose={this.handleRequestClose}
+                  initialValues={{
+                    dateCreated: moment().format(DATE_FORMAT),
+                    items: [],
+                  }}
+                />
+              );
+
             case 'sales':
               return (
                 <SaleForm
@@ -122,6 +134,9 @@ class TopContainer extends React.Component {
         <Dropdown onSelect={this.handleClick}>
           <Dropdown.Toggle componentClass={AddButton} />
           <Dropdown.Menu className={style.addMenu}>
+            <MenuItem eventKey="quotations" key="quotations">
+              Devis
+            </MenuItem>
             <MenuItem eventKey="sales" key="sales">
               Vente
             </MenuItem>

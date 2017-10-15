@@ -43,6 +43,11 @@ import {
 } from 'data/supplier/schema';
 
 import {
+  schema as quotationSchema,
+  resolvers as quotationResolvers,
+} from 'data/quotation/schema';
+
+import {
   schema as saleSchema,
   resolvers as saleResolvers,
 } from 'data/sale/schema';
@@ -261,6 +266,7 @@ const schema = [
   ...clientSchema,
   ...supplierSchema,
   ...productSchema,
+  ...quotationSchema,
   ...saleSchema,
   ...expenseSchema,
 ];
@@ -274,6 +280,7 @@ const resolvers = merge(
   clientResolvers,
   supplierResolvers,
   productResolvers,
+  quotationResolvers,
   saleResolvers,
   expenseResolvers,
 );

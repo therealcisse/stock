@@ -23,6 +23,7 @@ import { BusinessConnector } from 'data/business/connector';
 import { EventConnector } from 'data/event/connector';
 import { ClientConnector } from 'data/client/connector';
 import { SupplierConnector } from 'data/supplier/connector';
+import { QuotationConnector } from 'data/quotation/connector';
 import { SaleConnector } from 'data/sale/connector';
 import { ExpenseConnector } from 'data/expense/connector';
 import { ProductConnector } from 'data/product/connector';
@@ -33,6 +34,7 @@ import { Business } from 'data/business/models';
 import { Events } from 'data/event/models';
 import { Clients } from 'data/client/models';
 import { Suppliers } from 'data/supplier/models';
+import { Quotations } from 'data/quotation/models';
 import { Sales } from 'data/sale/models';
 import { Expenses } from 'data/expense/models';
 import { Products } from 'data/product/models';
@@ -55,6 +57,7 @@ const networkInterface = createLocalInterface({ execute }, schema, {
     Clients: new Clients({ connector: new ClientConnector({ db }) }),
     Suppliers: new Suppliers({ connector: new SupplierConnector({ db }) }),
     Sales: new Sales({ connector: new SaleConnector({ db }) }),
+    Quotations: new Quotations({ connector: new QuotationConnector({ db }) }),
     Expenses: new Expenses({ connector: new ExpenseConnector({ db }) }),
     Products: new Products({ connector: new ProductConnector({ db }) }),
     Money,

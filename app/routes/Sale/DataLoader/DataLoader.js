@@ -29,7 +29,7 @@ const paySale = graphql(PaySaleMutation, {
     return {
       paySale: (id, payload) =>
         mutate({
-          refetchQueries: ['Sale'],
+          refetchQueries: ['Sale', 'SalesReport'],
           variables: { id, payload },
           updateQueries: {},
         }),
@@ -42,7 +42,7 @@ const delSalePayment = graphql(DelSalePaymentMutation, {
     return {
       delSalePayment: id =>
         mutate({
-          refetchQueries: ['Sale'],
+          refetchQueries: ['Sale', 'SalesReport'],
           variables: { id },
           updateQueries: {},
         }),
@@ -55,7 +55,7 @@ const voidSale = graphql(VoidSaleMutation, {
     return {
       voidSale: id =>
         mutate({
-          refetchQueries: [],
+          refetchQueries: ['Sale', 'SalesReport'],
           variables: { id },
           updateQueries: {
             Sales(prev, { mutationResult }) {

@@ -1,0 +1,34 @@
+query Quotations($cursor: Int, $query: GetQuotationsQuery!) {
+  quotations(cursor: $cursor, query: $query) {
+    quotations {
+      quotation {
+        id
+        refNo
+        status
+        sale {
+          id
+        }
+        client {
+          id
+          displayName
+        }
+        dateCreated
+        items {
+          id
+          product {
+            id
+            displayName
+          }
+          qty
+          unitPrice
+        }
+        date
+        lastModified
+      }
+      total
+    }
+    cursor
+    prevCursor
+    length
+  }
+}

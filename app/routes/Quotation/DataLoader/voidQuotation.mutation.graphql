@@ -1,0 +1,35 @@
+mutation VoidQuotation($id: ID!) {
+  voidQuotation(id: $id) {
+    error {
+      code
+    }
+    info {
+      quotation {
+        id
+        status
+        refNo
+        dateCreated
+        sale {
+          id
+        }
+        client {
+          __typename
+          id
+          displayName
+        }
+        items {
+          id
+          product {
+            id
+            displayName
+            ref
+            unitPrice
+          }
+          qty
+          unitPrice
+        }
+      }
+      total
+    }
+  }
+}

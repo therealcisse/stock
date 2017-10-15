@@ -27,7 +27,11 @@ export class SaleConnector {
   }
 
   getNextRefNo() {
-    return this.loaders.nextRefNo.load('sales');
+    const { maxRefNo } = this.db
+      .prepare(`SELECT MAX(refNo) AS maxRefNo FROM sales;`)
+      .get();
+
+    return maxRefNo ? maxRefNo + 1 : 1;
   }
 
   getSalesReport() {
@@ -89,7 +93,6 @@ export class SaleConnector {
     { client, dateCreated, items, isFullyPaid },
     { Now, Events, Products, Clients },
   ) {
-    this.loaders.nextRefNo.clear('sales');
     this.loaders.length.clear('sales');
     this.loaders.salesReport.clear('sales');
 
@@ -97,11 +100,14 @@ export class SaleConnector {
 
     const id = uuid();
 
+    const refNo = this.getNextRefNo();
+
     this.db
       .prepare(
-        `INSERT INTO sales (id, clientId, dateCreated, date, lastModified) VALUES (@id, @client, @dateCreated, @date, @lastModified);`,
+        `INSERT INTO sales (id, refNo, clientId, dateCreated, date, lastModified) VALUES (@id, @refNo, @client, @dateCreated, @date, @lastModified);`,
       )
       .run({
+        refNo,
         id,
         client,
         dateCreated: +dateCreated,

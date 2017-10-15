@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from 'material-ui/Typography';
 
-import style from 'routes/Suppliers/styles';
+import style from 'routes/Sales/styles';
 
 export default function Empty() {
   return (

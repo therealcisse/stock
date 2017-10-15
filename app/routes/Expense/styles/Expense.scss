@@ -239,3 +239,33 @@
 .cancelled {
   text-decoration: line-through;
 }
+
+.t {
+  -webkit-transform-origin: top left;
+  -moz-transform-origin: top left;
+  -o-transform-origin: top left;
+  -ms-transform-origin: top left;
+  -webkit-transform: scale(0.25);
+  -moz-transform: scale(0.25);
+  -o-transform: scale(0.25);
+  -ms-transform: scale(0.25);
+  z-index: 2;
+  position: absolute;
+  white-space: pre;
+  overflow: visible;
+
+  &.m1_1 {
+    transform: matrix(0.52, -0.85, 0.85, 0.52, 0, 0) scale(0.25);
+  }
+}
+
+.s5_1 {
+  font-size: 2294.7px;
+  font-family: Roboto;
+  color: rgba(169, 169, 169, 0.3);
+}
+
+.t1c_1 {
+  left: -20px;
+  top: 1176px;
+}

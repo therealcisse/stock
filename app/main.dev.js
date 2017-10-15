@@ -177,8 +177,8 @@ const setupDB = new Promise(resolve => {
           db.exec(
             `
             CREATE TABLE sales (
-              id            TEXT NOT NULL,
-              refNo         INTEGER PRIMARY KEY AUTOINCREMENT,
+              id            TEXT PRIMARY KEY,
+              refNo         INTEGER NOT NULL,
               clientId      INTEGER NOT NULL,
 
               dateCreated   INTEGER NOT NULL,
@@ -188,7 +188,7 @@ const setupDB = new Promise(resolve => {
 
               date          INTEGER NOT NULL,
               lastModified  INTEGER NOT NULL
-            );
+            ) WITHOUT ROWID;
 
             CREATE VIRTUAL TABLE sales_index USING fts5(
               refNo,
@@ -220,6 +220,58 @@ const setupDB = new Promise(resolve => {
             `
             CREATE UNIQUE INDEX idx_sales_id ON sales (id);
           `,
+          );
+
+          // Quotations
+
+          db.exec(
+            `
+            CREATE TABLE quotations (
+              id            TEXT PRIMARY KEY,
+              refNo         INTEGER NOT NULL,
+              clientId      INTEGER NOT NULL,
+
+              saleId        INTEGER,
+
+              dateCreated   INTEGER NOT NULL,
+
+              -- state: extensible indicator of whether quotation is pending(1) or voided(2) or approved(3)
+              state         INTEGER NOT NULL DEFAULT 1,
+
+              date          INTEGER NOT NULL,
+              lastModified  INTEGER NOT NULL
+            ) WITHOUT ROWID;
+
+            CREATE VIRTUAL TABLE quotations_index USING fts5(
+              refNo,
+              id UNINDEXED,
+              tokenize=porter
+            );
+
+            -- Trigger on CREATE
+            CREATE TRIGGER after_quotations_insert AFTER INSERT ON quotations BEGIN
+            INSERT INTO quotations_index (
+              id,
+              refNo
+            )
+            VALUES(
+              new.id,
+              new.refNo
+            );
+            END;
+
+            -- Trigger on DELETE
+            CREATE TRIGGER after_quotations_delete AFTER DELETE ON quotations BEGIN
+            DELETE FROM quotations_index WHERE id = old.id;
+            END;
+
+            `,
+          );
+
+          db.exec(
+            `
+            CREATE UNIQUE INDEX idx_quotations_id ON quotations (id);
+            `,
           );
 
           // Expenses
@@ -598,9 +650,13 @@ app.on('ready', async () => {
   menuBuilder.buildMenu();
 
   (async () => {
-    browser = await puppeteer.launch({
-      handleSIGINT: false,
-      args: [`--remote-debugging-port=${CHROME_REMOTE_DEBUGGING_PORT}`],
-    });
+    try {
+      browser = await puppeteer.launch({
+        handleSIGINT: false,
+        args: [`--remote-debugging-port=${CHROME_REMOTE_DEBUGGING_PORT}`],
+      });
+    } catch (e) {
+      log.error('[PUPPETEER] failed:', e);
+    }
   })();
 });

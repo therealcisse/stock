@@ -1,0 +1,200 @@
+@import "variables";
+
+.center {
+  composes: center from "styles/_base.scss";
+}
+
+.root {
+  composes: d-flex flex-row from "styles/_base.scss";
+  // height: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+.page {
+  composes: d-flex flex-column from "styles/_base.scss";
+  // height: 100%;
+  // overflow-y: visible;
+  // max-width: $content-width;
+  // min-width: $content-width;
+
+  width: calc(100vw - 64px);
+
+  min-height: calc(100vh - 100px);
+
+  padding-bottom: 100px;
+}
+
+.header {
+  padding: 35px 50px 0 25px;
+
+  background-image: linear-gradient(to top, #f6f8fb 0%, #f9fafb 100%);
+  background-color: #f3f5f8;
+
+  border-bottom: 1px solid #e3eaf3;
+}
+.pageHeader {
+  composes: d-flex flex-row justify-content-between from "styles/_base.scss";
+}
+.pageBody {
+  margin-top: 70px;
+  margin-left: 25px;
+  margin-right: 35px;
+}
+
+.addButton {
+}
+
+.stageRoot {
+  min-width: 160px;
+}
+
+.stageRootInner {
+  padding-bottom: 20px;
+}
+
+.stageInsightPaid {
+  border-left: 5px solid #56b349;
+  padding-left: 10px;
+}
+
+.stageInsightOverdue {
+  border-left: 5px solid #f2b835;
+  padding-left: 10px;
+}
+
+.stageAmountText {
+  font-family: "DinNextLight", Arial, sans-serif;
+  letter-spacing: -0.05em;
+  color: #56b349;
+  padding: 2px 4px 4px 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-bottom: 15px;
+  font-size: 2.4rem;
+  color: black;
+  line-height: 0.85;
+}
+
+.stageAmountLabel {
+  font-family: HelveticaNeueLight, Helvetica, Arial, sans-serif;
+  color: rgb(153, 153, 153);
+  font-size: 12px;
+}
+
+.leftPadding10 {
+  padding-left: 10px;
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+
+.alignTextRight {
+  text-align: right;
+}
+
+.alignTextLeft {
+  text-align: left;
+}
+
+.upperCase {
+  text-transform: uppercase;
+}
+
+.amount2 {
+  font-family: DinNextLight, Arial, sans-serif;
+  letter-spacing: -0.05em;
+  font-size: 2.8rem;
+}
+
+.entrySection + .entrySection {
+  margin-top: 100px;
+}
+
+.empty,
+.loading {
+  composes: flex-column from "styles/_base.scss";
+  composes: center from "styles/_base.scss";
+  margin: 35px 50px 0 25px;
+}
+
+.displayNameLink {
+}
+
+.errorLine {
+  composes: d-flex align-items-center from "styles/_base.scss";
+
+  svg {
+    color: theme-color("danger");
+  }
+
+  background-color: theme-color("warning");
+  height: 50px;
+  padding: 5px 24px 5px 24px;
+
+  div {
+    color: theme-color("inverse");
+  }
+}
+
+.center {
+  composes: center from "styles/_base.scss";
+  height: 150px;
+}
+
+.balanceDueTop {
+}
+
+.formTopInfo {
+  composes: d-flex flex-row justify-content-between align-items-center from "styles/_base.scss";
+  font-family: HelveticaNeueRoman, Helvetica, Arial, sans-serif;
+  background-image: linear-gradient(
+    to top,
+    rgb(246, 248, 251) 0%,
+    rgb(249, 250, 251) 100%
+  );
+  background-color: rgb(243, 245, 248);
+  border-bottom: 1px solid rgb(227, 234, 243);
+  height: 115px;
+  padding: 5px 24px 5px 24px;
+}
+
+.fieldDate {
+  width: 45%;
+  padding: 0 24px 0 24px;
+}
+
+.fieldItems {
+  padding: 0 24px 0 24px;
+}
+
+.fieldOps {
+  padding: 0 24px 0 24px;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.stockNumber {
+  letter-spacing: 1px;
+  margin-left: 6px;
+  color: theme-color("success");
+
+  &.danger {
+    color: theme-color("danger");
+  }
+}
+
+.totalsRow {
+  thead {
+    visibility: hidden;
+  }
+
+  td,
+  th {
+    border-bottom: none;
+  }
+}

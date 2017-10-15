@@ -14,6 +14,8 @@ import selector from './selector';
 
 import { injectIntl } from 'react-intl';
 
+import Page from './Page';
+
 export class HomeContainer extends React.Component {
   getChildContext() {
     return {
@@ -26,6 +28,7 @@ export class HomeContainer extends React.Component {
     return (
       <div className={style.root}>
         <SideMenu intl={intl} user={user} onLogOut={actions.logOut} />
+        <Page />
       </div>
     );
   }

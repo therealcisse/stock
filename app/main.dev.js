@@ -649,11 +649,28 @@ app.on('ready', async () => {
   const menuBuilder = new MenuBuilder(win);
   menuBuilder.buildMenu();
 
+  // Launch background browser for printing.
   (async () => {
     try {
+      const options = {};
+
+      if (process.env.NODE_ENV === 'production') {
+        const exe = puppeteer.executablePath();
+        const executablePath = exe.replace('app.asar', 'app.asar.unpacked');
+        options.executablePath = executablePath;
+      }
+
       browser = await puppeteer.launch({
+        ...options,
         handleSIGINT: false,
-        args: [`--remote-debugging-port=${CHROME_REMOTE_DEBUGGING_PORT}`],
+        dumpio:
+          process.env.NODE_ENV !== 'production' ||
+          process.env.DEBUG_PROD === 'true',
+        args: [
+          `--remote-debugging-port=${CHROME_REMOTE_DEBUGGING_PORT}`,
+          '--disable-sandbox',
+          '--disable-setuid-sandbox',
+        ],
       });
     } catch (e) {
       log.error('[PUPPETEER] failed:', e);

@@ -30,7 +30,22 @@ const approveQuotation = graphql(ApproveQuotationMutation, {
         mutate({
           refetchQueries: ['Quotation'],
           variables: { id },
-          updateQueries: {},
+          updateQueries: {
+            Quotations(prev, { mutationResult }) {
+              if (mutationResult.data.approveQuotation.error) {
+                return prev;
+              }
+
+              return {
+                quotations: {
+                  ...prev.quotations,
+                  quotations: prev.quotations.quotations.filter(
+                    ({ quotation }) => quotation.id !== id,
+                  ),
+                },
+              };
+            },
+          },
         }),
     };
   },

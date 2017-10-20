@@ -16,8 +16,8 @@ image: "Visual Studio 2015"
 init:
   - "git config --global core.autocrlf input"
 install:
-  - "npm install --global --production windows-build-tools"
   - ps: "Install-Product node $env:nodejs_version"
+  - "npm install --global --production windows-build-tools"
   - cmd: "SET PATH=C:\\Program Files (x86)\\MSBuild\\14.0\\bin\\;%PATH%"
   - cmd: "SET PATH=C:\\python27;%PATH%"
   - cmd: "SET CI=true"

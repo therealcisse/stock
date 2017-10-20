@@ -1,38 +1,39 @@
-sudo: false
-
-language: node_js
-
-node_js:
-  - 8
-
-cache:
-  yarn: true
-  directories:
-    - node_modules
-    - app/node_modules
-
+---
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
       - icnsutils
       - graphicsmagick
       - xz-utils
       - xorriso
-
-install:
-  - export CXX="g++-4.8"
-  - yarn
-  - cd app && yarn && cd ..
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
-
+    sources:
+      - ubuntu-toolchain-r-test
 before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start &
-  - sleep 3
-
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start &"
+  - "sleep 3"
+cache:
+  directories:
+    - node_modules
+    - app/node_modules
+  yarn: true
+deploy:
+  api_key:
+    secure: DrdPmYhj9SNumKDzlU7pJoDWRgBhw25zdWvGCBCmMzC5Q+fCBLqfBr6o2jjT9eYJeEnxNvVVeQ53pdJKJ6QHpZc6f/kdc3QjNI6sI/XXSTYxpNln1lxAgYvg5UVWbBGJiYF0ZbQZszqUei1zdxpS+nn7D+0sknFPtADNRuRssEOOvLRUCOv9VJi33iiU7uKckuppfnkKpQKFtKpxtRMxKAMQFnvXxVicAHXK7oisSbnzPJq2D+B4VgUYSH4jrCZO1n+pQfeaK08tecg/iblWFE6cM0gleYR12UkC1DSdWj4G2YNlZ2zeAs6kJUZN0DadxwoAo6oLLu1SdB0Czbak9nUWLbbXgMRMTWi7Vu8jQ0qYPx60YjuYMo+6HBhKKlwakK57ZtQi9fdAwbdv+Nya8tsDws+eInGWidXT+BQcqnvOGsggyEHUshKBAA01Nyr0osO313YFHNoe0XCbLsmKrk7r44jM7NiqoAHf8qA2509gjAYhDk211fj3Wcg+N0W/96vxRGTe2FZd2H0C+jaalAnDLb4roS4c0Oz2LVmY6VybYiFmjXSa9gwWnNKDdYItxACTFz/GBw27j8pXW0kEkfYNdP8p1fim7mjoops4u0ayFxmY/pNUuMuziFz1wIWIFtxMNj6yTUxMAOJY7OHqiTb1nt2+jSkduwfp8DePMUE=
+  file: release.zip
+  provider: releases
+  skip_cleanup: true
+  true: tags
+install:
+  - "export CXX=\"g++-4.8\""
+  - yarn
+  - "cd app && yarn && cd .."
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+language: node_js
+node_js:
+  - 8
 script:
-  - node --version
-  - yarn package
+  - "node --version"
+  - "yarn package"
+sudo: false

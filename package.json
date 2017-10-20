@@ -193,7 +193,6 @@
     "jsdom": "^11.2.0",
     "lint-staged": "^4.1.3",
     "minimist": "^1.2.0",
-    "node-gyp": "^3.6.2",
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.6",
     "progress-bar-webpack-plugin": "^1.10.0",

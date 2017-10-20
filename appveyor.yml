@@ -9,13 +9,14 @@ cache:
   - '%APPDATA%\npm-cache'
 clone_depth: 1
 environment:
+  ELECTRON_RUN_AS_NODE: 1
   matrix:
     - nodejs_version: 8
 image: "Visual Studio 2015"
 init:
   - "git config --global core.autocrlf input"
 install:
-  - npm install -g npm@4 --silent
+  - "npm install -g npm@4 --silent"
   - ps: "Install-Product node $env:nodejs_version"
   - md: "SET PATH=C:\\Program Files (x86)\\MSBuild\\14.0\\bin\\;%PATH%"
   - cmd: "SET PATH=C:\\python27;%PATH%"

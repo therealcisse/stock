@@ -59,12 +59,8 @@ const installExtensions = async () => {
     REACT_PERF,
     REACT_DEVELOPER_TOOLS,
     REDUX_DEVTOOLS,
+    APOLLO_DEVELOPER_TOOLS,
   } = require('electron-devtools-installer');
-
-  const APOLLO_DEVELOPER_TOOLS = {
-    id: 'jdkknkkbebbapilgoeccciglkfbmbnfm',
-    electron: '^1.2.1',
-  };
 
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
 
@@ -235,7 +231,7 @@ const setupDB = new Promise(resolve => {
 
               dateCreated   INTEGER NOT NULL,
 
-              -- state: extensible indicator of whether quotation is pending(1) or voided(2) or approved(3)
+              -- state: extensible indicator of whether quotation is pending(1) or voided(2) or accepted(3)
               state         INTEGER NOT NULL DEFAULT 1,
 
               date          INTEGER NOT NULL,
@@ -452,7 +448,7 @@ const setupDB = new Promise(resolve => {
             CREATE TABLE events (
               id          TEXT PRIMARY KEY,
 
-              -- ns { SALES, EXPENSES, PRODUCTS, CLIENTS, SUPPLIERS }
+              -- ns { QUOTATIONS, SALES, EXPENSES, PRODUCTS, CLIENTS, SUPPLIERS }
               ns          TEXT NOT NULL,
 
               -- type of event
@@ -463,6 +459,9 @@ const setupDB = new Promise(resolve => {
 
               -- A payment was made on an expense or a sale
               paymentId   INTEGER,
+
+              -- A quotation was created, modified or deleted
+              quotationId      INTEGER,
 
               -- A sale was created, modified or deleted
               saleId      INTEGER,

@@ -1,0 +1,11 @@
+query SearchProducts($q: String) {
+  searchProducts(q: $q) {
+    product {
+      id
+      displayName
+      unitPrice
+      ref
+    }
+    stock
+  }
+}

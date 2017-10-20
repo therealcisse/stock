@@ -1,35 +1,38 @@
 import React from 'react';
 import T from 'prop-types';
 
+import Typography from 'material-ui/Typography';
+
 import compose from 'redux/lib/compose';
 
 import { withStyles } from 'material-ui/styles';
 
 import { injectIntl } from 'react-intl';
 
-import Loading from 'components/Loading';
-
 import style from 'routes/Landing/styles';
 
-import TestGraph from './TestGraph';
+import PaperSheet from './PaperSheet';
 
 const styles = theme => ({});
 
 class PageBody extends React.Component {
   render() {
-    const { intl, loading, classes } = this.props;
-
-    if (loading) {
-      return (
-        <div className={style.loading}>
-          <Loading />
-        </div>
-      );
-    }
+    const { intl, classes } = this.props;
 
     return (
       <div className={style.pageBody}>
-        <TestGraph width={500} height={600} />
+        <div className={style.graphs}>
+          <PaperSheet />
+          <PaperSheet />
+          <PaperSheet />
+        </div>
+
+        <div className={style.events}>
+          <Typography type="headline" component="h3">
+            Événnements récents
+          </Typography>
+          <div />
+        </div>
       </div>
     );
   }

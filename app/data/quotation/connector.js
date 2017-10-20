@@ -22,7 +22,7 @@ export class QuotationConnector {
 
     this.addQuotation = asTransaction(this.addQuotation.bind(this));
     this.void = asTransaction(this.void.bind(this));
-    this.approve = asTransaction(this.approve.bind(this));
+    this.accept = asTransaction(this.accept.bind(this));
   }
 
   getNextRefNo() {
@@ -45,7 +45,7 @@ export class QuotationConnector {
     const quotation = await this.loaders.ids.load(id);
     return {
       quotation,
-      total: quotation.items.reduce(
+      total: (await this.getItems(quotation.id)).reduce(
         (sum, { qty, unitPrice }) => sum + qty * unitPrice,
         0,
       ),
@@ -55,22 +55,22 @@ export class QuotationConnector {
   async getQuotations({ cursor = 0, query }) {
     const objects = this.db
       .prepare(
-        `SELECT * FROM quotations WHERE state <> @cancelled AND state <> @approved;`,
+        `SELECT * FROM quotations WHERE state <> @cancelled AND state <> @accepted;`,
       )
       .all({
         // offset: cursor,
         // limit: LIMIT,
         cancelled: TransactionStatus.toDatabase(TransactionStatus.CANCELLED),
-        approved: TransactionStatus.toDatabase(TransactionStatus.APPROVED),
+        accepted: TransactionStatus.toDatabase(TransactionStatus.ACCEPTED),
       })
       .map(Quotation.fromDatabase);
 
     const length = await this.loaders.length.load('quotations');
 
     const quotations = await Promise.all(
-      objects.map(quotation => ({
+      objects.map(async quotation => ({
         quotation,
-        total: quotation.items.reduce(
+        total: (await this.getItems(quotation.id)).reduce(
           (sum, { qty, unitPrice }) => sum + qty * unitPrice,
           0,
         ),
@@ -174,28 +174,54 @@ export class QuotationConnector {
     return { id, events: [event] };
   }
 
-  async approve(id, { amount, dateCreated }, { Now, Events }) {
+  async accept(id, context) {
+    const { Now, Events, Sales } = context;
+
     this.loaders.ids.clear(id);
+    this.loaders.items.clear(id);
+
+    const q = await this.get(id);
+
+    this.loaders.ids.clear(id);
+
+    const payload = {
+      client: q.clientId,
+      dateCreated: q.dateCreated,
+      items: (await this.getItems(
+        q.id,
+      )).map(({ productId, qty, unitPrice }) => ({
+        productId,
+        qty,
+        unitPrice,
+      })),
+      isFullyPaid: false,
+    };
+
+    const { id: saleId, events: saleEvents } = await Sales.addSale(
+      payload,
+      context,
+    );
 
     this.db
       .prepare(
-        `UPDATE quotations SET state = @state, lastModified = @lastModified WHERE id = @id;`,
+        `UPDATE quotations SET state = @state, saleId = @saleId, lastModified = @lastModified WHERE id = @id;`,
       )
       .run({
-        state: TransactionStatus.toDatabase(TransactionStatus.APPROVED),
+        state: TransactionStatus.toDatabase(TransactionStatus.ACCEPTED),
+        saleId,
         lastModified: Now(),
         id,
       });
 
     const event = await Events.create({
       ns: Event.NS_QUOTATIONS,
-      type: Event.TYPE_APPROVE_QUOTATION,
+      type: Event.TYPE_ACCEPT_QUOTATION,
       quotationId: id,
       metadata: JSON.stringify({}),
       timestamp: Now(),
     });
 
-    return { id, events: [event] };
+    return { id, events: [event].concat(saleEvents) };
   }
 
   query(q: ?string) {

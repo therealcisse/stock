@@ -3,6 +3,8 @@ import Store from 'Store';
 import React from 'react';
 import T from 'prop-types';
 
+import Link from 'react-router-dom/Link';
+
 import pick from 'lodash.pick';
 
 import * as DataLoader from 'routes/Products/DataLoader';
@@ -22,6 +24,8 @@ import Table, {
   TableRow,
   TableSortLabel,
 } from 'material-ui/Table';
+
+import { PATH_PRODUCT_PREFIX } from 'vars';
 
 import { injectIntl } from 'react-intl';
 
@@ -218,9 +222,14 @@ class PageBody extends React.Component {
                   <TableCell padding="none">{''}</TableCell>
                   <TableCell>
                     <div className={style.displayName}>
-                      <Typography type="body1" noWrap>
-                        {n.product.displayName}
-                      </Typography>
+                      <Link
+                        to={PATH_PRODUCT_PREFIX + '/' + n.product.id}
+                        className={style.displayNameLink}
+                      >
+                        <Typography color="inherit" type="body1" noWrap>
+                          {n.product.displayName}
+                        </Typography>
+                      </Link>
                       <div className={style.actions}>
                         <IconButton
                           aria-label="Actions"

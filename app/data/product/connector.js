@@ -24,6 +24,12 @@ export class ProductConnector {
     return this.loaders.stock.load(id);
   }
 
+  async getProduct(id: string): Promise<any> {
+    const product = await this.get(id);
+
+    return { product, stock: await this.getStock(id) };
+  }
+
   async newItem({
     type,
     foreignId,
@@ -139,5 +145,15 @@ export class ProductConnector {
 
       return { id: newId, events: [newProduct] };
     }
+  }
+
+  async query(q: ?string) {
+    const products = await this.loaders.q.load(q);
+    return await Promise.all(
+      products.map(async product => ({
+        product,
+        stock: await this.getStock(product.id),
+      })),
+    );
   }
 }

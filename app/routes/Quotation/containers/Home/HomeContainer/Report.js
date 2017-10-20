@@ -29,7 +29,7 @@ export default class Report extends React.Component {
               style.amount,
               quotation.status === TransactionStatus.CANCELLED &&
                 style.cancelled,
-              quotation.status === TransactionStatus.APPROVED && style.approved,
+              quotation.status === TransactionStatus.ACCEPTED && style.accepted,
             )}
           >
             {intl.formatNumber(total, { format: 'MAD' })} MAD

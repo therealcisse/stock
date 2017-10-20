@@ -14,7 +14,7 @@ import { PATH_QUOTATIONS, DATE_FORMAT } from 'vars';
 
 import parseMoney from 'parseMoney';
 
-import { TransactionStatus } from 'data/types';
+import { TransactionStatus, Quotation } from 'data/types';
 
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
@@ -32,7 +32,7 @@ import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
 
-import ApproveForm from './ApproveForm';
+import AcceptForm from './AcceptForm';
 import VoidForm from './VoidForm';
 
 import PDF from './templates/PDF';
@@ -67,7 +67,7 @@ class PageHeader extends React.Component {
         />,
       );
 
-      this.props.actions.print('<!DOCTYPE html >' + html);
+      this.props.actions.print(Quotation.TYPE, '<!DOCTYPE html >' + html);
     } else {
       this.setState({ dialogOpen: true, option, open: false, anchorEl: null });
     }
@@ -92,20 +92,22 @@ class PageHeader extends React.Component {
     const options = [];
 
     if (n) {
-      if (!n.isFullyPaid) {
-        options.push({ id: 'pay', displayName: 'Reçevoir un paiement' });
+      if (!n.quotation.status) {
+        options.push({ id: 'accept', displayName: 'Accepter' });
       }
 
       options.push({ id: 'print', displayName: 'Imprimer' });
 
-      options.push({ id: 'void', displayName: 'Annuler' });
+      if (!n.quotation.status) {
+        options.push({ id: 'void', displayName: 'Annuler' });
+      }
     }
     return (
       <div className={style.pageHeader}>
         <div className={style.title}>
           <Typography type="display1" gutterBottom>
             <Link className={style.titleLink} to={PATH_QUOTATIONS}>
-              Ventes
+              Devis
             </Link>
           </Typography>
           {n
@@ -119,7 +121,7 @@ class PageHeader extends React.Component {
                 </Typography>,
 
                 n.quotation.status === TransactionStatus.CANCELLED ||
-                n.quotation.status === TransactionStatus.APPROVED ? null : (
+                n.quotation.status === TransactionStatus.ACCEPTED ? null : (
                   <div className={style.actions}>
                     <IconButton
                       aria-label="Actions"
@@ -174,9 +176,9 @@ class PageHeader extends React.Component {
             );
           }
 
-          if (option === 'approve') {
+          if (option === 'accept') {
             return (
-              <ApproveForm
+              <AcceptForm
                 id={n.quotation.id}
                 handleRequestClose={this.handleDialogClose}
               />

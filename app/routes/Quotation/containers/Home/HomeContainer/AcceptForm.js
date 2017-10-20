@@ -36,13 +36,13 @@ const styles = theme => ({
   },
 });
 
-class ApproveForm extends React.Component {
-  onApprove = async () => {
+class AcceptForm extends React.Component {
+  onAccept = async () => {
     this.setState({ loading: true });
 
-    const { id, approveQuotation } = this.props;
+    const { id, acceptQuotation } = this.props;
 
-    const { data: { approveQuotation: { error } } } = await approveQuotation(id);
+    const { data: { acceptQuotation: { error } } } = await acceptQuotation(id);
 
     if (error) {
       //
@@ -77,7 +77,7 @@ class ApproveForm extends React.Component {
         onRequestClose={this.onClose}
         onExited={handleRequestClose}
       >
-        <DialogTitle>{'Annuler cette opération?'}</DialogTitle>
+        <DialogTitle>{'Accepter ce devis?'}</DialogTitle>
         {this.state.loading ? (
           <div className={style.center}>
             <Loading />
@@ -86,16 +86,15 @@ class ApproveForm extends React.Component {
           [
             <DialogContent key="content">
               <DialogContentText>
-                Cette opération ne s'affichira plus et une nouvelle facture de
-                vente sera généré.
+                Une nouvelle facture de vente sera généré automatiquement.
               </DialogContentText>
             </DialogContent>,
             <DialogActions key="actions">
               <Button onClick={this.onClose} color="primary">
                 Retour
               </Button>
-              <Button onClick={this.onApprove} color="primary">
-                Oui, Annuler
+              <Button onClick={this.onAccept} color="primary">
+                Oui, Accepter
               </Button>
             </DialogActions>,
           ]
@@ -105,16 +104,16 @@ class ApproveForm extends React.Component {
   }
 }
 
-ApproveForm.propTypes = {
+AcceptForm.propTypes = {
   id: T.string.isRequired,
 };
 
-ApproveForm.contextTypes = {
+AcceptForm.contextTypes = {
   snackbar: T.object.isRequired,
 };
 
 export default compose(
   withStyles(styles),
   injectIntl,
-  DataLoader.approveQuotation,
-)(ApproveForm);
+  DataLoader.acceptQuotation,
+)(AcceptForm);

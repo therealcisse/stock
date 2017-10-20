@@ -4,7 +4,7 @@ import BusinessQuery from './business.query.graphql';
 
 import QuotationQuery from './getQuotation.query.graphql';
 
-import ApproveQuotationMutation from './approveQuotation.mutation.graphql';
+import AcceptQuotationMutation from './acceptQuotation.mutation.graphql';
 import VoidQuotationMutation from './voidQuotation.mutation.graphql';
 
 const business = graphql(BusinessQuery, {
@@ -23,16 +23,16 @@ const quotation = graphql(QuotationQuery, {
   }),
 });
 
-const approveQuotation = graphql(ApproveQuotationMutation, {
+const acceptQuotation = graphql(AcceptQuotationMutation, {
   props({ mutate }) {
     return {
-      approveQuotation: id =>
+      acceptQuotation: id =>
         mutate({
           refetchQueries: ['Quotation'],
           variables: { id },
           updateQueries: {
             Quotations(prev, { mutationResult }) {
-              if (mutationResult.data.approveQuotation.error) {
+              if (mutationResult.data.acceptQuotation.error) {
                 return prev;
               }
 
@@ -82,6 +82,6 @@ const voidQuotation = graphql(VoidQuotationMutation, {
 export default {
   business,
   quotation,
-  approveQuotation,
+  acceptQuotation,
   voidQuotation,
 };

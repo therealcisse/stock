@@ -27,8 +27,8 @@ export class Quotations {
     return this.connector.void(id, context);
   }
 
-  approve(id, context) {
-    return this.connector.approve(id, context);
+  accept(id, context) {
+    return this.connector.accept(id, context);
   }
 
   getNextRefNo() {

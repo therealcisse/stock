@@ -1,0 +1,11 @@
+query Product($id: ID!) {
+  getProduct(id: $id) {
+    product {
+      id
+      displayName
+      unitPrice
+      ref
+    }
+    stock
+  }
+}

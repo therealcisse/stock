@@ -1,0 +1,23 @@
+query SearchQuotations($q: String) {
+  searchQuotations(q: $q) {
+    id
+    refNo
+    status
+    client {
+      id
+      displayName
+    }
+    dateCreated
+    items {
+      id
+      product {
+        id
+        displayName
+      }
+      qty
+      unitPrice
+    }
+    date
+    lastModified
+  }
+}

@@ -231,7 +231,7 @@ export class Event extends Record({
   static TYPE_VOID_EXPENSE_PAYMENT = 'VOID_EXPENSE_PAYMENT';
   static TYPE_VOID_SALE_PAYMENT = 'VOID_SALE_PAYMENT';
 
-  static TYPE_APPROVE_QUOTATION = 'APPROVE_QUOTATION';
+  static TYPE_ACCEPT_QUOTATION = 'ACCEPT_QUOTATION';
 
   static fromDatabase({ ...props }) {
     return {
@@ -242,7 +242,7 @@ export class Event extends Record({
 
 export class TransactionStatus {
   static CANCELLED = 'CANCELLED'; // 2
-  static APPROVED = 'APPROVED'; // 3
+  static ACCEPTED = 'ACCEPTED'; // 3
 
   static fromDatabase(value: ?number) {
     if (value === 2) {
@@ -250,7 +250,7 @@ export class TransactionStatus {
     }
 
     if (value === 3) {
-      return TransactionStatus.APPROVED;
+      return TransactionStatus.ACCEPTED;
     }
 
     return null;
@@ -261,7 +261,7 @@ export class TransactionStatus {
       return 2;
     }
 
-    if (value === TransactionStatus.APPROVED) {
+    if (value === TransactionStatus.ACCEPTED) {
       return 3;
     }
 

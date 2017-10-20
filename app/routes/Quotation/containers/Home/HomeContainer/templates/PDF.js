@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import writtenNumber from 'written-number';
+import writtenNumber from 'written-number';
 
 import moment from 'moment';
 
@@ -16,11 +16,9 @@ export default class PDF extends React.Component {
     const { intl, business, n } = this.props;
     const { total, quotation } = n;
 
-    const paymentDate = quotation.payments.length
-      ? Math.max(...quotation.payments.map(p => p.dateCreated))
-      : false;
-
     const g = Math.min(Math.max(0, quotation.items.length - 3), 9);
+
+    const includeQty = quotation.items.some(item => item.qty > 1);
 
     const Line_1 = intersperse(
       [
@@ -120,14 +118,18 @@ export default class PDF extends React.Component {
               {quotation.client.tel || <span>&mdash;</span>}
             </div>
             <div id="tb_1" className="t s3_1">
-              PRODUIT
+              PRODUIT / PRESTATION
             </div>
-            <div id="tc_1" className="t s3_1">
-              QTÉ
-            </div>
-            <div id="td_1" className="t s3_1">
-              P. U.
-            </div>
+            {includeQty ? (
+              <div id="tc_1" className="t s3_1">
+                QTÉ
+              </div>
+            ) : null}
+            {includeQty ? (
+              <div id="td_1" className="t s3_1">
+                P. U.
+              </div>
+            ) : null}
             <div id="tf_1" className="t s3_1">
               MONTANT
             </div>
@@ -136,12 +138,16 @@ export default class PDF extends React.Component {
                 <div style={{ top: 432 + 32 * i }} id="tg" className="t s2_1">
                   {product.displayName}
                 </div>,
-                <div style={{ top: 432 + 32 * i }} id="th" className="t s1_1">
-                  {qty}
-                </div>,
-                <div style={{ top: 432 + 32 * i }} id="ti" className="t s1_1">
-                  {intl.formatNumber(unitPrice, { format: 'MAD' })}
-                </div>,
+                includeQty ? (
+                  <div style={{ top: 432 + 32 * i }} id="th" className="t s1_1">
+                    {qty}
+                  </div>
+                ) : null,
+                includeQty ? (
+                  <div style={{ top: 432 + 32 * i }} id="ti" className="t s1_1">
+                    {intl.formatNumber(unitPrice, { format: 'MAD' })}
+                  </div>
+                ) : null,
                 <div
                   style={{ top: 432 + 32 * i, left: 786 }}
                   id="tk"
@@ -151,6 +157,23 @@ export default class PDF extends React.Component {
                 </div>,
               ];
             })}
+            {/* <div style={{ top: 553 + 32 * g }} id="tq_1" className="t s1_1"> */}
+            {/*   Mode de paiement: */}
+            {/* </div> */}
+            {/* <div style={{ top: 584 + 32 * g }} id="tr_1" className="t s1_1"> */}
+            {/*   Nº: */}
+            {/* </div> */}
+            {/* <div style={{ top: 616 + 32 * g }} id="ts_1" className="t s1_1"> */}
+            {/*   Date de paiement: */}
+            {/* </div> */}
+            {/* <div style={{ top: 553 + 32 * g }} id="tt_1" className="t s2_1" /> */}
+            {/* <div style={{ top: 616 + 32 * g }} id="tu_1" className="t s2_1"> */}
+            {/*   {paymentDate !== false ? ( */}
+            {/*     formatDate(moment.utc(paymentDate).toDate()) */}
+            {/*   ) : ( */}
+            {/*     <span>&mdash;</span> */}
+            {/*   )} */}
+            {/* </div> */}
             <div style={{ top: 544 + g * 32 }} id="tv_1" className="t s1_1">
               Total HT
             </div>
@@ -161,14 +184,45 @@ export default class PDF extends React.Component {
             >
               {intl.formatNumber(total, { format: 'MAD' })}
             </div>
+            <div style={{ top: 566 + g * 32 }} id="tx_1" className="t s1_1">
+              TVA 20%
+            </div>
+            <div
+              style={{ top: 566 + g * 32, left: 786 }}
+              id="ty_1"
+              className="t s1_1"
+            >
+              {intl.formatNumber(0.2 * total, { format: 'MAD' })}
+            </div>
+            <div
+              style={{
+                top: 32 + 589,
+              }}
+              id="tz_1"
+              className="t s2_1"
+            >
+              Total TTC
+            </div>
+            <div
+              style={{
+                top: 32 + 589,
+                left: 786,
+              }}
+              id="t10_1"
+              className="t s1_1"
+            >
+              {intl.formatNumber(total + total * 0.2, { format: 'MAD' })}
+            </div>
+            {/*                */}
             <div style={{ top: 756 + 32 * g }} id="t15_1" className="t s1_1">
               Cadre reservé à la société
             </div>
             <div id="t16_1" className="t s4_1">
-              Devis
+              DEVIS
             </div>
             <div id="t17_1" className="t s1_1">
-              Rabat le : {formatDate(new Date())}
+              {business.city ? business.city + ' ' : ''}le :{' '}
+              {formatDate(quotation.dateCreated)}
             </div>
             <div id="t18_1" className="t s1_1">
               Numéro : {quotation.refNo}
@@ -266,7 +320,7 @@ const STYLE_2 = (
       #t11_1{left:633px;top:611px;}
       #t12_1{left:813px;top:611px;}
       #t13_1{left:198px;top:686px;}
-      #t14_1{left:527px;top:686px;}
+      #t14_1{left:450px;top:686px;}
       #t15_1{left:453px;top:756px;word-spacing:-0.1px;}
       #t16_1{left:688px;top:35px;}
       #t17_1{left:709px;top:91px;}

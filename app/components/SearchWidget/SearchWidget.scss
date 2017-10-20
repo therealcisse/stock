@@ -1,3 +1,5 @@
+@import "variables";
+
 .root {
   display: flex;
   width: 100%;
@@ -191,6 +193,15 @@
   flex-grow: 1;
   margin: 0;
   overflow: hidden;
+}
+
+.stock {
+  align-self: flex-end;
+  color: theme-color("success");
+
+  &.stockBad {
+    color: theme-color("danger");
+  }
 }
 
 .text {

@@ -117,7 +117,7 @@ class PageHeader extends React.Component {
               ]),
             }}
             id={n.supplier.id}
-            title="Nouveau fournisseur"
+            title="Modifier le fournisseur"
           />
         ) : null}
       </div>

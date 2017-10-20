@@ -14,6 +14,7 @@ import style from 'routes/Quotation/styles';
 import NotFound from './NotFound';
 
 import ClientInfo from './ClientInfo';
+import SaleInfo from './SaleInfo';
 
 import Items from './Items';
 
@@ -49,6 +50,7 @@ class PageBody extends React.Component {
     return (
       <div className={style.pageBody}>
         <ClientInfo n={n} />
+        <SaleInfo n={n} />
         <Items classes={classes} intl={intl} n={n} />
       </div>
     );

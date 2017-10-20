@@ -4,6 +4,8 @@ import objectAssign from 'object-assign';
 
 import invariant from 'invariant';
 
+import isEmpty from 'isEmpty';
+
 export const schema = [
   `
 
@@ -50,7 +52,9 @@ export const schema = [
   extend type Query {
     # Product
     getAllProducts(query: GetProductsQuery!): [ProductWithStock!]!
+    getProduct(id: ID!): ProductWithStock!
 
+    searchProducts(q: String): [ProductWithStock!]!
   }
 
 `,
@@ -102,6 +106,16 @@ export const resolvers = {
   Query: {
     getAllProducts(_, { query }, context) {
       return context.Products.getAllProducts(query);
+    },
+    getProduct(_, { id }, context) {
+      return context.Products.getProduct(id);
+    },
+    searchProducts(_, { q }, context) {
+      if (isEmpty(q)) {
+        return [];
+      }
+
+      return context.Products.query(q);
     },
   },
 };

@@ -22,6 +22,30 @@ export default function({ db }) {
       });
     }, {}),
 
+    q: new DataLoader(
+      async function(qs) {
+        return qs.map((q, index) => {
+          return db
+            .prepare(
+              `SELECT *
+                 FROM products
+                 WHERE id IN (
+                   SELECT id FROM products_index WHERE products_index MATCH @match LIMIT 5
+                 );`,
+            )
+            .all({
+              match: q
+                .trim()
+                .split(/\s+/g)
+                .map(s => s + '*')
+                .join(' OR '),
+            })
+            .map(Product.fromDatabase);
+        });
+      },
+      { cache: false },
+    ),
+
     stock: new DataLoader(async function(ids) {
       // Get all qty of sale items
       const sales = db

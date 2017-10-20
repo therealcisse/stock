@@ -12,6 +12,7 @@ import QuotationsRoute from 'routes/Quotations';
 import ExpensesRoute from 'routes/Expenses';
 
 import ProductsRoute from 'routes/Products';
+import ProductRoute from 'routes/Product';
 
 import ClientsRoute from 'routes/Clients';
 import SuppliersRoute from 'routes/Suppliers';
@@ -36,6 +37,7 @@ export default () => (
       {QuotationsRoute}
       {ExpensesRoute}
       {ProductsRoute}
+      {ProductRoute}
       {ClientsRoute}
       {SuppliersRoute}
       {SupplierRoute}

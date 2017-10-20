@@ -9,6 +9,10 @@ mutation AddQuotation($payload: AddQuotationPayload!) {
           id
           displayName
         }
+        sale {
+          id
+          refNo
+        }
         dateCreated
         items {
           id

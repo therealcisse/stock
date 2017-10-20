@@ -242,7 +242,8 @@ export default class PDF extends React.Component {
               Facture
             </div>
             <div id="t17_1" className="t s1_1">
-              Rabat le : {formatDate(new Date())}
+              {business.city ? business.city + ' ' : ''}le :{' '}
+              {formatDate(sale.dateCreated)}
             </div>
             <div id="t18_1" className="t s1_1">
               Numéro : {sale.refNo + SALES_REF_NO_BASE}

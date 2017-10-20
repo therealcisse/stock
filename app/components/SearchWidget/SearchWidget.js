@@ -20,10 +20,12 @@ import { toggleSearch } from 'redux/reducers/app/actions';
 import Logo from './Logo';
 import Back from './Back';
 
+import Quotations from './Quotations';
 import Sales from './Sales';
 import Expenses from './Expenses';
 import Clients from './Clients';
 import Suppliers from './Suppliers';
+import Products from './Products';
 
 import selector from './selector';
 
@@ -89,6 +91,8 @@ class SearchWidget extends React.Component {
               <SearchTextInput q={this.state.q} onText={this.onText} />
             </div>
             <div className={style.results}>
+              <Products handleRequestClose={this.onClose} q={this.state.q} />
+              <Quotations handleRequestClose={this.onClose} q={this.state.q} />
               <Sales handleRequestClose={this.onClose} q={this.state.q} />
               <Expenses handleRequestClose={this.onClose} q={this.state.q} />
               <Clients handleRequestClose={this.onClose} q={this.state.q} />

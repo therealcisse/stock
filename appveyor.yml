@@ -1,0 +1,40 @@
+---
+branches:
+  only:
+    - master
+build: false
+build_script:
+  - "npm run package-win"
+cache:
+  - "%LOCALAPPDATA%/Yarn"
+  - "node_modules -> package.json"
+  - "app/node_modules -> app/package.json"
+  - "%APPDATA%\\npm-cache"
+  - "%USERPROFILE%\\.electron"
+  - "%LOCALAPPDATA%\\electron\\Cache"
+  - "%LOCALAPPDATA%\\electron-builder\\cache"
+clone_depth: 1
+environment:
+  matrix:
+    -
+      nodejs_version: 8
+image: "Visual Studio 2015"
+init:
+  - "git config --global core.autocrlf input"
+install:
+  -
+    ps: "Install-Product node $env:nodejs_version"
+  -
+    cmd: "SET PATH=C:\\Program Files (x86)\\MSBuild\\14.0\\bin\\;%PATH%"
+  -
+    cmd: "SET PATH=C:\\python27;%PATH%"
+  - "set CI=true"
+  - yarn
+  - "cd app && yarn"
+matrix:
+  fast_finish: true
+platform:
+  - x86
+shallow_clone: true
+test: false
+version: "{build}"

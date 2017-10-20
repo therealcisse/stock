@@ -20,6 +20,7 @@ type EventMeta = {
   | { supplierId: string }
   | { productId: string }
   | { saleId: string }
+  | { quotationId: string }
   | { expenseId: string }
   | { paymentId: string, saleId: string });
 

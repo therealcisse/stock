@@ -14,6 +14,8 @@ import * as htmlPdf from 'html-pdf-chrome';
 
 import Queue from 'async/queue';
 
+import { TransactionStatus, Quotation, Sale } from 'data/types';
+
 const pdfOptions = {
   port: CHROME_REMOTE_DEBUGGING_PORT,
   printOptions: {
@@ -22,19 +24,20 @@ const pdfOptions = {
   },
 };
 
-const DEFAULT_INVOICE_FILENAME = 'Facture.pdf';
+const DEFAULT_INVOICE_FILENAME = {
+  [Sale.TYPE]: 'Facture.pdf',
+  [Quotation.TYPE]: 'Devis.pdf',
+};
 
-const defaultPath = path.resolve(
-  remote.app.getPath('downloads'),
-  DEFAULT_INVOICE_FILENAME,
-);
+const defaultPath = type =>
+  path.resolve(remote.app.getPath('downloads'), DEFAULT_INVOICE_FILENAME[type]);
 
-const q = Queue(async function({ name, html }, callback) {
+const q = Queue(async function({ type, html }, callback) {
   try {
     const url = remote.dialog.showSaveDialog(
       remote.BrowserWindow.getFocusedWindow(),
       {
-        defaultPath,
+        defaultPath: defaultPath(type),
         createDirectory: true,
       },
     );
@@ -55,9 +58,9 @@ q.error = function(error, task) {};
 // assign a callback
 q.drain = function() {};
 
-export function print(html) {
+export function print(type: typeof Sale.TYPE | typeof Quotation.TYPE, html) {
   return (dispatch, _, { snackbar }) => {
-    q.push({ html }, function(err, url) {
+    q.push({ type, html }, function(err, url) {
       snackbar.show({
         message: err || 'Succès',
         type: err ? 'danger' : undefined,

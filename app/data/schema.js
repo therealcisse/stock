@@ -123,6 +123,7 @@ const rootSchema = [
   }
 
   enum TransactionStatus {
+    ACCEPTED
     CANCELLED
   }
 

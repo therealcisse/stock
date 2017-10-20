@@ -39,6 +39,7 @@ export const PATH_PRODUCTS = '/products';
 export const PATH_CLIENTS = '/clients';
 export const PATH_SUPPLIERS = '/suppliers';
 
+export const PATH_PRODUCT_PREFIX = '/product';
 export const PATH_CLIENT_PREFIX = '/client';
 export const PATH_SUPPLIER_PREFIX = '/supplier';
 

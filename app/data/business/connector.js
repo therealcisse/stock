@@ -36,7 +36,7 @@ export class BusinessConnector {
            url = @url,
            country = @country,
            city = @city,
-           address = @city,
+           address = @address,
            postalCode = @postalCode,
            phone = @phone,
            fax = @fax,

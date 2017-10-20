@@ -67,7 +67,7 @@ export const schema = [
     # Quotations
     addQuotation(payload: AddQuotationPayload!): QuotationMutationResponse!
     voidQuotation(id: ID!): QuotationMutationResponse!
-    approveQuotation(id: ID!): QuotationMutationResponse!
+    acceptQuotation(id: ID!): QuotationMutationResponse!
 
   }
 
@@ -127,7 +127,7 @@ export const resolvers = {
         return { error: { code: e.code || null } };
       }
     },
-    async approveQuotation(_, { id }, context) {
+    async acceptQuotation(_, { id }, context) {
       if (!context.user) {
         throw new Error('Login required.');
       }
@@ -135,7 +135,7 @@ export const resolvers = {
       // TODO: validate payload
 
       try {
-        const info = await context.Quotations.approve(id, context);
+        const info = await context.Quotations.accept(id, context);
 
         const [quotation, events] = await Promise.all([
           context.Quotations.getQuotation(info.id),

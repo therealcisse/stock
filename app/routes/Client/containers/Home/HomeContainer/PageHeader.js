@@ -126,7 +126,7 @@ class PageHeader extends React.Component {
               ]),
             }}
             id={n.client.id}
-            title="Nouveau client"
+            title="Modifier le client"
           />
         ) : null}
       </div>

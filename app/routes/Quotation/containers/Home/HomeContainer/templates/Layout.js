@@ -50,19 +50,13 @@ stroke-linejoin: miter;
 <path d="M839.7,152.8l0,165.2" class="g2_1" />
 <path d="M305.6,317.5l533.6,0" class="g2_1" />
 <path d="M61.1,${519.1 + 32 * g}l817.4,0" class="g3_1" />
-<path d="M61.1,${542.6 + 32 * g}l304.5,0" class="g2_1" />
-<path d="M61.6,${542 + 32 * g}l0,102.5" class="g2_1" />
-<path d="M366.1,${542 + 32 * g}l0,102.5" class="g2_1" />
-<path d="M61.1,${643.9 + 32 * g}l304.5,0" class="g2_1" />
 <path d="M191,${745.7 + 32 * g}l681.8,0" class="g2_1" />
 <path d="M191.5,${745.2 + 32 * g}l0,146.6" class="g2_1" />
 <path d="M873.4,${745.2 + 32 * g}l0,146.6" class="g2_1" />
 <path d="M191,${891.3 + 32 * g}l681.8,0" class="g2_1" />
 <image preserveAspectRatio="none" x="38" y="0" width="229" height="196" xlink:href=${Logo} />
 <path d="M76.4,1464.4l${264 + 264 + 264},0" class="g4_1" />
-<!-- <path d="M${583 - ratio},1464.4l${264 + ratio},0" class="g4_1" /> -->
 </svg>
-
 
       `,
       }}

@@ -14,7 +14,7 @@ import { PATH_SALES, SALES_REF_NO_BASE, DATE_FORMAT } from 'vars';
 
 import parseMoney from 'parseMoney';
 
-import { TransactionStatus } from 'data/types';
+import { TransactionStatus, Sale } from 'data/types';
 
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
@@ -67,7 +67,7 @@ class PageHeader extends React.Component {
         />,
       );
 
-      this.props.actions.print('<!DOCTYPE html >' + html);
+      this.props.actions.print(Sale.TYPE, '<!DOCTYPE html >' + html);
     } else {
       this.setState({ dialogOpen: true, option, open: false, anchorEl: null });
     }

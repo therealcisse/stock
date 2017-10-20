@@ -16,13 +16,13 @@ image: "Visual Studio 2015"
 init:
   - "git config --global core.autocrlf input"
 install:
-  - "cd app && npm install node-gyp"
+  - "npm install --global --production windows-build-tools"
   - ps: "Install-Product node $env:nodejs_version"
   - cmd: "SET PATH=C:\\Program Files (x86)\\MSBuild\\14.0\\bin\\;%PATH%"
   - cmd: "SET PATH=C:\\python27;%PATH%"
-  - "set CI=true"
-  - yarn
-  - "cd app && yarn"
+  - cmd: "SET CI=true"
+  - "yarn install"
+  - "yarn run package-win"
 matrix:
   fast_finish: true
 platform:

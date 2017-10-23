@@ -4,8 +4,6 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { configureStore, history } from 'redux/configureStore';
 
-import mac from 'getmac';
-
 import { ApolloProvider } from 'react-apollo';
 
 import MouseTrap from 'mousetrap';
@@ -57,18 +55,6 @@ let render = function() {
   const Root = require('./containers/Root'); // eslint-disable-line global-require
 
   // store.dispatch(scrolling());
-
-  // Check database
-  require('electron').ipcRenderer.once('db-status', (event, { status }) => {
-    store.dispatch(dbStatus(status));
-  });
-
-  // Check mac address
-  mac.getMac((err, macAddr) => {
-    if (err || MACS.indexOf(macAddr) === -1) {
-      store.dispatch(invalidMac());
-    }
-  });
 
   const locale = LANG;
 
@@ -171,3 +157,18 @@ if (__DEV__ || DEBUG) {
 // Go!
 // ========================================================
 render();
+
+// Check database
+require('electron').ipcRenderer.once('db-status', (event, { status }) => {
+  store.dispatch(dbStatus(status));
+});
+
+// Check mac address
+require('electron')
+  .remote // Remote access
+  .require('getmac')
+  .getMac((err, macAddr) => {
+    if (err || MACS.indexOf(macAddr) === -1) {
+      store.dispatch(invalidMac());
+    }
+  });

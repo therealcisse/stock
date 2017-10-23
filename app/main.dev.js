@@ -94,7 +94,9 @@ app.on('window-all-closed', () => {
 });
 
 app.on('will-quit', () => {
-  browser.close();
+  try {
+    browser.close();
+  } catch (e) {}
 });
 
 const setupDB = new Promise(resolve => {

@@ -25,6 +25,7 @@ matrix:
   fast_finish: true
 platform:
   - x86
+  - x64
 shallow_clone: true
 test: false
 version: "{build}"

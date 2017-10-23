@@ -24,7 +24,7 @@ deploy:
   file: release.zip
   provider: releases
   skip_cleanup: true
-  true: tags
+  tags: true
 install:
   - "export CXX=\"g++-4.8\""
   - yarn

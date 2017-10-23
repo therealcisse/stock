@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { configureStore, history } from 'redux/configureStore';
 
+import mac from 'getmac';
+
 import { ApolloProvider } from 'react-apollo';
 
 import MouseTrap from 'mousetrap';
@@ -28,7 +30,7 @@ import formats from 'intl-formats';
 
 import { updateIntl } from 'redux/reducers/intl/actions';
 
-import { LANG, DEBUG, PATH_LOGIN } from 'vars';
+import { LANG, DEBUG, PATH_LOGIN, MACS } from 'vars';
 
 import 'typeface-roboto';
 
@@ -62,8 +64,10 @@ let render = function() {
   });
 
   // Check mac address
-  require('electron').ipcRenderer.once('invalid-mac', event => {
-    store.dispatch(invalidMac());
+  mac.getMac((err, macAddr) => {
+    if (err || MACS.indexOf(macAddr) === -1) {
+      store.dispatch(invalidMac());
+    }
   });
 
   const locale = LANG;

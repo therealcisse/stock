@@ -29,5 +29,4 @@ shallow_clone: true
 test: false
 version: "{build}"
 artifacts:
-  - path: release
   - path: release\*.exe

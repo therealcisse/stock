@@ -7,7 +7,7 @@ import { Record } from 'immutable';
 export class AppState extends Record({
   dbStatus: DBStatus.PENDING,
   searching: false,
-  unAuthorized: true,
+  unAuthorized: false,
 }) {}
 
 const initialState = new AppState();

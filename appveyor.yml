@@ -18,11 +18,8 @@ install:
   - ps: "Install-Product node $env:nodejs_version"
   - "npm install --global --production windows-build-tools"
   - "npm install --global node-gyp"
-  - "echo `pwd`"
   - "cd app && npm install node-gyp"
-  - "echo `pwd`"
   - "cd app && yarn install"
-  - "echo `pwd`"
   - "yarn install"
 matrix:
   fast_finish: true

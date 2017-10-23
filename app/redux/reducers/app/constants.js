@@ -1,5 +1,6 @@
 import keyOf from 'fbjs/lib/keyOf';
 
+export const INVALID_MAC = keyOf({ INVALID_MAC: null });
 export const DB_STATUS = keyOf({ DB_STATUS: null });
 export const APP_STATE_CHANGE = keyOf({ APP_STATE_CHANGE: null });
 export const TOGGLE_SEARCH = keyOf({ TOGGLE_SEARCH: null });

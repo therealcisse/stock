@@ -4,9 +4,9 @@ export const VERSION = require('../package.json').version;
 
 export const DEBUG = process.env.DEBUG_PROD;
 
-export const GA_TRACKING_ID = '';
+export const GA_TRACKING_ID = null;
 
-export const SENTRY_DSN = '';
+export const SENTRY_DSN = null;
 
 // Use this constant to initialize reducers
 export const INIT = keyOf({ INIT: null });
@@ -63,3 +63,5 @@ export const LINK_SUPPORT = '';
 export const APOLLO_DEFAULT_REDUX_ROOT_KEY = 'apollo';
 
 export const CHROME_REMOTE_DEBUGGING_PORT = 9222;
+
+export const MACS = [];

@@ -26,9 +26,6 @@ button {
   background-color: transparent;
 }
 
-* {
-}
-
 *,
 *::before,
 *::after {
@@ -46,10 +43,7 @@ button {
 .error {
   composes: hint-block;
   text-align: center;
-
-  * {
-    color: theme-color("danger");
-  }
+  color: theme-color("danger");
 }
 
 main {

@@ -1,4 +1,9 @@
-import { DB_STATUS, APP_STATE_CHANGE, TOGGLE_SEARCH } from './constants';
+import {
+  DB_STATUS,
+  APP_STATE_CHANGE,
+  TOGGLE_SEARCH,
+  INVALID_MAC,
+} from './constants';
 
 import { CHROME_REMOTE_DEBUGGING_PORT } from 'vars';
 
@@ -100,6 +105,13 @@ export function dbStatus(status) {
       type: DB_STATUS,
       status,
     });
+  };
+}
+
+export function invalidMac() {
+  return {
+    type: INVALID_MAC,
+    status,
   };
 }
 

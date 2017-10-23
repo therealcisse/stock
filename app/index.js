@@ -18,7 +18,7 @@ import { createSelector } from 'utils/reselect';
 
 import { client as apolloClient } from 'apollo';
 
-import { dbStatus, toggleSearch } from 'redux/reducers/app/actions';
+import { dbStatus, invalidMac, toggleSearch } from 'redux/reducers/app/actions';
 
 import { DBStatus } from 'redux/reducers/app/constants';
 
@@ -59,6 +59,11 @@ let render = function() {
   // Check database
   require('electron').ipcRenderer.once('db-status', (event, { status }) => {
     store.dispatch(dbStatus(status));
+  });
+
+  // Check mac address
+  require('electron').ipcRenderer.once('invalid-mac', event => {
+    store.dispatch(invalidMac());
   });
 
   const locale = LANG;

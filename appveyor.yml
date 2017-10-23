@@ -9,8 +9,6 @@ cache:
   - '%APPDATA%\npm-cache'
 clone_depth: 1
 environment:
-  NODE_GYP_DIR: '%USERPROFILE%\.node-gyp'
-  ELECTRON_RUN_AS_NODE: 1
   matrix:
     - nodejs_version: 8
 image: "Visual Studio 2015"
@@ -19,8 +17,13 @@ init:
 install:
   - ps: "Install-Product node $env:nodejs_version"
   - "npm install --global --production windows-build-tools"
+  - "npm install --global node-gyp"
+  - "echo `pwd`"
+  - "cd app && npm install node-gyp"
+  - "echo `pwd`"
+  - "cd app && yarn install"
+  - "echo `pwd`"
   - "yarn install"
-  - "yarn run package-win"
 matrix:
   fast_finish: true
 platform:
@@ -28,3 +31,6 @@ platform:
 shallow_clone: true
 test: false
 version: "{build}"
+artifacts:
+  - path: release
+  - path: release\*.exe

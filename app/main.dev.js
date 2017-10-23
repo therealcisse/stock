@@ -13,6 +13,8 @@
 import { app, BrowserWindow } from 'electron';
 import MenuBuilder from './menu';
 
+import mac from 'getmac';
+
 import Store from './utils/Store';
 
 import fs from 'fs';
@@ -31,6 +33,7 @@ import {
   COUNTRY,
   SALES_REF_NO_BASE,
   CHROME_REMOTE_DEBUGGING_PORT,
+  MACS,
 } from './vars';
 
 const log = debug('app:main');
@@ -647,6 +650,24 @@ app.on('ready', async () => {
 
   const menuBuilder = new MenuBuilder(win);
   menuBuilder.buildMenu();
+
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.DEBUG_PROD === 'true'
+  ) {
+    MACS.forEach(function(addr) {
+      if (!mac.isMac(addr)) {
+        throw new Error(`Invalid mac address: ${addr}`);
+      }
+    });
+  }
+
+  // Check valid MAC addresses
+  mac.getMac(function(err, macAddr) {
+    if (err || MACS.indexOf(macAddr) === -1) {
+      win.webContents.send('invalid-mac');
+    }
+  });
 
   // Launch background browser for printing.
   (async () => {

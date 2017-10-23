@@ -38,7 +38,7 @@ class CoreLayout extends React.Component {
   };
 
   render() {
-    const { dbStatus, intl, children } = this.props;
+    const { dbStatus, unAuthorized, intl, children } = this.props;
 
     if (dbStatus === DBStatus.PENDING) {
       // return loading
@@ -65,6 +65,19 @@ class CoreLayout extends React.Component {
       );
     }
 
+    if (unAuthorized) {
+      return (
+        <div className={cx(style.root, style.center)}>
+          <Title
+            title={intl.formatMessage(messages.title, { appName: APP_NAME })}
+          />
+          <div className={style.error}>
+            Environnement non-authorisé. Veuillez contacter Epsilon SARL.
+          </div>
+        </div>
+      );
+    }
+
     return [
       /* <Notification />, */
 
@@ -80,9 +93,13 @@ class CoreLayout extends React.Component {
   }
 }
 
-const mapStateToProps = createSelector(selectors.dbStatus, dbStatus => ({
-  dbStatus,
-}));
+const mapStateToProps = createSelector(
+  [selectors.dbStatus, selectors.unAuthorized],
+  (dbStatus, unAuthorized) => ({
+    dbStatus,
+    unAuthorized,
+  }),
+);
 
 const Connect = connect(mapStateToProps);
 

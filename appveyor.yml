@@ -4,7 +4,7 @@ branches:
     - master
 build: false
 build_script:
-  - "npm run package-win"
+  - "npm run package"
 cache:
   - '%APPDATA%\npm-cache'
 clone_depth: 1

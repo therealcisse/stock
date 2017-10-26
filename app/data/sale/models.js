@@ -23,6 +23,10 @@ export class Sales {
     return this.connector.getSale(id);
   }
 
+  getResult(args, context) {
+    return this.connector.getResult(args, context);
+  }
+
   getSalesReport() {
     return this.connector.getSalesReport();
   }

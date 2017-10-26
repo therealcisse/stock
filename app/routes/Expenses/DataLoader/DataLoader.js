@@ -23,7 +23,7 @@ const addExpense = graphql(AddExpenseMutation, {
     return {
       addExpense: payload =>
         mutate({
-          refetchQueries: [],
+          refetchQueries: ['Result'],
           variables: { payload },
           updateQueries: {
             Expenses(prev, { mutationResult }) {

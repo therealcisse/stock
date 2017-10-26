@@ -81,6 +81,15 @@ export const schema = [
     error: Error
   }
 
+  type Result {
+    categories: [String!]!
+    totalSales: Float!
+    totalExpenses: Float!
+    sales: [JSON!]!
+    expenses: [JSON!]!
+    result: [JSON!]!
+  }
+
   extend type Mutation {
     # Sales
     addSale(payload: AddSalePayload!): SaleMutationResponse!
@@ -98,6 +107,8 @@ export const schema = [
     getNextRefNo: Int!
 
     searchSales(q: String): [Sale!]!
+
+    getResult(from: Date!, to: Date): Result!
   }
 
 `,
@@ -218,6 +229,9 @@ export const resolvers = {
   Query: {
     sales: (_, { cursor, query }, context) => {
       return context.Sales.getSales({ cursor, query }, context);
+    },
+    getResult: (_, { from, to }, context) => {
+      return context.Sales.getResult({ from, to }, context);
     },
     getSalesReport: (_, {}, context) => {
       return context.Sales.getSalesReport();

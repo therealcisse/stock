@@ -15,6 +15,10 @@ export class Expenses {
     return this.connector.getPayments(id);
   }
 
+  getExpensesReport(args, context) {
+    return this.connector.getExpensesReport(args, context);
+  }
+
   getItems(id) {
     return this.connector.getItems(id);
   }

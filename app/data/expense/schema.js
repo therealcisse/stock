@@ -71,6 +71,11 @@ export const schema = [
     error: Error
   }
 
+  type ExpensesReport {
+    total: Float!
+    data: [JSON!]!
+  }
+
   extend type Mutation {
     # Expenses
     addExpense(payload: AddExpensePayload!): ExpenseMutationResponse!
@@ -85,6 +90,8 @@ export const schema = [
     getExpense(id: ID!): ExpenseInfo!
 
     searchExpenses(q: String): [Expense!]!
+
+    getExpensesReport(from: Date!, to: Date): ExpensesReport!
   }
 `,
 ];
@@ -224,6 +231,9 @@ export const resolvers = {
       }
 
       return context.Expenses.getExpenses({ cursor, query }, context);
+    },
+    getExpensesReport: (_, { from, to }, context) => {
+      return context.Expenses.getExpensesReport({ from, to }, context);
     },
     getExpense: (_, { id }, context) => {
       return context.Expenses.getExpense(id);

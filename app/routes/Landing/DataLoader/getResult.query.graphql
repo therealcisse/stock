@@ -1,0 +1,10 @@
+query Result($from: Date!, $to: Date) {
+  getResult(from: $from, to: $to) {
+    categories
+    totalExpenses
+    totalSales
+    sales
+    expenses
+    result
+  }
+}

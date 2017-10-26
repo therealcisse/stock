@@ -1,0 +1,6 @@
+query ExpensesReport($from: Date!, $to: Date) {
+  getExpensesReport(from: $from, to: $to) {
+    total
+    data
+  }
+}

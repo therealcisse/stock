@@ -4,6 +4,8 @@ import asTransaction from 'data/asTransaction';
 
 import { Expense, Event, TransactionStatus } from 'data/types';
 
+import { Money } from 'data/utils';
+
 import sort from 'lodash.orderby';
 
 import uuid from 'uuid';
@@ -42,6 +44,53 @@ export class ExpenseConnector {
     return {
       expense,
       ...(await this.loaders.info.load(expense.id)),
+    };
+  }
+
+  async getExpensesReport({ from, to }: { from: Date, to: ?Date }, { Now }) {
+    const items = this.db
+      .prepare(
+        `
+        SELECT
+          item.qty AS qty,
+          item.unitPrice AS unitPrice,
+          item.productId AS productId,
+          product.displayName AS productName
+        FROM items item
+        LEFT JOIN expenses expense
+        ON (item.foreignId = expense.id)
+        LEFT JOIN products product
+        ON (item.productId = product.id)
+        WHERE item.type = @type AND expense.state <> @state
+        AND expense.dateCreated BETWEEN @from AND @to;`,
+      )
+      .all({
+        from: +from,
+        to: to ? +to : Now(),
+        type: Expense.TYPE,
+        state: TransactionStatus.toDatabase(TransactionStatus.CANCELLED),
+      });
+
+    const data = {};
+    let total = 0.0;
+
+    items.forEach(({ productId, productName, qty, unitPrice }) => {
+      if (!data[productId]) {
+        data[productId] = {
+          name: productName,
+          y: 0.0,
+        };
+      }
+
+      const amount = qty * Money.fromDatabase(unitPrice);
+
+      total += amount;
+      data[productId].y += amount;
+    });
+
+    return {
+      total,
+      data: Object.keys(data).map(key => data[key]),
     };
   }
 

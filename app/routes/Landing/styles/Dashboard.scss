@@ -1,0 +1,778 @@
+.mainContainer {
+  //height: 100%;
+  //width: 100%;
+  //min-width: 982px;
+
+  padding: 60px 30px;
+
+  background-color: #f3f5fa;
+
+  // background-color: #f9fafb;
+  // background-image: -webkit-linear-gradient(bottom, #f6f8fb 0%, #f9fafb 100%);
+  // background-image: linear-gradient(to top, #f6f8fb 0%, #f9fafb 100%);
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+
+.pageContainer {
+}
+
+.pageContainer > header {
+  // box-shadow: inset 0 -1px #e3eaf3;
+  // border-bottom: 4px solid #f3f5f8;
+  padding: 0 0 20px 0;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.logoContainer {
+  // width: 56px;
+  vertical-align: top;
+  margin-right: 10px;
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+
+.headerLink {
+  text-decoration: none;
+}
+
+.tableCell {
+  //display: table-cell;
+  //vertical-align: top;
+}
+
+.logoPlaceHolder {
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #c7c7c7;
+  border: 1px dotted #c7c7c7;
+  border-radius: 3px;
+  // width: 56px;
+  height: 56px;
+  vertical-align: top;
+  text-align: center;
+  line-height: 56px;
+  font-size: 1.1rem;
+  padding: 1px;
+
+  max-width: 250px;
+}
+
+.companyData {
+  max-width: 80%;
+}
+
+.companyName {
+  font-family: "HelveticaNeueBold", Helvetica, Arial, sans-serif;
+  width: auto;
+  height: auto;
+  white-space: nowrap;
+  //overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 2.2rem;
+  line-height: 19px;
+  margin-bottom: 5px;
+  color: #404040;
+  padding-top: 1px;
+  padding-bottom: 3px;
+}
+
+.date {
+  color: #969696;
+}
+
+.module {
+  margin: 15px 0 25px 0;
+  padding: 30px;
+  position: relative;
+  // border-bottom: 2px solid #e3eaf3;
+  // background-color: #ffffff;
+  // background-color: #f9fafb;
+  // background-image: -webkit-linear-gradient(bottom, #f6f8fb 0%, #f9fafb 100%);
+  // background-image: linear-gradient(to top, #f6f8fb 0%, #f9fafb 100%);
+
+  // box-shadow: 0px 2px 0px #DAE3EF;
+  background-color: white;
+  background-image: none;
+}
+
+.module .header {
+  position: relative;
+  z-index: 1;
+}
+
+.module.income .moduleContent {
+  height: 150px;
+}
+
+.module.expenses .moduleContent {
+  height: 170px;
+}
+
+.module.expenses .moduleContent .expenseValues {
+  max-width: 150px;
+}
+
+.clear {
+  clear: both;
+}
+
+.module .moduleContent .moneySection {
+  margin: 30px 0;
+  cursor: pointer;
+}
+
+.mainContainer .module.expenses .moduleContent .chartContainer,
+.mainContainer .module.expenses .moduleContent .expenseValues {
+  opacity: 0.3;
+}
+
+.mainContainer .module.expenses .moduleContent .chartContainer,
+.mainContainer .module.expenses .moduleContent .expenseValues {
+  opacity: 0.3;
+}
+
+.mainContainer
+  .module.expenses
+  .moduleContent
+  .expenseCategories
+  .chartContainer {
+  position: absolute;
+  top: -45px;
+}
+
+.mainContainer
+  .module.expenses
+  .moduleContent
+  .expenseCategories
+  .chartContainer
+  .chart {
+  //width: 463px;
+  //height: 230px;
+}
+
+.mainContainer .module.expenses .moduleContent .expenseCategories {
+  margin: 0 0 0 40px;
+  width: 550px;
+  float: right;
+}
+
+.mainContainer .module.income .moduleContent .incomeCategories {
+  width: 100%;
+  height: 100%;
+}
+
+.mainContainer .module .moduleContent .subContainer {
+  float: left;
+  width: 100%;
+}
+
+.mainContainer .module.income .moduleContent .incomeCategories .chartContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .chart {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mainContainer .fancyMoney {
+  font-family: "DinNext", Arial, sans-serif;
+  letter-spacing: -0.05em;
+  // font-size: 2.8rem;
+  font-size: 2rem;
+  font-weight: 100;
+  color: #404040;
+}
+.mainContainer .module.expenses .moduleContent .expenseValues .fancyMoney {
+  font-size: 3.6rem;
+}
+
+.upperCase {
+  text-transform: uppercase;
+}
+
+.module.expenses .moduleContent {
+  height: 170px;
+}
+
+.module .moduleContent {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.module .header .title {
+  font-family: "HelveticaNeueBold", Helvetica, Arial, sans-serif;
+  font-size: 2.2rem;
+  float: left;
+  line-height: 19px;
+}
+
+.module .header .ftuMessage {
+  float: right;
+  //display: none;
+  //line-height: 10px;
+}
+
+.clear {
+  clear: both;
+}
+
+.fancyText {
+  color: #969696;
+  letter-spacing: 1px;
+  margin-left: 5px;
+  color: #6e8ba8;
+  margin-left: 0;
+}
+
+.ftuMessage {
+  display: block;
+}
+
+.floatRight {
+  float: right;
+}
+
+.pageBodyContainer {
+  padding: 0 15px 0 15px;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer {
+  position: relative;
+  margin-top: 30px;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar {
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar.open {
+  float: left;
+  width: 66%;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar.paid {
+  width: 32.8%;
+  float: left;
+  margin-left: 5px;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar.overdue {
+  width: 42%;
+  float: right;
+  margin-right: 25px;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar.open
+  .insightTooltipDiv {
+  background-color: #efb328;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar
+  .insightTooltipDiv {
+  min-width: 100%;
+  height: 45px;
+  position: absolute;
+}
+
+.mainContainer .module .moduleContent .moneySection {
+  margin: 30px 0;
+  cursor: pointer;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .moneySection {
+  width: 100%;
+  margin: 65px 0 0 0;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar.open
+  .moneySection {
+  width: 49%;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar.open
+  .openInvoicesTooltipDiv {
+  width: 58%;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar
+  .insightTooltipInnerDiv {
+  height: 29px;
+  position: relative;
+  top: 8px;
+}
+
+.homepage
+  .mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar.open
+  .insightTooltipDiv {
+  background-color: #efb328;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar.overdue
+  .insightTooltipDiv {
+  background-color: #e33d43;
+}
+
+.mainContainer
+  .module.income
+  .moduleContent
+  .incomeCategories
+  .chartContainer
+  .barsContainer
+  .invoiceBar.paid
+  .insightTooltipDiv {
+  background-color: #56b349;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.reportlist {
+  min-width: 603px !important;
+}
+
+body .stage {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e3eaf3;
+  background-image: -webkit-linear-gradient(bottom, #f6f8fb 0%, #f9fafb 100%);
+  background-image: linear-gradient(to top, #f6f8fb 0%, #f9fafb 100%);
+  box-sizing: border-box;
+  transition: height 0.2s linear 0s;
+  position: relative;
+  background-color: #f3f5f8;
+  padding: 24px 15px 0 15px;
+  transition: padding 0.5s;
+}
+body .stage.stage-default {
+  height: 330px;
+  padding: 24px 30px 0 20px;
+}
+.reportlist .stage {
+  padding: 0;
+  border-bottom: 0;
+}
+
+.reportlist .stage-header {
+  width: 100%;
+}
+
+.reportlist .page-title {
+  font-family: "HelveticaNeueBold", Helvetica, Arial, sans-serif;
+  font-size: 2.2rem;
+  line-height: 19px;
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+.dijitToggleButton,
+.dijitButton,
+.dijitDropDownButton,
+.dijitComboButton {
+  margin: 0.2em;
+  vertical-align: middle;
+}
+
+.button,
+.button:link {
+  background-clip: padding-box;
+  border-radius: 2px;
+  font-family: "HelveticaNeueRoman", Helvetica, Arial, sans-serif;
+  min-width: 80px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 20px;
+  border: 0;
+  margin: 0px;
+  box-sizing: border-box;
+  color: #365ebf;
+  box-shadow: inset 0 0 0 1px #dcdcdc;
+  background-image: -webkit-linear-gradient(top, #fff 0%, #f2f2f2 100%);
+  background-image: linear-gradient(to bottom, #fff 0%, #f2f2f2 100%);
+  -webkit-font-smoothing: subpixel-antialiased;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.dijitDropDownButton {
+  padding: 0 15px;
+}
+
+.reportlist .dateSelector {
+  float: right;
+  margin-right: -20px;
+  margin-top: -5px;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.button .caret,
+.button:link .caret {
+  display: inline-block;
+  width: 0 !important;
+  height: 0 !important;
+  vertical-align: middle;
+  border-top: 6px solid #404040;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  content: "";
+  background-color: transparent;
+  margin-left: 5px;
+  border-top-color: #404040;
+}
+.reportlist .dateSelector .caret {
+  margin-left: 3px;
+}
+
+.reportlist .chartTable .reportChartNumbers {
+  position: absolute;
+  top: 45px;
+  margin-left: -10px;
+}
+.reportlist .reportChartNumbers {
+  min-width: 320px;
+}
+
+.reportlist .isFTU {
+  opacity: 0.3;
+}
+.dashboard .reportlist .reportChartDescription {
+  margin: 0 30px 0 0;
+}
+
+.reportlist .reportChartDescription {
+  float: left;
+  margin-top: 15px;
+  margin-right: 50px;
+  text-transform: uppercase;
+}
+.reportlist .reportChartDescription {
+  margin: 0 30px 0 0;
+}
+.reportlist .reportChartDescription.incomeExpenseChart {
+  clear: left;
+  margin-top: 10px;
+}
+
+.reportlist .reportChartDescription .netProfitValue {
+  font-family: "DinNext", Arial, sans-serif;
+  letter-spacing: -0.05em;
+  font-size: 38px;
+  color: #414141;
+  text-transform: none;
+  cursor: pointer;
+}
+.reportlist .reportChartDescription .netProfitValue {
+  letter-spacing: -0.05em;
+  font-size: 3.6rem;
+  font-weight: 100;
+  color: #404040;
+  cursor: pointer;
+  font-family: "DinNext", Arial, sans-serif;
+  letter-spacing: -0.05em;
+}
+
+.reportlist .reportChartDescription .netProfitText {
+  font-family: "HelveticaNeueRoman", Helvetica, Arial, sans-serif;
+  color: #6e8ba8;
+  font-size: 14px;
+  margin-top: -2px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.reportlist .reportChartDescription .netProfitText {
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.reportlist .reportChartDescription {
+  float: left;
+  margin-top: 15px;
+  margin-right: 50px;
+  text-transform: uppercase;
+}
+.reportlist .reportChartDescription {
+  margin: 0 30px 0 0;
+}
+.reportlist .reportChartDescription.incomeExpenseChart {
+  clear: left;
+  margin-top: 10px;
+}
+
+.reportlist .reportChartDescription .totalIncomeSection {
+  border-left: 5px solid #abcc00;
+  padding-left: 8px;
+  margin-top: 5px;
+}
+.reportlist .reportChartDescription .totalIncomeSection {
+  margin-top: 3px;
+}
+
+.reportChartDescription .totalIncomeSection .incomeValue {
+  font-size: 2.8rem;
+}
+.reportlist .reportChartDescription .totalIncomeSection .incomeValue {
+  font-family: "DinNextLight", Arial, sans-serif;
+  letter-spacing: -0.05em;
+  font-size: 28px;
+  color: #6e8ba8;
+  text-transform: none;
+}
+
+.reportlist .reportChartDescription .totalIncomeSection .incomeText {
+  font-family: "HelveticaNeueRoman", Helvetica, Arial, sans-serif;
+  color: #6e8ba8;
+  font-size: 14px;
+  margin-top: 6px;
+  margin-top: -4px;
+}
+.reportlist .reportChartDescription .totalIncomeSection .incomeText {
+  margin-top: 0;
+}
+
+.reportlist .reportChartDescription .totalExpensesSection {
+  margin-top: 20px;
+  border-left: 5px solid #50a6be;
+  padding-left: 8px;
+}
+.reportlist .reportChartDescription .totalExpensesSection {
+  margin-top: 10px;
+}
+
+.reportlist .reportChartDescription .totalExpensesSection .expensesValue {
+  font-size: 2.8rem;
+}
+.reportlist .reportChartDescription .totalExpensesSection .expensesValue {
+  font-family: "DinNextLight", Arial, sans-serif;
+  letter-spacing: -0.05em;
+  font-size: 28px;
+  color: #6e8ba8;
+  text-transform: none;
+}
+
+.reportlist .reportChartDescription .totalExpensesSection .expensesText {
+  font-family: "HelveticaNeueRoman", Helvetica, Arial, sans-serif;
+  color: #6e8ba8;
+  font-size: 14px;
+  margin-top: -4px;
+}
+.reportlist .reportChartDescription .totalExpensesSection .expensesText {
+  margin-top: 0;
+}
+
+.reportlist .reportChartTD {
+  margin-top: 0;
+  float: right;
+}
+
+.rightAligned {
+  text-align: right;
+}
+
+.reportlist .mainChartContainer {
+  width: 380px;
+  margin: 0 10px 0px 60px;
+}
+.reportlist .reportChartTD .mainChartContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 430px;
+  height: 180px;
+  margin: 50px 0 0 20px;
+}
+.reportlist .reportChartTD.isFTU .mainChartContainer {
+  opacity: 0.3;
+}
+
+.highcharts-container {
+  position: relative;
+  overflow: hidden;
+  width: 430px;
+  height: 200px;
+  text-align: left;
+  line-height: normal;
+  z-index: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.reportlist .reportsStage {
+  min-width: 820px;
+  margin-bottom: 10px;
+}
+body .stage.stage-default .stage-content {
+  padding-left: 10px;
+}
+.reportlist .reportsStage {
+  min-width: 0;
+}
+body .stage .stage-content {
+  transition: opacity 0.1s linear 0.2s, max-height 0.05s linear 0.2s;
+  max-height: 500px;
+}
+body .stage .stage-content {
+  margin-top: 10px;
+}
+
+.mainContainer
+  .module.expenses
+  .moduleContent
+  .expenseCategories
+  .chartContainer {
+  width: auto;
+  height: auto;
+}
+
+.mainContainer
+  .module.expenses
+  .moduleContent
+  .expenseCategories
+  .highcharts-container {
+  width: auto;
+  height: auto;
+  padding-top: 50px;
+}
+
+.mainContainer .module.expenses .moduleContent .expenseCategories .chart {
+  width: auto;
+  height: auto;
+}
+
+.mainContainer
+  .module.expenses
+  .moduleContent
+  .expenseCategories
+  .highcharts-container
+  > div
+  > div.expenses-chart-legend {
+  display: inline-block !important;
+  width: 150px !important;
+  float: left !important;
+}
+
+.mainContainer
+  .module.expenses
+  .moduleContent
+  .expenseCategories
+  .highcharts-container
+  > div
+  > div.expenses-chart-legend
+  > div.expenses-chart-legend {
+  display: block !important;
+  background-color: inherit !important;
+}
+
+.mainContainer
+  .module.expenses
+  .moduleContent
+  .expenseCategories
+  .highcharts-container
+  > div
+  > svg {
+  display: inline-block !important;
+  margin-top: -39px;
+}
+
+.reportlist .highcharts-container > div > div {
+  display: none;
+}

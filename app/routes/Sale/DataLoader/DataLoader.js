@@ -29,7 +29,7 @@ const paySale = graphql(PaySaleMutation, {
     return {
       paySale: (id, payload) =>
         mutate({
-          refetchQueries: ['Sale', 'SalesReport', 'Result'],
+          refetchQueries: ['Sale', 'SalesReport'],
           variables: { id, payload },
           updateQueries: {},
         }),

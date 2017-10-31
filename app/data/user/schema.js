@@ -157,7 +157,13 @@ export const resolvers = {
       } catch (errors) {
         return { errors };
       }
-      await context.Users.setPassword(payload, context);
+
+      try {
+        await context.Users.setPassword(payload, context);
+      } catch (errors) {
+        return { errors };
+      }
+
       return { errors: {} };
     },
 

@@ -1,6 +1,9 @@
 query settings_business__getUser($id: ID!) {
   currentUser: getUser(id: $id) {
     id
+    email
+    displayName
+    username
     changePasswordAtNextLogin
     business {
       id

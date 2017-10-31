@@ -6,7 +6,7 @@ import invariant from 'invariant';
 
 import debug from 'log';
 
-import addSamples from 'data/addSamples';
+// import addSamples from 'data/addSamples';
 
 import { CURRENT_USER_COOKIE_NAME } from 'vars';
 
@@ -41,14 +41,14 @@ function logIn(username, password) {
       });
 
       // Add samples if dbStatus === DBStatus.NEW
-      if (getState().getIn(['app', 'dbStatus']) === DBStatus.NEW) {
-        try {
-          await addSamples();
-          log('Import success.');
-        } catch (e) {
-          log.error('Import failure:', e);
-        }
-      }
+      // if (__DEV__ && getState().getIn(['app', 'dbStatus']) === DBStatus.NEW) {
+      //   try {
+      //     await addSamples();
+      //     log('Import success.');
+      //   } catch (e) {
+      //     log.error('Import failure:', e);
+      //   }
+      // }
     }
   };
 }

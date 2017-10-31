@@ -10,7 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
+import { app, screen, BrowserWindow } from 'electron';
 import MenuBuilder from './menu';
 
 import Store from './utils/Store';
@@ -31,6 +31,7 @@ import {
   COUNTRY,
   SALES_REF_NO_BASE,
   CHROME_REMOTE_DEBUGGING_PORT,
+  DB_PATH,
 } from './vars';
 
 const log = debug('app:main');
@@ -100,8 +101,7 @@ app.on('will-quit', () => {
 });
 
 const setupDB = new Promise(resolve => {
-  const dbPath = path.resolve(app.getPath('userData'), 'STOCK.DB');
-  fs.access(dbPath, fs.constants.R_OK | fs.constants.W_OK, err => {
+  fs.access(DB_PATH, fs.constants.R_OK | fs.constants.W_OK, err => {
     let status = DBStatus.OK;
 
     if (err) {
@@ -111,7 +111,7 @@ const setupDB = new Promise(resolve => {
 
       try {
         const Database = require('better-sqlite3');
-        const db = new Database(dbPath, { fileMustExist: false });
+        const db = new Database(DB_PATH, { fileMustExist: false });
 
         const begin = db.prepare('BEGIN');
         const commit = db.prepare('COMMIT');
@@ -528,6 +528,7 @@ const setupDB = new Promise(resolve => {
                 password                  TEXT NOT NULL,
                 displayName               TEXT NOT NULL,
                 username                  VARCHAR NOT NULL,
+                email                     VARCHAR,
                 changePasswordAtNextLogin BOOLEAN NOT NULL DEFAULT 0,
                 date                      INTEGER NOT NULL,
                 lastModified              INTEGER NOT NULL
@@ -559,12 +560,16 @@ const setupDB = new Promise(resolve => {
           commit.run();
         } finally {
           if (db.inTransaction) rollback.run();
+
+          try {
+            db.close();
+          } catch (e) {}
         }
       } catch (e) {
         log.error(`DB error:`, e);
 
         try {
-          fs.unlinkSync(dbPath);
+          fs.unlinkSync(DB_PATH);
         } catch (e) {}
 
         status = DBStatus.FAILED;
@@ -599,9 +604,13 @@ app.on('ready', async () => {
     await installExtensions();
   }
 
+  const status = await setupDB;
+
+  const screenSize = screen.getPrimaryDisplay().workAreaSize;
+
   const bounds = Store.get('window.bounds') || {
-    width: 1281,
-    height: 768,
+    width: Math.min(1281, screenSize.width),
+    height: Math.min(768, screenSize.height),
   };
 
   win = new BrowserWindow({
@@ -633,14 +642,16 @@ app.on('ready', async () => {
     }
 
     win.webContents.send('db-status', {
-      status: await setupDB,
+      status,
     });
   });
 
   win.on('close', () => {
-    Store.set({
-      'window.bounds': win ? win.getBounds() : {},
-    });
+    if (win) {
+      Store.set({
+        'window.bounds': win.getBounds(),
+      });
+    }
   });
 
   win.on('closed', () => {

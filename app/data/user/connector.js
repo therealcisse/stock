@@ -44,29 +44,51 @@ export class UserConnector {
     return null;
   }
 
-  async setPassword({ password }, { user, Users }) {
+  async setPassword(
+    { currentPassword, newPassword: password },
+    { user, Users },
+  ) {
+    const dbUser = this.db
+      .prepare(`SELECT * FROM users WHERE id = @id;`)
+      .get({ id: user.id });
+
+    if (
+      !dbUser ||
+      !await passwordUtils.compare(currentPassword, dbUser.password)
+    ) {
+      throw { currentPassword: { currentPassword: 'Mot de passe invalide.' } };
+    }
+
     const info = this.db
-      .prepare('UPDATE users SET password = @password where id = @id;')
+      .prepare('UPDATE users SET password = @password WHERE id = @id;')
       .run({ id: user.id, password: await passwordUtils.hash(password) });
 
     return await Users.get(user.id);
   }
-  changeEmail({ email }, { user, Users }) {
+  async changeEmail({ email }, { user, Users }) {
     const info = this.db
-      .prepare('UPDATE users SET email = @email where id = @id;')
+      .prepare('UPDATE users SET email = @email WHERE id = @id;')
       .run({ id: user.id, email });
 
     this.loaders.ids.clear(user.id);
 
-    return Users.get(user.id);
+    const dbUser = await Users.get(user.id);
+
+    sessionStorage.setItem(CURRENT_USER_COOKIE_NAME, JSON.stringify(dbUser));
+
+    return dbUser;
   }
-  updateAccountSettings({ displayName }, { user, Users }) {
+  async updateAccountSettings({ displayName }, { user, Users }) {
     const info = this.db
-      .prepare('UPDATE users SET displayName = @displayName where id = @id;')
+      .prepare('UPDATE users SET displayName = @displayName WHERE id = @id;')
       .run({ id: user.id, displayName });
 
     this.loaders.ids.clear(user.id);
 
-    return Users.get(user.id);
+    const dbUser = await Users.get(user.id);
+
+    sessionStorage.setItem(CURRENT_USER_COOKIE_NAME, JSON.stringify(dbUser));
+
+    return dbUser;
   }
 }

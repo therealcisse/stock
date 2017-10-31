@@ -24,7 +24,7 @@ function NewPasswordField({
   return (
     <div
       className={cx(style.formGroup, {
-        [style.formGroupHasDanger]: touched && error,
+        // [style.formGroupHasDanger]: touched && error,
       })}
     >
       <label htmlFor={input.name} className={style.label}>

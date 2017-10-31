@@ -3,6 +3,8 @@ mutation updateAccountSettings($payload: UpdateAccountSettingsPayload!) {
     user {
       id
       displayName
+      email
+      username
     }
     errors
   }

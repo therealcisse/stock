@@ -1,8 +1,16 @@
 import keyOf from 'fbjs/lib/keyOf';
 
+import path from 'path';
+
+import electron from 'electron';
+
+const app = electron.remote ? electron.remote.app : electron.app;
+
 export const VERSION = require('../package.json').version;
 
 export const DEBUG = process.env.DEBUG_PROD;
+
+export const DB_PATH = path.resolve(app.getPath('userData'), 'STOCK.DB');
 
 export const GA_TRACKING_ID = null;
 
@@ -64,4 +72,7 @@ export const APOLLO_DEFAULT_REDUX_ROOT_KEY = 'apollo';
 
 export const CHROME_REMOTE_DEBUGGING_PORT = 9222;
 
-export const MACS = [];
+export const MACS = [
+  '08-00-27-5e-ad-d4', // Windows 7 x64 VM
+  'b8:f6:b1:14:01:25', // My MAC
+];

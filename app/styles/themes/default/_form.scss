@@ -7,8 +7,9 @@
 }
 
 .formControlFeedback {
-  composes: hint-block;
   composes: form-control-feedback;
+  composes: invalid-feedback;
+  display: block;
 }
 
 .formControl {

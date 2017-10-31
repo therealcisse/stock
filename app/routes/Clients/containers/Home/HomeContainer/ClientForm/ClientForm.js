@@ -114,10 +114,6 @@ class ClientForm extends React.Component {
 
     this.context.snackbar.show({
       message: 'Succès',
-      action: {
-        title: 'undo',
-        click() {},
-      },
     });
   };
 

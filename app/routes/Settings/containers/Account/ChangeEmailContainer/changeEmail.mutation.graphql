@@ -2,7 +2,9 @@ mutation changeEmail($payload: ChangeEmailPayload!) {
   changeEmail(payload: $payload) {
     user {
       id
+      displayName
       email
+      username
     }
     errors
   }

@@ -3,13 +3,6 @@ import { generateValidation, addValidation } from 'validation';
 
 import { PASSWORD_MIN_SCORE } from 'vars';
 
-addValidation('currentPassword', (_, oldPassword, __, { user }) => {
-  if (!oldPassword) {
-    return false;
-  }
-  return Parse.User.logIn(user.get('username'), oldPassword); // TODO: verify current password
-});
-
 addValidation('minScore', (_, newPassword, minScore) => {
   return newPassword ? zxcvbn(newPassword).score < minScore : false;
 });
@@ -22,7 +15,6 @@ const validations = {
   },
   currentPassword: {
     required: true,
-    currentPassword: true,
   },
 };
 

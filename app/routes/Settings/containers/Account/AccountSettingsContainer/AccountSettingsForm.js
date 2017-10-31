@@ -46,7 +46,7 @@ export class AccountSettingsForm extends React.Component {
 
   async onSubmit(data) {
     const {
-      data: { updateAccountSettings: { errors } },
+      data: { updateAccountSettings: { user, errors } },
     } = await this.props.client.mutate({
       mutation: MUTATION,
       variables: {
@@ -60,18 +60,17 @@ export class AccountSettingsForm extends React.Component {
       throw new SubmissionError(errors);
     }
 
+    // currentUser has changed, refresh.
+    await refreshCurrentUser(user, this.props.dispatch);
+
     const { intl } = this.props;
     const { snackbar } = this.context;
     if (snackbar) {
       snackbar.show({
-        message: intl.formatMessage(
-          messages.accountSettingsChangeSuccessNotification,
-        ),
+        duration: 2000,
+        message: 'Succès', // intl.formatMessage( messages.accountSettingsChangeSuccessNotification,),
       });
     }
-
-    // currentUser has changed, refresh.
-    await refreshCurrentUser();
   }
 
   render() {

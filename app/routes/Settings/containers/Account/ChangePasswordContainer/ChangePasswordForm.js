@@ -6,8 +6,6 @@ import { compose } from 'redux';
 
 import { withApollo } from 'react-apollo';
 
-import refreshCurrentUser from 'utils/refreshCurrentUser';
-
 import {
   reduxForm,
   Field,
@@ -68,8 +66,6 @@ export class ChangePasswordForm extends React.Component {
         message: intl.formatMessage(messages.passwordChangeSuccessNotification),
       });
     }
-
-    await refreshCurrentUser();
   }
 
   render() {

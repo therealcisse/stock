@@ -4,6 +4,8 @@ import { compose } from 'redux';
 
 import { withApollo } from 'react-apollo';
 
+import refreshCurrentUser from 'utils/refreshCurrentUser';
+
 import {
   reduxForm,
   Field,
@@ -39,7 +41,7 @@ export class ChangeEmailForm extends React.Component {
 
   async onSubmit(data) {
     const {
-      data: { changeEmail: { errors } },
+      data: { changeEmail: { user, errors } },
     } = await this.props.client.mutate({
       mutation: MUTATION,
       variables: {
@@ -53,12 +55,15 @@ export class ChangeEmailForm extends React.Component {
       throw new SubmissionError(errors);
     }
 
+    // currentUser has changed, refresh.
+    await refreshCurrentUser(user, this.props.dispatch);
+
     const { intl } = this.props;
     const { snackbar } = this.context;
     if (snackbar) {
       snackbar.show({
-        message: intl.formatMessage(messages.emailChangeSuccessNotification),
-        duration: 9 * 1000,
+        message: 'Succès', // intl.formatMessage(messages.emailChangeSuccessNotification),
+        duration: 2000,
       });
     }
   }

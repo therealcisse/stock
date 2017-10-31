@@ -4,14 +4,14 @@ branches:
     - master
 build: false
 build_script:
-  - "npm run package"
+  - "npm run package-win"
 cache:
   - '%APPDATA%\npm-cache'
 clone_depth: 1
 environment:
   matrix:
     - nodejs_version: 8
-image: "Visual Studio 2013"
+image: "Visual Studio 2015"
 init:
   - "git config --global core.autocrlf input"
 install:
@@ -24,7 +24,6 @@ install:
 matrix:
   fast_finish: true
 platform:
-  - x86
   - x64
 shallow_clone: true
 test: false

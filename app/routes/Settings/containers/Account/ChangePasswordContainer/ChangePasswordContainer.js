@@ -24,19 +24,21 @@ import { APP_NAME } from 'vars';
 import ChangePasswordForm from './ChangePasswordForm';
 
 function ChangePasswordContainer({ intl, user, actions }) {
+  const changePasswordAtNextLogin =
+    user && user.changePasswordAtNextLogin ? true : false;
+
   return (
     <div className={style.root}>
       <Title title={intl.formatMessage(messages.title, { appName: APP_NAME })} />
       <Header
-        danger={
-          user && user.changePasswordAtNextLogin ? (
-            intl.formatMessage(messages.changePasswordAtNextLogin)
-          ) : null
-        }
+        changePasswordAtNextLogin={changePasswordAtNextLogin}
         onLogOut={actions.logOut}
       />
       <Sidebar user={user} selectedMenuItem={'security.change_password'} />
-      <ChangePasswordForm intl={intl} />
+      <ChangePasswordForm
+        changePasswordAtNextLogin={changePasswordAtNextLogin}
+        intl={intl}
+      />
     </div>
   );
 }

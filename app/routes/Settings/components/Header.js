@@ -34,14 +34,24 @@ const getStyle = (notificationOpen, scrollTop) =>
       }
     : {};
 
-function Header({ intl, danger, scrolling, notificationOpen, onLogOut }) {
+function Header({
+  intl,
+  changePasswordAtNextLogin,
+  scrolling,
+  notificationOpen,
+  onLogOut,
+}) {
   return (
     <nav
       style={getStyle(notificationOpen, scrolling.scrollTop)}
       className={style.navbar}
     >
       <AppBrand />
-      {danger ? <div className={style.messageDanger}>{danger}</div> : null}
+      {changePasswordAtNextLogin ? (
+        <div className={style.messageDanger}>
+          {intl.formatMessage(messages.changePasswordAtNextLogin)}
+        </div>
+      ) : null}
       <div className={style.menu}>
         <a className={style.logoutLink} onClick={onLogOut}>
           {intl.formatMessage(messages.logOut)}

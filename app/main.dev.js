@@ -553,7 +553,11 @@ const setupDB = new Promise(resolve => {
           // Initial user
           db.exec(
             `
-            INSERT INTO users (id, password, displayName, username, changePasswordAtNextLogin, date, lastModified) VALUES (${ADMIN_KEY}, '$2a$10$nWFC.i/7wl0HNabsOikfluI78m2EnTeFtBm1YWxrAu5n6Y5vm3yF.', 'Admin', 'admin', 0, strftime('%s','now'), strftime('%s','now'));
+            INSERT INTO users (id, password, displayName, username, changePasswordAtNextLogin, date, lastModified) VALUES (${ADMIN_KEY}, '$2a$10$nWFC.i/7wl0HNabsOikfluI78m2EnTeFtBm1YWxrAu5n6Y5vm3yF.', 'Admin', 'admin', ${process
+              .env.NODE_ENV === 'development' ||
+            process.env.DEBUG_PROD === 'true'
+              ? 0
+              : 1}, strftime('%s','now'), strftime('%s','now'));
           `,
           );
 

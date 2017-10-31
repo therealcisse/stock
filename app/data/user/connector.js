@@ -59,11 +59,24 @@ export class UserConnector {
       throw { currentPassword: { currentPassword: 'Mot de passe invalide.' } };
     }
 
-    const info = this.db
-      .prepare('UPDATE users SET password = @password WHERE id = @id;')
-      .run({ id: user.id, password: await passwordUtils.hash(password) });
+    this.db
+      .prepare(
+        'UPDATE users SET password = @password, changePasswordAtNextLogin = @changePasswordAtNextLogin WHERE id = @id;',
+      )
+      .run({
+        id: user.id,
+        password: await passwordUtils.hash(password),
+        changePasswordAtNextLogin: 0,
+      });
 
-    return await Users.get(user.id);
+    const refreshedUser = await Users.get(user.id);
+
+    sessionStorage.setItem(
+      CURRENT_USER_COOKIE_NAME,
+      JSON.stringify(refreshedUser),
+    );
+
+    return refreshedUser;
   }
   async changeEmail({ email }, { user, Users }) {
     const info = this.db

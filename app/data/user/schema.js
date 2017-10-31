@@ -41,6 +41,7 @@ export const schema = [
   }
 
   type SetPasswordResponse {
+    user: User
     errors: JSON!
   }
 
@@ -109,7 +110,7 @@ export const resolvers = {
 
   ChangeEmailResponse: objectAssign({}, graphqlResolvers(['user', 'errors'])),
 
-  SetPasswordResponse: objectAssign({}, graphqlResolvers(['errors'])),
+  SetPasswordResponse: objectAssign({}, graphqlResolvers(['user', 'errors'])),
 
   UpdateAccountSettingsResponse: objectAssign(
     {},
@@ -159,12 +160,11 @@ export const resolvers = {
       }
 
       try {
-        await context.Users.setPassword(payload, context);
+        const user = await context.Users.setPassword(payload, context);
+        return { user, errors: {} };
       } catch (errors) {
         return { errors };
       }
-
-      return { errors: {} };
     },
 
     // auth

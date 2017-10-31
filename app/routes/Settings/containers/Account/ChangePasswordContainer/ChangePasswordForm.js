@@ -1,10 +1,13 @@
 import React from 'react';
 import T from 'prop-types';
 import Link from 'react-router-dom/Link';
+import withRouter from 'react-router-dom/withRouter';
 
 import { compose } from 'redux';
 
 import { withApollo } from 'react-apollo';
+
+import { locationHelper } from 'redux/configureStore';
 
 import {
   reduxForm,
@@ -24,11 +27,17 @@ import style from 'routes/Settings/styles';
 import CurrentPasswordField from 'routes/Settings/components/CurrentPasswordField';
 import NewPasswordField from 'routes/Settings/components/NewPasswordField';
 
+import refreshCurrentUser from 'utils/refreshCurrentUser';
+
 import { PATH_SETTINGS_BASE, PATH_LOGIN } from 'vars';
 
 import MUTATION from './setPassword.mutation.graphql';
 
 export class ChangePasswordForm extends React.Component {
+  state = {
+    changePasswordAtNextLogin: this.props.changePasswordAtNextLogin,
+  };
+
   constructor(props, context) {
     super(props, context);
 
@@ -44,7 +53,7 @@ export class ChangePasswordForm extends React.Component {
 
   async onSubmit(data) {
     const {
-      data: { setPassword: { errors } },
+      data: { setPassword: { user, errors } },
     } = await this.props.client.mutate({
       mutation: MUTATION,
       variables: {
@@ -59,12 +68,20 @@ export class ChangePasswordForm extends React.Component {
       throw new SubmissionError(errors);
     }
 
+    refreshCurrentUser(user, this.props.dispatch);
+
     const { intl } = this.props;
     const { snackbar } = this.context;
     if (snackbar) {
       snackbar.show({
+        duration: 2000,
         message: intl.formatMessage(messages.passwordChangeSuccessNotification),
       });
+    }
+
+    if (this.state.changePasswordAtNextLogin) {
+      const redirectPath = locationHelper.getRedirectQueryParam(this.props);
+      setTimeout(() => this.props.history.push(redirectPath || '/'), 100);
     }
   }
 
@@ -127,4 +144,4 @@ const Form = reduxForm({
   form: 'changePassword',
 });
 
-export default compose(withApollo, Form)(ChangePasswordForm);
+export default compose(withApollo, withRouter, Form)(ChangePasswordForm);

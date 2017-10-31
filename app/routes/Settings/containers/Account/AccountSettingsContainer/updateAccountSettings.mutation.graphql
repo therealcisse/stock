@@ -5,6 +5,7 @@ mutation updateAccountSettings($payload: UpdateAccountSettingsPayload!) {
       displayName
       email
       username
+      changePasswordAtNextLogin
     }
     errors
   }

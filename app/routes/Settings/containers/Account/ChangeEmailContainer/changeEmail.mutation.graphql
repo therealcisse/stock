@@ -5,6 +5,7 @@ mutation changeEmail($payload: ChangeEmailPayload!) {
       displayName
       email
       username
+      changePasswordAtNextLogin
     }
     errors
   }

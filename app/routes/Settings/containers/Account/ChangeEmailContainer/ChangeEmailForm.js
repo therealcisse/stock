@@ -80,15 +80,19 @@ export class ChangeEmailForm extends React.Component {
     return (
       <div className={style.content}>
         <h1 className={style.changeEmailFormHeading}>
-          {intl.formatMessage(messages.titleChangeEmail)}
+          {intl.formatMessage(
+            user.email ? messages.titleChangeEmail : messages.titleSetEmail,
+          )}
         </h1>
         <p className={style.currentEmailIntro}>
-          <FormattedMessage
-            {...messages.currentEmailIntro}
-            values={{
-              email: <strong>{user.email}</strong>,
-            }}
-          />
+          {user.email ? (
+            <FormattedMessage
+              {...messages.currentEmailIntro}
+              values={{
+                email: <strong>{user.email}</strong>,
+              }}
+            />
+          ) : null}
         </p>
         <div className={style.form}>
           <Field

@@ -143,6 +143,11 @@ export default defineMessages({
     defaultMessage: 'Changez votre adresse d’e-mail',
   },
 
+  titleSetEmail: {
+    id: 'settings-page.set-email-title',
+    defaultMessage: 'Votre adresse d’e-mail',
+  },
+
   titleChangePassword: {
     id: 'settings-page.change-password-title',
     defaultMessage: 'Changez votre mot de passe',

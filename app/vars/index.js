@@ -29,6 +29,9 @@ export const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
 
 export const SALES_REF_NO_BASE = 1000;
 
+export const PASSWORD =
+  '$2a$04$Wvb5rBln4GaBniOTY5xwIe6aD42AlY4edofMQXBEFE2RBM.hGEvyu';
+
 export const CURRENT_USER_COOKIE_NAME = 'currentUser';
 
 export const LANG = 'fr';
@@ -72,9 +75,4 @@ export const APOLLO_DEFAULT_REDUX_ROOT_KEY = 'apollo';
 
 export const CHROME_REMOTE_DEBUGGING_PORT = 9222;
 
-export const MACS = [
-  '08-00-27-4E-9B-3C', // Win8 VM
-  '08-00-27-5E-AD-D4', // Windows 7 x64 VM
-  'b8:f6:b1:14:01:25', // My MAC
-  'C02K29KFDNCT', // Comptline
-];
+export const MACS = [];

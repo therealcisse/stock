@@ -72,7 +72,8 @@ class CoreLayout extends React.Component {
             title={intl.formatMessage(messages.title, { appName: APP_NAME })}
           />
           <div className={style.error}>
-            Environnement non-authorisé. Veuillez contacter Epsilon SARL.
+            Votre environnement est non-authorisé. Veuillez contacter votre
+            administrateur.
           </div>
         </div>
       );
@@ -103,4 +104,7 @@ const mapStateToProps = createSelector(
 
 const Connect = connect(mapStateToProps);
 
-export default compose(injectIntl, Connect)(CoreLayout);
+export default compose(
+  injectIntl,
+  Connect,
+)(CoreLayout);

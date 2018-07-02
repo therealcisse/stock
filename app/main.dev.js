@@ -32,7 +32,9 @@ import {
   SALES_REF_NO_BASE,
   CHROME_REMOTE_DEBUGGING_PORT,
   DB_PATH,
+  PASSWORD,
 } from './vars';
+import { setTimeout } from 'core-js/library/web/timers';
 
 const log = debug('app:main');
 
@@ -553,11 +555,12 @@ const setupDB = new Promise(resolve => {
           // Initial user
           db.exec(
             `
-            INSERT INTO users (id, password, displayName, username, changePasswordAtNextLogin, date, lastModified) VALUES (${ADMIN_KEY}, '$2a$10$nWFC.i/7wl0HNabsOikfluI78m2EnTeFtBm1YWxrAu5n6Y5vm3yF.', 'Admin', 'admin', ${process
-              .env.NODE_ENV === 'development' ||
-            process.env.DEBUG_PROD === 'true'
-              ? 0
-              : 1}, strftime('%s','now'), strftime('%s','now'));
+            INSERT INTO users (id, password, displayName, username, changePasswordAtNextLogin, date, lastModified) VALUES (${ADMIN_KEY}, '${PASSWORD}', 'Admin', 'admin', ${
+              process.env.NODE_ENV === 'development' ||
+              process.env.DEBUG_PROD === 'true'
+                ? 0
+                : 1
+            }, strftime('%s','now'), strftime('%s','now'));
           `,
           );
 
@@ -577,6 +580,10 @@ const setupDB = new Promise(resolve => {
         } catch (e) {}
 
         status = DBStatus.FAILED;
+
+        setTimeout(() => {
+          throw e;
+        }, 0);
       }
     }
 

@@ -24,8 +24,7 @@ import { APP_NAME } from 'vars';
 import ChangePasswordForm from './ChangePasswordForm';
 
 function ChangePasswordContainer({ intl, user, actions }) {
-  const changePasswordAtNextLogin =
-    user && user.changePasswordAtNextLogin ? true : false;
+  const changePasswordAtNextLogin = user && user.changePasswordAtNextLogin;
 
   return (
     <div className={style.root}>
@@ -53,6 +52,12 @@ function mapDispatchToProps(dispatch) {
   return { actions: bindActionCreators({ logOut }, dispatch) };
 }
 
-const Connect = connect(mapStateToProps, mapDispatchToProps);
+const Connect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
-export default compose(injectIntl, Connect)(ChangePasswordContainer);
+export default compose(
+  injectIntl,
+  Connect,
+)(ChangePasswordContainer);

@@ -67,7 +67,11 @@ class PageHeader extends React.Component {
         />,
       );
 
-      this.props.actions.print(Sale.TYPE, '<!DOCTYPE html >' + html);
+      this.props.actions.print(
+        this.props.data.getSale.sale.refNo,
+        Sale.TYPE,
+        '<!DOCTYPE html >' + html,
+      );
     } else {
       this.setState({ dialogOpen: true, option, open: false, anchorEl: null });
     }
@@ -208,6 +212,12 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const Connect = connect(mapStateToProps, mapDispatchToProps);
+const Connect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
-export default compose(withStyles(styles), Connect)(PageHeader);
+export default compose(
+  withStyles(styles),
+  Connect,
+)(PageHeader);

@@ -9,8 +9,6 @@ import { CHROME_REMOTE_DEBUGGING_PORT } from 'vars';
 
 import path from 'path';
 
-import memoizeStringOnly from 'memoizeStringOnly';
-
 import { remote } from 'electron';
 
 import gql from 'graphql-tag';
@@ -19,7 +17,10 @@ import * as htmlPdf from 'html-pdf-chrome';
 
 import Queue from 'async/queue';
 
+import moment from 'moment';
+
 import { TransactionStatus, Quotation, Sale } from 'data/types';
+import { DATE_FORMAT } from '../../../vars/index';
 
 const pdfOptions = {
   timeout: 15 * 1000,
@@ -31,20 +32,23 @@ const pdfOptions = {
 };
 
 const DEFAULT_INVOICE_FILENAME = {
-  [Sale.TYPE]: 'Facture.pdf',
-  [Quotation.TYPE]: 'Devis.pdf',
+  [Sale.TYPE]: refNo => `Facture-${moment().format(DATE_FORMAT)}-${refNo}.pdf`,
+  [Quotation.TYPE]: refNo =>
+    `Devis-${moment().format(DATE_FORMAT)}-${refNo}.pdf`,
 };
 
-const defaultPath = memoizeStringOnly(type =>
-  path.resolve(remote.app.getPath('downloads'), DEFAULT_INVOICE_FILENAME[type]),
-);
+const defaultPath = (type, refNo) =>
+  path.resolve(
+    remote.app.getPath('downloads'),
+    DEFAULT_INVOICE_FILENAME[type](refNo),
+  );
 
-const q = Queue(async function({ type, html }, callback) {
+const q = Queue(async function({ type, refNo, html }, callback) {
   try {
     const url = remote.dialog.showSaveDialog(
       remote.BrowserWindow.getFocusedWindow(),
       {
-        defaultPath: defaultPath(type),
+        defaultPath: defaultPath(type, refNo),
         createDirectory: true,
       },
     );
@@ -62,6 +66,7 @@ const q = Queue(async function({ type, html }, callback) {
 }, 1);
 
 export function print(
+  refNo: number,
   type: typeof Sale.TYPE | typeof Quotation.TYPE,
   html: string,
 ) {
@@ -79,7 +84,7 @@ export function print(
         },
       });
     } else {
-      q.push({ type, html }, function(err, url) {
+      q.push({ type, refNo, html }, function(err, url) {
         snackbar.show({
           message: err || 'Succès',
           type: err ? 'danger' : undefined,

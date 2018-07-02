@@ -165,12 +165,11 @@ require('electron').ipcRenderer.once('db-status', (event, { status }) => {
 
 // Check mac address in production
 if (!__DEV__) {
-  require('electron')
-    .remote // Remote access
-    .require('getmac')
-    .getMac((err, macAddr) => {
-      if (err || MACS.indexOf(macAddr) === -1) {
-        store.dispatch(invalidMac());
-      }
-    });
+  const sn = require('serial-number');
+
+  sn(function(err, n) {
+    if (err || !MACS.includes(n)) {
+      store.dispatch(invalidMac());
+    }
+  });
 }
